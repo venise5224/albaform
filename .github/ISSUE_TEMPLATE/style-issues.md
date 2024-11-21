@@ -1,7 +1,7 @@
 ---
 name: Style Issues
-about: Style에 관련한 issue
-title: Style
+about: CSS 등 사용자 UI 디자인 변경
+title: 'Style: '
 labels: "\U0001F3A8 Style"
 assignees: ''
 

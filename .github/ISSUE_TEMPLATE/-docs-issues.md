@@ -1,7 +1,7 @@
 ---
 name: "\bDocs Issues"
-about: Docs에 관련한 issue
-title: Docs
+about: 문서 수정
+title: 'Docs: '
 labels: "\U0001F4DC Docs"
 assignees: ''
 

@@ -1,7 +1,7 @@
 ---
 name: Fix issue
-about: Fix에 관련한 issue
-title: "[Fix]"
+about: 버그 수정
+title: "\bFix: "
 labels: "\U0001F41E Fix"
 assignees: ''
 
