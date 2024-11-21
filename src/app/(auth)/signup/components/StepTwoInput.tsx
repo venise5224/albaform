@@ -80,7 +80,7 @@ export const StepTwoInput = ({ userType, register, errors }: StepTwoInputProps) 
       title: "가게 위치",
       placeholder: "위치를 입력해주세요.",
       type: "text",
-      isRequired: false,
+      isRequired: true,
       error: errors.storeLocation?.message,
       register: register("storeLocation"),
     },

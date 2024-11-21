@@ -9,6 +9,7 @@ interface SignupSecondContentsProps {
   formWatch: UseFormWatch<z.infer<typeof signupSchema>>;
   register: UseFormRegister<z.infer<typeof signupSchema>>;
   errors: FieldErrors<z.infer<typeof signupSchema>>;
+  isSubmitting: boolean;
   userType: string;
   isValid: boolean;
 }
@@ -17,6 +18,7 @@ const SignupSecondContents = ({
   formWatch,
   register,
   errors,
+  isSubmitting,
   userType,
   isValid,
 }: SignupSecondContentsProps) => {
@@ -67,7 +69,7 @@ const SignupSecondContents = ({
           )}
         </div>
       ))}
-      <PrimaryCTA disabled={isValid} type="submit">시작하기</PrimaryCTA>
+      <PrimaryCTA disabled={!isValid || isSubmitting} type="submit">시작하기</PrimaryCTA>
     </div>
   );
 };
