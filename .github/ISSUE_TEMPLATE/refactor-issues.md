@@ -1,7 +1,7 @@
 ---
 name: Refactor Issues
-about: Refactor에 관련한 issue
-title: Refactor
+about: 코드 리팩토링
+title: 'Refactor: '
 labels: "⚒️ Refactor"
 assignees: ''
 

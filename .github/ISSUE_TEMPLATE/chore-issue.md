@@ -1,7 +1,7 @@
 ---
 name: Chore Issue
-about: Chore에 관련한 issue
-title: Chore
+about: 기타 수정
+title: 'Chore: '
 labels: "\U0001F527 Chore"
 assignees: ''
 

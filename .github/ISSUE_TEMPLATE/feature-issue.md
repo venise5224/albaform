@@ -1,7 +1,7 @@
 ---
 name: Feature Issue
-about: Feat에 관련한 issue
-title: Feat
+about: 새로운 기능 추가
+title: 'Feat: '
 labels: "\U0001F9D1‍\U0001F4BB Feat"
 assignees: ''
 
