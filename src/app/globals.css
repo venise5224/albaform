@@ -27,3 +27,19 @@ body {
   background: var(--background);
   font-family: Pretendard, Arial, Helvetica, sans-serif;
 }
+
+@layer base {
+  input {
+    @apply outline-none;
+  }
+
+  input:focus {
+    @apply caret-orange-300;
+  }
+}
+
+@layer components {
+  .form-input-base {
+    @apply max-w-[640px] rounded-lg border-[0.5px] border-gray-200 p-[14px] placeholder:text-gray-400 focus:border-orange-300;
+  }
+}
