@@ -133,7 +133,7 @@ const SignupContents = ({
           >
             다음
           </PrimaryCTA>
-          <p className="text-black-100 text-center text-xs">
+          <p className="text-black-100 text-center text-xs pc:text-lg">
             가입 시
             <Link
               href="/terms"
