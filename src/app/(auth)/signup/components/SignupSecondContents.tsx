@@ -53,7 +53,7 @@ const SignupSecondContents = ({
           className="relative flex w-full flex-col space-y-2"
           key={input.name}
         >
-          <label htmlFor={input.name} className="text-black-400 text-md">
+          <label htmlFor={input.name} className="text-md text-black-400">
             {input.title}{" "}
             {input.isRequired && <span className="text-orange-300">*</span>}
           </label>
@@ -65,11 +65,15 @@ const SignupSecondContents = ({
             placeholder={input.placeholder}
           />
           {input.error && (
-            <p className="absolute bottom-0 right-0 translate-y-full text-red text-sm font-medium">{input.error}</p>
+            <p className="absolute bottom-0 right-0 translate-y-full text-sm font-medium text-red">
+              {input.error}
+            </p>
           )}
         </div>
       ))}
-      <PrimaryCTA disabled={!isValid || isSubmitting} type="submit">시작하기</PrimaryCTA>
+      <PrimaryCTA disabled={!isValid || isSubmitting} type="submit">
+        시작하기
+      </PrimaryCTA>
     </div>
   );
 };

@@ -22,13 +22,19 @@ export const signupSchema = z
       .regex(/^[0-9]+$/, { message: "숫자만 입력해주세요." })
       .optional(),
     nickname: z.string().min(1, { message: "닉네임을 입력해주세요." }).trim(),
-    storeName: z.string().min(1, { message: "가게 이름을 입력해주세요." }).trim(),
+    storeName: z
+      .string()
+      .min(1, { message: "가게 이름을 입력해주세요." })
+      .trim(),
     storeNumber: z
       .string()
       .min(9, { message: "올바르지 않은 번호입니다." })
       .regex(/^[0-9]+$/, { message: "숫자만 입력해주세요." })
       .trim(),
-    storeLocation: z.string().min(1, { message: "가게 위치를 입력해주세요." }).trim(),
+    storeLocation: z
+      .string()
+      .min(1, { message: "가게 위치를 입력해주세요." })
+      .trim(),
   })
   .refine((data) => data.password === data.passwordConfirm, {
     message: "비밀번호가 일치하지 않습니다.",

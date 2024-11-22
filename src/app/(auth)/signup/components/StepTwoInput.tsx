@@ -11,7 +11,11 @@ interface StepTwoInputProps {
   errors: FieldErrors<z.infer<typeof signupSchema>>;
 }
 
-export const StepTwoInput = ({ userType, register, errors }: StepTwoInputProps) => {
+export const StepTwoInput = ({
+  userType,
+  register,
+  errors,
+}: StepTwoInputProps) => {
   const isApplicant = userType === "applicant";
 
   const commonInput = [
@@ -86,9 +90,10 @@ export const StepTwoInput = ({ userType, register, errors }: StepTwoInputProps) 
     },
   ];
 
-  const inputArr = [...commonInput, ...(isApplicant ? applicantInput : ownerInput)];
+  const inputArr = [
+    ...commonInput,
+    ...(isApplicant ? applicantInput : ownerInput),
+  ];
 
   return inputArr;
 };
-
-

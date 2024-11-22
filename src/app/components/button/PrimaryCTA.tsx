@@ -9,7 +9,7 @@ const PrimaryCTA = ({ children, disabled, type, onClick }: PrimaryCTAProps) => {
   return (
     <button
       type={type}
-      className="max-w-[640px] rounded-lg bg-orange-300 p-4 text-lg font-semibold text-white disabled:bg-gray-100 w-full"
+      className="w-full max-w-[640px] rounded-lg bg-orange-300 p-4 text-lg font-semibold text-white disabled:bg-gray-100"
       disabled={disabled}
       onClick={onClick}
     >

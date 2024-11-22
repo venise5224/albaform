@@ -23,32 +23,32 @@ const SignupTitle = ({
       signinHref: "/signin/applicant",
     },
   ];
-  
+
   return (
     <div className="flex flex-col space-y-10">
       {stepOneDone !== "true" && (
         <nav className="flex items-center justify-center space-x-4">
           {linkArr.map((link) => (
             <Link
-            key={link.type}
-            href={link.href}
-            className={cls(
-              "text-lg font-bold leading-[26px] text-gray-300",
-              link.type === userType ? "text-orange-300" : ""
-            )}
-          >
-            {link.title}
-          </Link>
+              key={link.type}
+              href={link.href}
+              className={cls(
+                "text-lg font-bold leading-[26px] text-gray-300",
+                link.type === userType ? "text-orange-300" : ""
+              )}
+            >
+              {link.title}
+            </Link>
           ))}
         </nav>
       )}
       <div className="flex flex-col items-center space-y-4">
-        <h1 className="text-black-500 text-2xl font-semibold pc:text-3xl">
+        <h1 className="text-2xl font-semibold text-black-500 pc:text-3xl">
           {stepOneDone === "true" ? "지원자 정보 입력" : "회원가입"}
         </h1>
         {stepOneDone !== "true" ? (
           <div className="flex flex-col items-center space-y-[2px]">
-            <p className="text-black-100 text-xs pc:text-xl">
+            <p className="text-xs text-black-100 pc:text-xl">
               이미 계정이 있으신가요?
               <Link
                 href={
@@ -56,18 +56,20 @@ const SignupTitle = ({
                     ? "/signin/applicant"
                     : "/signin/owner"
                 }
-                className="text-black-400 ml-2 font-semibold underline"
+                className="ml-2 font-semibold text-black-400 underline"
               >
                 로그인 하기
               </Link>
             </p>
-            <span className="text-black-100 text-xs pc:text-xl">
+            <span className="text-xs text-black-100 pc:text-xl">
               {userTypeText} 회원가입은 {userTypeText} 전용 페이지에서 할 수
               있습니다.
             </span>
           </div>
         ) : (
-          <p className="text-black-100 text-xs pc:text-xl">추가 정보를 입력하여 회원가입을 완료해주세요.</p>  
+          <p className="text-xs text-black-100 pc:text-xl">
+            추가 정보를 입력하여 회원가입을 완료해주세요.
+          </p>
         )}
       </div>
     </div>

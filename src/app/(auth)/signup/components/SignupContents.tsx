@@ -78,7 +78,7 @@ const SignupContents = ({
       {stepOneDone !== "true" ? (
         <div className="flex flex-col space-y-10">
           <div className="relative flex flex-col space-y-2">
-            <label htmlFor="email" className="text-black-400 text-md">
+            <label htmlFor="email" className="text-md text-black-400">
               이메일
             </label>
             <input
@@ -89,14 +89,14 @@ const SignupContents = ({
               placeholder="이메일을 입력해주세요."
             />
             {errors.email && (
-              <p className="text-red absolute bottom-0 right-0 translate-y-full text-sm font-medium">
+              <p className="absolute bottom-0 right-0 translate-y-full text-sm font-medium text-red">
                 {errors.email.message}
               </p>
             )}
           </div>
           {passwordArr.map((item) => (
             <div key={item.name} className="relative flex flex-col space-y-2">
-              <label htmlFor={item.name} className="text-black-400 text-md">
+              <label htmlFor={item.name} className="text-md text-black-400">
                 {item.title}
               </label>
               <div className="form-input-base flex items-center justify-between focus-within:border-orange-300">
@@ -120,7 +120,7 @@ const SignupContents = ({
                 />
               </div>
               {item.error && (
-                <p className="text-red absolute bottom-0 right-0 translate-y-full text-sm font-medium">
+                <p className="absolute bottom-0 right-0 translate-y-full text-sm font-medium text-red">
                   {item.error}
                 </p>
               )}
@@ -133,7 +133,7 @@ const SignupContents = ({
           >
             다음
           </PrimaryCTA>
-          <p className="text-black-100 text-center text-xs pc:text-lg">
+          <p className="text-center text-xs text-black-100 pc:text-lg">
             가입 시
             <Link
               href="/terms"

@@ -1,7 +1,13 @@
 import SignupTitle from "../components/SignupTitle";
 import SignupContents from "../components/SignupContents";
 
-const SignupPage = async ({ params, searchParams }: { params: { userType: string }, searchParams: { stepOneDone: string } }) => {
+const SignupPage = async ({
+  params,
+  searchParams,
+}: {
+  params: { userType: string };
+  searchParams: { stepOneDone: string };
+}) => {
   const { userType } = await params;
   const { stepOneDone } = await searchParams;
 
