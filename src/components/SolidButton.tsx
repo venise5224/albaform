@@ -2,8 +2,8 @@
 
 import Image from "next/image";
 
-interface IconSolidButtonProps {
-  icon: string;
+interface SolidButtonProps {
+  icon?: string;
   label: string;
   size: "small" | "large";
   style:
@@ -16,13 +16,13 @@ interface IconSolidButtonProps {
   onClick: () => void;
 }
 
-export default function IconSolidButton({
+export default function SolidButton({
   icon,
   label,
   size,
   style,
   onClick,
-}: IconSolidButtonProps) {
+}: SolidButtonProps) {
   // 크기 설정
   const sizeClass =
     size === "small"
@@ -50,14 +50,16 @@ export default function IconSolidButton({
 
   return (
     <button className={finalClassName} onClick={onClick}>
-      <span>
-        <Image
-          src={icon}
-          alt="buttonIcon"
-          width={size === "small" ? 24 : 36}
-          height={size === "small" ? 24 : 36}
-        />
-      </span>
+      {icon && (
+        <span>
+          <Image
+            src={icon}
+            alt="buttonIcon"
+            width={size === "small" ? 24 : 36}
+            height={size === "small" ? 24 : 36}
+          />
+        </span>
+      )}
       {label}
     </button>
   );
