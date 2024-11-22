@@ -4,6 +4,7 @@ import { signupSchema } from "../zodSchema/signupSchema";
 import Image from "next/image";
 import PrimaryCTA from "@/app/components/button/PrimaryCTA";
 import { StepTwoInput } from "./StepTwoInput";
+import { cls } from "@/app/lib/utils";
 
 interface SignupSecondContentsProps {
   formWatch: UseFormWatch<z.infer<typeof signupSchema>>;
@@ -61,7 +62,7 @@ const SignupSecondContents = ({
             {...input.register}
             type={input.type}
             name={input.name}
-            className="form-input-base"
+            className={cls("form-input-base", input.error ? "border-red" : "")}
             placeholder={input.placeholder}
           />
           {input.error && (
@@ -71,6 +72,36 @@ const SignupSecondContents = ({
           )}
         </div>
       ))}
+      <div className="relative flex w-full flex-col space-y-2">
+        <label htmlFor="storeLocation" className="text-md text-black-400">
+          가게 위치
+        </label>
+        <div
+          className={cls(
+            "form-input-base flex items-center space-x-2 focus-within:border-orange-300",
+            errors.storeLocation ? "border-red" : ""
+          )}
+        >
+          <Image
+            src="/icons/map-pin.png"
+            alt="가게 위치"
+            width={36}
+            height={36}
+          />
+          <input
+            {...register("storeLocation")}
+            type="text"
+            name="storeLocation"
+            className="w-full"
+            placeholder="위치를 입력해주세요."
+          />
+          {errors.storeLocation && (
+            <p className="absolute bottom-0 right-0 translate-y-full text-sm font-medium text-red">
+              {errors.storeLocation.message}
+            </p>
+          )}
+        </div>
+      </div>
       <PrimaryCTA disabled={!isValid || isSubmitting} type="submit">
         시작하기
       </PrimaryCTA>

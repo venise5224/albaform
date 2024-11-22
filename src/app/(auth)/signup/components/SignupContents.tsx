@@ -10,6 +10,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signupSchema } from "../zodSchema/signupSchema";
 import PrimaryCTA from "@/app/components/button/PrimaryCTA";
+import { cls } from "@/app/lib/utils";
 
 const SignupContents = ({
   userType,
@@ -85,7 +86,10 @@ const SignupContents = ({
               {...register("email")}
               type="email"
               name="email"
-              className="form-input-base"
+              className={cls(
+                "form-input-base",
+                errors.email ? "border-red" : ""
+              )}
               placeholder="이메일을 입력해주세요."
             />
             {errors.email && (
@@ -99,7 +103,12 @@ const SignupContents = ({
               <label htmlFor={item.name} className="text-md text-black-400">
                 {item.title}
               </label>
-              <div className="form-input-base flex items-center justify-between focus-within:border-orange-300">
+              <div
+                className={cls(
+                  "form-input-base flex items-center justify-between focus-within:border-orange-300",
+                  item.error ? "border-red" : ""
+                )}
+              >
                 <input
                   {...item.register}
                   type={item.visible ? "text" : "password"}

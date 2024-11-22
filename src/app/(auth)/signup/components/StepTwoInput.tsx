@@ -79,15 +79,6 @@ export const StepTwoInput = ({
       error: errors.phoneNumber?.message,
       register: register("phoneNumber"),
     },
-    {
-      name: "storeLocation",
-      title: "가게 위치",
-      placeholder: "위치를 입력해주세요.",
-      type: "text",
-      isRequired: true,
-      error: errors.storeLocation?.message,
-      register: register("storeLocation"),
-    },
   ];
 
   const inputArr = [
