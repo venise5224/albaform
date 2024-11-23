@@ -12,14 +12,15 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { signinAction } from "../actions/signinActions";
 import { useRouter } from "next/navigation";
+import useToken from "@/hooks/useToken";
 
 const SigninContents = () => {
   const router = useRouter();
   const [visible, setVisible] = useState(false);
+  const { setTokens } = useToken();
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors, isValid, isSubmitting },
   } = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
@@ -39,6 +40,7 @@ const SigninContents = () => {
       const response = await signinAction(formData);
 
       if (response.status === 200) {
+        setTokens(response.data.accessToken, response.data.refreshToken);
         router.push("/");
       }
     } catch (error) {
