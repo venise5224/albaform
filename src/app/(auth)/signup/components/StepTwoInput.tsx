@@ -1,6 +1,9 @@
 import { FieldErrors } from "react-hook-form";
 
-import { applicantSchema, ownerSchema } from "../zodSchema/signupSchema";
+import {
+  applicantSchema,
+  ownerSchema,
+} from "../../../../schema/signup/signupSchema";
 
 import { UseFormRegister } from "react-hook-form";
 import { z } from "zod";

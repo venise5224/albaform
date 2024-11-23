@@ -1,6 +1,6 @@
 "use server";
 
-import instance from "@/app/lib/instance";
+import instance from "@/lib/instance";
 
 export const profileImgActions = async (image: FormData) => {
   if (!image) {

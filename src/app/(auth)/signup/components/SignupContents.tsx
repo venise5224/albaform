@@ -9,14 +9,18 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { applicantSchema, ownerSchema } from "../zodSchema/signupSchema";
-import { cls } from "@/app/lib/utils";
+import {
+  applicantSchema,
+  ownerSchema,
+} from "../../../../schema/signup/signupSchema";
+import { cls } from "@/lib/utils";
 import { signupActions } from "../actions/signupActions";
 import { profileImgAtom } from "@/atoms/signupAtomStore";
 import { useAtomValue } from "jotai";
 import useToken from "@/hooks/useToken";
 import { profileImgActions } from "../actions/profileImgActions";
 import FormInput from "@/app/components/input/FormInput";
+import ErrorText from "@/app/components/errorText/ErrorText";
 
 export type FormSchema =
   | z.infer<typeof applicantSchema>
@@ -140,11 +144,7 @@ const SignupContents = ({
               error={errors.email}
               name="email"
             />
-            {errors.email && (
-              <p className="absolute bottom-0 right-0 translate-y-full text-sm font-medium text-red">
-                {errors.email.message}
-              </p>
-            )}
+            <ErrorText error={errors.email}>{errors.email?.message}</ErrorText>
           </div>
           {passwordArr.map((item) => (
             <div key={item.name} className="relative flex flex-col space-y-2">
@@ -167,20 +167,14 @@ const SignupContents = ({
                 <Image
                   onClick={() => item.visibleFn(!item.visible)}
                   src={
-                    item.visible
-                      ? "/icons/visibility_on.png"
-                      : "/icons/visibility_off.png"
+                    item.visible ? "/icon/visible.svg" : "/icon/non-visible.svg"
                   }
                   alt="비밀번호 보이기 버튼"
                   width={24}
                   height={24}
                 />
               </div>
-              {item.error && (
-                <p className="absolute bottom-0 right-0 translate-y-full text-sm font-medium text-red">
-                  {item.error}
-                </p>
-              )}
+              <ErrorText error={item.error}>{item.error}</ErrorText>
             </div>
           ))}
           <PrimaryCTA

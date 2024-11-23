@@ -1,12 +1,16 @@
 import { FieldErrors, Path, UseFormRegister } from "react-hook-form";
 import { z } from "zod";
-import { applicantSchema, ownerSchema } from "../zodSchema/signupSchema";
+import {
+  applicantSchema,
+  ownerSchema,
+} from "../../../../schema/signup/signupSchema";
 import Image from "next/image";
 import PrimaryCTA from "@/app/components/button/PrimaryCTA";
 import { StepTwoInput } from "./StepTwoInput";
-import { cls } from "@/app/lib/utils";
+import { cls } from "@/lib/utils";
 import ProfileImg from "./ProfileImg";
 import FormInput from "@/app/components/input/FormInput";
+import ErrorText from "@/app/components/errorText/ErrorText";
 
 interface SignupSecondContentsProps {
   register: UseFormRegister<
@@ -57,11 +61,7 @@ const SignupSecondContents = ({
             }
             placeholder={input.placeholder}
           />
-          {input.error && (
-            <p className="absolute bottom-0 right-0 translate-y-full text-sm font-medium text-red">
-              {input.error}
-            </p>
-          )}
+          <ErrorText error={input.error}>{input.error}</ErrorText>
         </div>
       ))}
       {userType === "owner" && (
@@ -76,7 +76,7 @@ const SignupSecondContents = ({
             )}
           >
             <Image
-              src="/icons/map-pin.png"
+              src="/icon/pin-fill-lg.svg"
               alt="가게 위치"
               width={36}
               height={36}
@@ -88,11 +88,9 @@ const SignupSecondContents = ({
               className="w-full"
               placeholder="위치를 입력해주세요."
             />
-            {ownerErrors.location && (
-              <p className="absolute bottom-0 right-0 translate-y-full text-sm font-medium text-red">
-                {ownerErrors.location.message}
-              </p>
-            )}
+            <ErrorText error={ownerErrors.location}>
+              {ownerErrors.location?.message}
+            </ErrorText>
           </div>
         </div>
       )}

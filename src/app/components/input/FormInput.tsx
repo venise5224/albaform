@@ -1,4 +1,4 @@
-import { cls } from "@/app/lib/utils";
+import { cls } from "@/lib/utils";
 import { HTMLInputTypeAttribute } from "react";
 import {
   FieldErrors,

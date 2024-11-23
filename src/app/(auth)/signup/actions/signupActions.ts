@@ -1,6 +1,9 @@
 "use server";
 
-import { applicantSchema, ownerSchema } from "../zodSchema/signupSchema";
+import {
+  applicantSchema,
+  ownerSchema,
+} from "../../../../schema/signup/signupSchema";
 
 export const signupActions = async (formData: FormData) => {
   const data = {

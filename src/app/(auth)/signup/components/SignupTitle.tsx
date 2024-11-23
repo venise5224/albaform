@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { cls } from "@/app/lib/utils";
+import { cls } from "@/lib/utils";
 
 const SignupTitle = ({
   userType,
@@ -8,7 +8,7 @@ const SignupTitle = ({
   userType: string;
   stepOneDone: string;
 }) => {
-  const userTypeText = userType === "applicant" ? "지원자" : "사장님";
+  const userTypeText = userType === "applicant" ? "사장님" : "지원자";
   const linkArr = [
     {
       type: "owner",
@@ -27,7 +27,7 @@ const SignupTitle = ({
   return (
     <div className="flex flex-col space-y-10">
       {stepOneDone !== "true" && (
-        <nav className="flex items-center justify-center space-x-4">
+        <nav className="flex items-center justify-center space-x-4 pc:hidden">
           {linkArr.map((link) => (
             <Link
               key={link.type}
