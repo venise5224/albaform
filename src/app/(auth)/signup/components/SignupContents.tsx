@@ -8,9 +8,14 @@ import { useForm } from "react-hook-form";
 import { useRouter, useSearchParams } from "next/navigation";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signupSchema } from "../zodSchema/signupSchema";
+import { applicantSchema, ownerSchema } from "../zodSchema/signupSchema";
 import PrimaryCTA from "@/app/components/button/PrimaryCTA";
 import { cls } from "@/app/lib/utils";
+import { signupActions } from "../actions/signupActions";
+
+export type FormSchema =
+  | z.infer<typeof applicantSchema>
+  | z.infer<typeof ownerSchema>;
 
 const SignupContents = ({
   userType,
@@ -24,25 +29,29 @@ const SignupContents = ({
   const [visiblePassword, setVisiblePassword] = useState(false);
   const [visiblePasswordConfirm, setVisiblePasswordConfirm] = useState(false);
   const currentParams = new URLSearchParams(searchParams.toString());
+
   const {
     register,
     handleSubmit,
     reset,
     watch,
     formState: { errors, isSubmitting, isValid },
-  } = useForm<z.infer<typeof signupSchema>>({
-    resolver: zodResolver(signupSchema),
+  } = useForm<FormSchema>({
+    resolver: zodResolver(
+      userType === "applicant" ? applicantSchema : ownerSchema
+    ),
     mode: "onChange",
     defaultValues: {
       email: "",
       password: "",
+      role: userType === "applicant" ? "APPLICANT" : "OWNER",
       passwordConfirm: "",
       nickname: "",
-      username: "",
+      name: "",
       phoneNumber: "",
       storeName: "",
-      storeNumber: "",
-      storeLocation: "",
+      storePhoneNumber: "",
+      location: "",
     },
   });
   const isValidFirstStep =
@@ -51,6 +60,26 @@ const SignupContents = ({
   const handleNextStep = () => {
     currentParams.set("stepOneDone", "true");
     router.push(`/signup/${userType}?${currentParams.toString()}`);
+  };
+
+  const onSubmit = async (data: FormSchema) => {
+    try {
+      const formData = new FormData();
+      Object.entries(data).forEach(([key, value]) => {
+        formData.append(key, value || "");
+      });
+
+      const response = await signupActions(formData);
+
+      if (response.status) {
+        reset();
+        router.push("/signin");
+      } else {
+        console.error(response.message);
+      }
+    } catch (error) {
+      console.error("signup에서 에러 발생", error);
+    }
   };
 
   const passwordArr = [
@@ -75,8 +104,8 @@ const SignupContents = ({
   ];
 
   return (
-    <form>
-      {stepOneDone !== "true" ? (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      {!stepOneDone ? (
         <div className="flex flex-col space-y-10">
           <div className="relative flex flex-col space-y-2">
             <label htmlFor="email" className="text-md text-black-400">
@@ -155,7 +184,6 @@ const SignupContents = ({
         </div>
       ) : (
         <SignupSecondContents
-          formWatch={watch}
           userType={userType}
           isValid={isValid}
           register={register}

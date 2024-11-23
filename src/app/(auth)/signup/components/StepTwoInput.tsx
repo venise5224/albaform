@@ -1,14 +1,18 @@
 import { FieldErrors } from "react-hook-form";
 
-import { signupSchema } from "../zodSchema/signupSchema";
+import { applicantSchema, ownerSchema } from "../zodSchema/signupSchema";
 
 import { UseFormRegister } from "react-hook-form";
 import { z } from "zod";
 
 interface StepTwoInputProps {
   userType: string;
-  register: UseFormRegister<z.infer<typeof signupSchema>>;
-  errors: FieldErrors<z.infer<typeof signupSchema>>;
+  register: UseFormRegister<
+    z.infer<typeof applicantSchema> | z.infer<typeof ownerSchema>
+  >;
+  errors: FieldErrors<
+    z.infer<typeof applicantSchema> | z.infer<typeof ownerSchema>
+  >;
 }
 
 export const StepTwoInput = ({
@@ -17,6 +21,10 @@ export const StepTwoInput = ({
   errors,
 }: StepTwoInputProps) => {
   const isApplicant = userType === "applicant";
+  const applicantErrors = errors as FieldErrors<
+    z.infer<typeof applicantSchema>
+  >;
+  const ownerErrors = errors as FieldErrors<z.infer<typeof ownerSchema>>;
 
   const commonInput = [
     {
@@ -32,13 +40,13 @@ export const StepTwoInput = ({
 
   const applicantInput = [
     {
-      name: "username",
+      name: "name",
       title: "이름",
       placeholder: "이름을 입력해주세요.",
       type: "text",
       isRequired: true,
-      error: errors.username?.message,
-      register: register("username"),
+      error: applicantErrors.name?.message,
+      register: register("name"),
     },
     {
       name: "phoneNumber",
@@ -46,7 +54,7 @@ export const StepTwoInput = ({
       placeholder: "숫자만 입력해주세요.",
       type: "tel",
       isRequired: true,
-      error: errors.phoneNumber?.message,
+      error: applicantErrors.phoneNumber?.message,
       register: register("phoneNumber"),
     },
   ];
@@ -58,17 +66,17 @@ export const StepTwoInput = ({
       placeholder: "가게 이름(상호명)을 입력해주세요.",
       type: "text",
       isRequired: true,
-      error: errors.storeName?.message,
+      error: ownerErrors.storeName?.message,
       register: register("storeName"),
     },
     {
-      name: "storeNumber",
+      name: "storePhoneNumber",
       title: "가게 전화번호",
       placeholder: "숫자만 입력해주세요.",
       type: "tel",
       isRequired: true,
-      error: errors.storeNumber?.message,
-      register: register("storeNumber"),
+      error: ownerErrors.storePhoneNumber?.message,
+      register: register("storePhoneNumber"),
     },
     {
       name: "phoneNumber",
@@ -76,7 +84,7 @@ export const StepTwoInput = ({
       placeholder: "숫자만 입력해주세요.",
       type: "tel",
       isRequired: false,
-      error: errors.phoneNumber?.message,
+      error: ownerErrors.phoneNumber?.message,
       register: register("phoneNumber"),
     },
   ];

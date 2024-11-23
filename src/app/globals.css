@@ -29,12 +29,8 @@ body {
 }
 
 @layer base {
-  input {
-    @apply outline-none;
-  }
-
   input:focus {
-    @apply caret-orange-300;
+    @apply caret-orange-300 outline-none;
   }
 }
 
