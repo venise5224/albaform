@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-const HeaderNavigation = () => {
+const HeaderNavigation = ({ isAuthPage }: { isAuthPage: boolean }) => {
   const currentPathname = usePathname();
+
+  if (isAuthPage) return null;
 
   return (
     <nav className="flex-grow">
