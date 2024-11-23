@@ -42,6 +42,9 @@ const SigninContents = () => {
       if (response.status === 200) {
         setTokens(response.data.accessToken, response.data.refreshToken);
         router.push("/");
+      } else {
+        alert(response.error); // 토스트 변경
+        console.error("로그인 에러", response.error, response.status);
       }
     } catch (error) {
       console.error("로그인 에러", error);
