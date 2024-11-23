@@ -16,7 +16,7 @@ const baseSchema = z.object({
     .optional(),
 });
 
-const applicantBaseSchema = baseSchema.extend({
+export const applicantSchema = baseSchema.extend({
   role: z.literal("APPLICANT"),
   name: z.string().min(1, { message: "이름을 입력해주세요." }).optional(),
   phoneNumber: z.string().regex(/^(010|011|016|017|018|019)\d{7,8}$/, {
@@ -25,15 +25,7 @@ const applicantBaseSchema = baseSchema.extend({
   nickname: z.string().min(1, { message: "닉네임을 입력해주세요." }),
 });
 
-export const applicantSchema = applicantBaseSchema.refine(
-  (data) => data.password === data.passwordConfirm,
-  {
-    message: "비밀번호가 일치하지 않습니다.",
-    path: ["passwordConfirm"],
-  }
-);
-
-const ownerBaseSchema = baseSchema.extend({
+export const ownerSchema = baseSchema.extend({
   role: z.literal("OWNER"),
   nickname: z.string().min(1, { message: "닉네임을 입력해주세요." }),
   storeName: z
@@ -55,11 +47,3 @@ const ownerBaseSchema = baseSchema.extend({
     .min(1, { message: "가게 위치를 입력해주세요." })
     .optional(),
 });
-
-export const ownerSchema = ownerBaseSchema.refine(
-  (data) => data.password === data.passwordConfirm,
-  {
-    message: "비밀번호가 일치하지 않습니다.",
-    path: ["passwordConfirm"],
-  }
-);

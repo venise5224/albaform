@@ -23,8 +23,7 @@ export const signupActions = async (formData: FormData) => {
   if (!result.success) {
     return {
       status: false,
-      error: result.error.flatten(),
-      message: "회원가입 정보가 올바르지 않습니다.",
+      message: result.error.flatten(),
     };
   }
 
@@ -41,19 +40,23 @@ export const signupActions = async (formData: FormData) => {
     );
 
     if (!response.ok) {
+      console.error("회원가입 요청 실패", response.statusText, response.status);
       return {
-        status: false,
+        status: response.status,
         message: response.statusText,
       };
     }
 
     const resData = await response.json();
 
-    return resData;
+    return {
+      status: response.status,
+      data: resData,
+    };
   } catch (error) {
     console.error("signupActions에서 에러 발생", error);
     return {
-      status: false,
+      status: 500,
       message: "회원가입 중 오류가 발생했습니다.",
     };
   }

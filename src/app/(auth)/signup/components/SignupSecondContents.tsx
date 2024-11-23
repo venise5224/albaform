@@ -1,10 +1,12 @@
-import { FieldErrors, UseFormRegister } from "react-hook-form";
+import { FieldErrors, Path, UseFormRegister } from "react-hook-form";
 import { z } from "zod";
 import { applicantSchema, ownerSchema } from "../zodSchema/signupSchema";
 import Image from "next/image";
 import PrimaryCTA from "@/app/components/button/PrimaryCTA";
 import { StepTwoInput } from "./StepTwoInput";
 import { cls } from "@/app/lib/utils";
+import ProfileImg from "./ProfileImg";
+import FormInput from "@/app/components/input/FormInput";
 
 interface SignupSecondContentsProps {
   register: UseFormRegister<
@@ -30,28 +32,7 @@ const SignupSecondContents = ({
 
   return (
     <div className="flex flex-col items-center space-y-10">
-      <label htmlFor="profileImg" className="relative cursor-pointer">
-        <Image
-          src="/images/profile-img-edit.png"
-          alt="프로필사진 변경"
-          width={80}
-          height={80}
-        />
-        <Image
-          src="/images/img-edit-btn.png"
-          alt="프로필사진 변경 버튼"
-          width={24}
-          height={24}
-          className="absolute bottom-0 right-0"
-        />
-      </label>
-      <input
-        type="file"
-        id="profileImg"
-        name="profileImg"
-        className="hidden"
-        accept="image/*"
-      />
+      <ProfileImg />
       {inputArr.map((input) => (
         <div
           className="relative flex w-full flex-col space-y-2"
@@ -61,11 +42,19 @@ const SignupSecondContents = ({
             {input.title}{" "}
             {input.isRequired && <span className="text-orange-300">*</span>}
           </label>
-          <input
-            {...input.register}
+          <FormInput
+            register={register}
             type={input.type}
-            name={input.name}
-            className={cls("form-input-base", input.error ? "border-red" : "")}
+            name={
+              input.name as Path<
+                z.infer<typeof applicantSchema> | z.infer<typeof ownerSchema>
+              >
+            }
+            error={
+              input.error as FieldErrors<
+                z.infer<typeof applicantSchema> | z.infer<typeof ownerSchema>
+              >
+            }
             placeholder={input.placeholder}
           />
           {input.error && (

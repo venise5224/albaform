@@ -3,15 +3,20 @@
 import Image from "next/image";
 import Link from "next/link";
 import SignupSecondContents from "./SignupSecondContents";
+import PrimaryCTA from "@/app/components/button/PrimaryCTA";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { applicantSchema, ownerSchema } from "../zodSchema/signupSchema";
-import PrimaryCTA from "@/app/components/button/PrimaryCTA";
 import { cls } from "@/app/lib/utils";
 import { signupActions } from "../actions/signupActions";
+import { profileImgAtom } from "@/atoms/signupAtomStore";
+import { useAtomValue } from "jotai";
+import useToken from "@/hooks/useToken";
+import { profileImgActions } from "../actions/profileImgActions";
+import FormInput from "@/app/components/input/FormInput";
 
 export type FormSchema =
   | z.infer<typeof applicantSchema>
@@ -29,7 +34,8 @@ const SignupContents = ({
   const [visiblePassword, setVisiblePassword] = useState(false);
   const [visiblePasswordConfirm, setVisiblePasswordConfirm] = useState(false);
   const currentParams = new URLSearchParams(searchParams.toString());
-
+  const profileImg = useAtomValue(profileImgAtom);
+  const { setTokens } = useToken();
   const {
     register,
     handleSubmit,
@@ -71,14 +77,30 @@ const SignupContents = ({
 
       const response = await signupActions(formData);
 
-      if (response.status) {
+      if (response.status === 200) {
+        setTokens(response.data.accessToken, response.data.refreshToken);
+
+        if (profileImg) {
+          const formData = new FormData();
+          formData.append("image", profileImg);
+          const profileImgResponse = await profileImgActions(formData);
+
+          if (profileImgResponse.status !== 200) {
+            alert(profileImgResponse.message); // 토스트 변경
+            return;
+          }
+        }
+
+        alert("회원가입이 완료되었습니다."); // 토스트 변경
         reset();
         router.push("/signin");
       } else {
         console.error(response.message);
+        alert(response.message); // 회원가입 실패 시 토스트 띄우기
       }
     } catch (error) {
       console.error("signup에서 에러 발생", error);
+      alert("회원가입 중 오류가 발생했습니다."); // 회원가입 중 오류 시 토스트 띄우기
     }
   };
 
@@ -111,15 +133,12 @@ const SignupContents = ({
             <label htmlFor="email" className="text-md text-black-400">
               이메일
             </label>
-            <input
-              {...register("email")}
+            <FormInput
               type="email"
-              name="email"
-              className={cls(
-                "form-input-base",
-                errors.email ? "border-red" : ""
-              )}
               placeholder="이메일을 입력해주세요."
+              register={register}
+              error={errors.email}
+              name="email"
             />
             {errors.email && (
               <p className="absolute bottom-0 right-0 translate-y-full text-sm font-medium text-red">
