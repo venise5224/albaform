@@ -10,8 +10,11 @@ import Image from "next/image";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { signinAction } from "../actions/signinActions";
+import { useRouter } from "next/navigation";
 
-const SigninContents = ({ userType }: { userType: string }) => {
+const SigninContents = () => {
+  const router = useRouter();
   const [visible, setVisible] = useState(false);
   const {
     register,
@@ -27,8 +30,21 @@ const SigninContents = ({ userType }: { userType: string }) => {
     },
   });
 
-  const onSubmit = (data: z.infer<typeof signInSchema>) => {
-    console.log(data);
+  const onSubmit = async (data: z.infer<typeof signInSchema>) => {
+    try {
+      const formData = new FormData();
+      formData.append("email", data.email);
+      formData.append("password", data.password);
+
+      const response = await signinAction(formData);
+
+      if (response.status === 200) {
+        router.push("/");
+      }
+    } catch (error) {
+      console.error("로그인 에러", error);
+      alert("로그인에 실패했습니다."); // 토스트 변경
+    }
   };
 
   return (

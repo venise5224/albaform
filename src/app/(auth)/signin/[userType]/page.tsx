@@ -6,7 +6,7 @@ const SigninPage = async ({ params }: { params: { userType: string } }) => {
   return (
     <>
       <SigninTitle userType={userType} />
-      <SigninContents userType={userType} />
+      <SigninContents />
     </>
   );
 };

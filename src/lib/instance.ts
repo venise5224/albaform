@@ -1,7 +1,7 @@
 import Cookies from "js-cookie";
 
 // 요청 시 사용하여 토큰 확인 및 갱신, 재요청까지 처리할 수 있는 함수입니다.
-// 요청할 때 fetch 대신 instance를 사용합니다.
+// 토큰이 필요한 요청을 할 때 fetch 대신 instance를 사용합니다.
 const instance = async (url: string, options: RequestInit = {}) => {
   const accessToken = Cookies.get("accessToken");
 

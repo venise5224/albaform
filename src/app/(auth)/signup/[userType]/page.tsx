@@ -1,5 +1,10 @@
 import SignupTitle from "../components/SignupTitle";
 import SignupContents from "../components/SignupContents";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "회원가입",
+};
 
 const SignupPage = async ({
   params,
