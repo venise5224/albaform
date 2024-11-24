@@ -2,10 +2,11 @@
 
 import { usePathname } from "next/navigation";
 import { useSidebarState } from "@/hooks/useSidebarState";
-import Link from "next/link";
 import Image from "next/image";
 import HeaderNavigation from "./HeaderNavigation";
-import AuthPageHeader from "./AuthPageHeader";
+import AuthPageNavigation from "./AuthPageNavigation";
+import Logo from "./Logo";
+import HeaderMenu from "./HeaderMenu";
 
 const Header = () => {
   const currentPath = usePathname();
@@ -15,26 +16,14 @@ const Header = () => {
 
   return (
     <>
-      <header className="flex h-[88px] w-full items-center justify-between border-b-[1px] border-b-gray-100 px-[220px] py-[24px]">
-        <Link href="/">
-          <Image
-            src="/logo/albaform-with-logo.svg"
-            width={284}
-            height={40}
-            alt="logo"
-          />
-        </Link>
+      <header className="tablet:header-tablet pc:header-pc flex h-[54px] w-full items-center justify-between border-b-[1px] border-b-gray-100 px-[24px] py-[12px] text-md">
+        <Logo />
         <HeaderNavigation isAuthPage={isAuthPage} />
         {isAuthPage ? (
-          <AuthPageHeader />
+          <AuthPageNavigation />
         ) : (
           <button onClick={() => setIsOpen(!isOpen)}>
-            <Image
-              src="/icon/menu-lg.svg"
-              width={36}
-              height={36}
-              alt="header menu"
-            />
+            <HeaderMenu />
           </button>
         )}
       </header>

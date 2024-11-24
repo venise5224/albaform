@@ -7,8 +7,8 @@ const HeaderNavigation = ({ isAuthPage }: { isAuthPage: boolean }) => {
   if (isAuthPage) return null;
 
   return (
-    <nav className="flex-grow">
-      <ul className="ml-[48px] flex flex-grow gap-[24px] text-2lg text-gray-300">
+    <nav className="m-[16px] flex-grow">
+      <ul className="flex gap-[16px] text-gray-300">
         <Link
           href="/albalist"
           className={currentPathname === "/albalist" ? "text-orange-100" : ""}

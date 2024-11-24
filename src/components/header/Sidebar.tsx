@@ -10,7 +10,7 @@ const Sidebar = () => {
 
   if (!isOpen) return null;
 
-  return createPortal(
+  return (
     <>
       {/* Overlay */}
       <div
@@ -18,22 +18,20 @@ const Sidebar = () => {
         onClick={() => setIsOpen(false)} // Overlay 클릭 시 Sidebar 닫기
       />
       {/* Sidebar */}
-      <nav className="fixed right-0 top-0 z-[99] h-[100vh] w-[560px] bg-white shadow-lg">
-        <div className="flex h-[88px] w-full flex-row-reverse items-center border-b border-b-gray-100 px-[26px]">
-          <button onClick={() => setIsOpen(false)}>
-            <Image
-              src="/icon/close-lg.svg"
-              width={36}
-              height={36}
-              alt="닫기 버튼"
-            />
+      <nav className="fixed right-0 top-0 z-[99] h-[100vh] w-[220px] bg-white shadow-lg pc:w-[560px] tablet:w-[320px]">
+        <div className="flex h-[54px] w-full flex-row-reverse items-center border-b border-b-gray-100 px-[15px] pc:h-[88px] pc:px-[56px] tablet:h-[60px]">
+          <button
+            onClick={() => setIsOpen(false)}
+            className="relative h-[24px] w-[24px] pc:h-[32px] pc:w-[32px]"
+          >
+            <Image src="/icon/close-lg.svg" fill alt="닫기 버튼" />
           </button>
         </div>
         <ul className="flex flex-col">
           <li>
             <Link
               href="/mypage"
-              className="flex h-[100px] w-full items-center gap-[24px] px-[56px] py-[32p]"
+              className="flex h-[100px] w-full items-center gap-[16px] px-[16px] py-[24px]"
             >
               <div className="text-orange-100">
                 <Image
@@ -43,10 +41,12 @@ const Sidebar = () => {
                   alt="마이페이지 이동"
                 />
               </div>
-              <span className="text-xl text-black-400">마이페이지</span>
+              <span className="text-lg text-black-400 pc:text-xl">
+                마이페이지
+              </span>
             </Link>
           </li>
-          <li className="flex h-[100px] w-full items-center gap-[24px] px-[56px] py-[32px]">
+          <li className="flex h-[100px] w-full items-center gap-[16px] px-[16px] py-[24px]">
             <Image
               src="/icon/logout-orange.svg"
               width={36}
@@ -54,12 +54,11 @@ const Sidebar = () => {
               alt="로그아웃"
               className="text-orange-100"
             />
-            <span className="text-xl text-black-400">로그아웃</span>
+            <span className="text-lg text-black-400 pc:text-xl">로그아웃</span>
           </li>
         </ul>
       </nav>
-    </>,
-    document.getElementById("sidebar-root") as HTMLElement
+    </>
   );
 };
 

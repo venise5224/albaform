@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Header from "../components/Header";
-import Sidebar from "@/components/Sidebar";
+import Header from "../components/header/Header";
+import Sidebar from "@/components/header/Sidebar";
 
 export const metadata: Metadata = {
   title: "Albaform",
@@ -16,7 +16,6 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body>
-        <div id="sidebar-root"></div>
         <Sidebar />
         <Header />
         {children}
