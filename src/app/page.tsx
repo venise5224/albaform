@@ -1,5 +1,5 @@
 const HomePage = () => {
-  return <>인덱스</>;
+  <div>나는 홈페이지!</div>;
 };
 
 export default HomePage;
