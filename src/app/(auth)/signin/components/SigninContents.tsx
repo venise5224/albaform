@@ -1,8 +1,8 @@
 "use client";
 
-import PrimaryCTA from "@/app/components/button/PrimaryCTA";
-import ErrorText from "@/app/components/errorText/ErrorText";
-import FormInput from "@/app/components/input/FormInput";
+import PrimaryCTA from "@/components/button/PrimaryCTA";
+import ErrorText from "@/components/errorText/ErrorText";
+import FormInput from "@/components/input/FormInput";
 import { cls } from "@/lib/utils";
 import { signInSchema } from "@/schema/signin/signinSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,6 +13,7 @@ import { z } from "zod";
 import { signinAction } from "../actions/signinActions";
 import { useRouter } from "next/navigation";
 import useToken from "@/hooks/useToken";
+import Cookies from "js-cookie";
 
 const SigninContents = () => {
   const router = useRouter();
@@ -41,6 +42,8 @@ const SigninContents = () => {
 
       if (response.status === 200) {
         setTokens(response.data.accessToken, response.data.refreshToken);
+        Cookies.set("role", response.data.user.role);
+
         router.push("/");
       } else {
         alert(response.error); // 토스트 변경
@@ -91,6 +94,7 @@ const SigninContents = () => {
               alt="비밀번호 보이기 버튼"
               width={24}
               height={24}
+              priority={true}
             />
             <ErrorText error={errors.password}>
               {errors.password?.message}

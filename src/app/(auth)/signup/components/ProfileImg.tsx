@@ -44,6 +44,7 @@ const ProfileImg = () => {
           width={80}
           height={80}
           className="size-20 rounded-full border-4 border-line-100 bg-background-200 pc:size-[100px]"
+          priority={true}
         />
         <Image
           src="/icon/write-lg.svg"
@@ -51,6 +52,7 @@ const ProfileImg = () => {
           width={24}
           height={24}
           className="absolute bottom-2 right-0 rounded-full border-[3px] border-gray-50 bg-background-300 pc:bottom-0 pc:size-9"
+          priority={true}
         />
       </label>
       <input

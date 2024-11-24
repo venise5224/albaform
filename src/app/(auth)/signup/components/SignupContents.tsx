@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import SignupSecondContents from "./SignupSecondContents";
-import PrimaryCTA from "@/app/components/button/PrimaryCTA";
+import PrimaryCTA from "@/components/button/PrimaryCTA";
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -19,8 +19,8 @@ import { profileImgAtom } from "@/atoms/signupAtomStore";
 import { useAtomValue } from "jotai";
 import useToken from "@/hooks/useToken";
 import { profileImgActions } from "../actions/profileImgActions";
-import FormInput from "@/app/components/input/FormInput";
-import ErrorText from "@/app/components/errorText/ErrorText";
+import FormInput from "@/components/input/FormInput";
+import ErrorText from "@/components/errorText/ErrorText";
 
 export type FormSchema =
   | z.infer<typeof applicantSchema>
@@ -97,14 +97,14 @@ const SignupContents = ({
 
         alert("회원가입이 완료되었습니다."); // 토스트 변경
         reset();
-        router.push("/signin");
+        router.push(`/signin/${userType}`);
       } else {
         console.error(response.message);
-        alert(response.message); // 회원가입 실패 시 토스트 띄우기
+        alert(response.message); // 토스트 변경
       }
     } catch (error) {
       console.error("signup에서 에러 발생", error);
-      alert("회원가입 중 오류가 발생했습니다."); // 회원가입 중 오류 시 토스트 띄우기
+      alert("회원가입 중 오류가 발생했습니다."); // 토스트 변경
     }
   };
 

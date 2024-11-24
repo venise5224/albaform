@@ -5,12 +5,12 @@ import {
   ownerSchema,
 } from "../../../../schema/signup/signupSchema";
 import Image from "next/image";
-import PrimaryCTA from "@/app/components/button/PrimaryCTA";
+import PrimaryCTA from "@/components/button/PrimaryCTA";
 import { StepTwoInput } from "./StepTwoInput";
 import { cls } from "@/lib/utils";
 import ProfileImg from "./ProfileImg";
-import FormInput from "@/app/components/input/FormInput";
-import ErrorText from "@/app/components/errorText/ErrorText";
+import FormInput from "@/components/input/FormInput";
+import ErrorText from "@/components/errorText/ErrorText";
 
 interface SignupSecondContentsProps {
   register: UseFormRegister<
