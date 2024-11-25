@@ -1,6 +1,11 @@
+"use client";
+
+import useViewPort from "@/hooks/useViewport";
 import Image from "next/image";
 
 const HomePage = () => {
+  const currentViewport = useViewPort();
+
   return (
     <main>
       <section className="relative h-[609px] w-full bg-black-400 pc:h-[1080px] tablet:h-[633px]">
@@ -20,18 +25,50 @@ const HomePage = () => {
         </div>
       </section>
       <section className="bg-white">
-        <div className="flex flex-col items-center gap-[160px] py-[120px] pc:gap-[120px] pc:py-[400px] tablet:py-[240px]">
-          <div className="relative h-[344px] w-[327px] pc:h-[640px] pc:w-[1140px]">
-            <Image src="/image/landing/landing-1-sm.png" fill alt="?" />
+        <div className="flex flex-col items-center gap-[160px] py-[120px] pc:gap-[240px] pc:pt-[400px] tablet:pt-[240px]">
+          <div className="relative h-[344px] w-[327px] pc:h-[640px] pc:w-[1140px] tablet:h-[320px] tablet:w-[570px]">
+            <Image
+              src={
+                currentViewport === "mobile"
+                  ? "/image/landing/landing-1-sm.png"
+                  : "/image/landing/landing-1-lg.png"
+              }
+              fill
+              alt="?"
+            />
           </div>
-          <div className="relative h-[344px] w-[327px] pc:h-[640px] pc:w-[1140px]">
-            <Image src="/image/landing/landing-2-sm.png" fill alt="?" />
+          <div className="relative h-[344px] w-[327px] pc:h-[640px] pc:w-[1140px] tablet:h-[320px] tablet:w-[570px]">
+            <Image
+              src={
+                currentViewport === "mobile"
+                  ? "/image/landing/landing-2-sm.png"
+                  : "/image/landing/landing-2-lg.png"
+              }
+              fill
+              alt="?"
+            />
           </div>
-          <div className="relative h-[344px] w-[327px] pc:h-[640px] pc:w-[1140px]">
-            <Image src="/image/landing/landing-3-sm.png" fill alt="?" />
+          <div className="relative h-[344px] w-[327px] pc:h-[640px] pc:w-[1140px] tablet:h-[320px] tablet:w-[570px]">
+            <Image
+              src={
+                currentViewport === "mobile"
+                  ? "/image/landing/landing-3-sm.png"
+                  : "/image/landing/landing-3-lg.png"
+              }
+              fill
+              alt="?"
+            />
           </div>
-          <div className="relative h-[344px] w-[327px] pc:h-[640px] pc:w-[1140px]">
-            <Image src="/image/landing/landing-4-sm.png" fill alt="?" />
+          <div className="relative h-[344px] w-[327px] pc:h-[640px] pc:w-[1140px] tablet:h-[320px] tablet:w-[570px]">
+            <Image
+              src={
+                currentViewport === "mobile"
+                  ? "/image/landing/landing-4-sm.png"
+                  : "/image/landing/landing-4-lg.png"
+              }
+              fill
+              alt="?"
+            />
           </div>
           <div className="flex flex-col items-center text-center">
             <span className="text-2xl font-bold text-black-400 pc:text-[48px] pc:leading-[68px]">
