@@ -21,7 +21,7 @@ import useToken from "@/hooks/useToken";
 import { profileImgActions } from "../actions/profileImgActions";
 import FormInput from "@/components/input/FormInput";
 import ErrorText from "@/components/errorText/ErrorText";
-
+import Cookies from "js-cookie";
 export type FormSchema =
   | z.infer<typeof applicantSchema>
   | z.infer<typeof ownerSchema>;
@@ -111,6 +111,7 @@ const SignupContents = ({
         alert("회원가입이 완료되었습니다."); // 토스트 변경
         reset();
         setTokens(response.data.accessToken, response.data.refreshToken);
+        Cookies.set("role", response.data.user.role);
       } else {
         console.error(response.message);
         alert(response.message); // 토스트 변경
