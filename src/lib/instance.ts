@@ -53,7 +53,7 @@ const instance = async (url: string, options: RequestInit = {}) => {
     throw new Error("요청 실패");
   }
 
-  return response.json();
+  return response.json(); // 각 요청의 응답을 json으로 반환합니다.
 };
 
 export default instance;

@@ -85,13 +85,23 @@ const SignupContents = ({
         setTokens(response.data.accessToken, response.data.refreshToken);
 
         if (profileImg) {
-          const formData = new FormData();
-          formData.append("image", profileImg);
-          const profileImgResponse = await profileImgActions(formData);
+          const imgFormData = new FormData();
+          imgFormData.append("image", profileImg);
 
-          if (profileImgResponse.status !== 200) {
-            alert(profileImgResponse.message); // 토스트 변경
-            return;
+          try {
+            const profileImgResponse = await profileImgActions(imgFormData);
+
+            if (profileImgResponse.status !== 200) {
+              alert(profileImgResponse.message); // 토스트 변경
+              throw new Error(
+                profileImgResponse.message || "프로필 이미지 업로드 실패"
+              );
+            }
+          } catch (error) {
+            console.error("프로필 사진 업로드 오류", error);
+            alert(
+              "회원가입은 완료되었으나 프로필 사진 업로드 중 오류가 발생했습니다."
+            ); // 토스트 변경
           }
         }
 

@@ -2,52 +2,42 @@
 
 import instance from "@/lib/instance";
 
-export const profileImgActions = async (image: FormData) => {
-  if (!image) {
-    return { message: "프로필 사진이 없습니다." };
-  }
-
-  // 이미지 업로드
-  const response = await instance(
-    `${process.env.NEXT_PUBLIC_API_URL}/images/upload`,
-    {
-      method: "POST",
-      body: image,
-    }
-  );
-
-  if (!response.ok) {
-    const errorBody = await response.json();
-    console.log(errorBody);
-    return {
-      status: response.status,
-      message: "이미지 업로드 오류",
-    };
-  } else {
-    const data = await response.json();
-    console.log(data);
+export const profileImgActions = async (imgFormData: FormData) => {
+  try {
+    console.log(imgFormData);
+    // 이미지 업로드
+    const imageData = await instance(
+      `${process.env.NEXT_PUBLIC_API_URL}/images/upload`,
+      {
+        method: "POST",
+        body: imgFormData,
+      }
+    );
 
     // 프로필 사진 업로드
-    const patchResponse = await instance(
+    const profileResponse = await instance(
       `${process.env.NEXT_PUBLIC_API_URL}/users/me`,
       {
         method: "PATCH",
-        body: JSON.stringify({ imageUrl: data.url }),
+        body: JSON.stringify({ imageUrl: imageData.url }),
         headers: {
           "Content-Type": "application/json",
         },
       }
     );
-    console.log(patchResponse);
-    if (!patchResponse.ok) {
-      return {
-        status: patchResponse.status,
-        message: "프로필 사진 수정 오류",
-      };
-    }
 
     return {
-      status: patchResponse.status,
+      status: profileResponse.status,
+      data: profileResponse,
+    };
+  } catch (error) {
+    console.error("프로필 이미지 업로드 실패:", error);
+    return {
+      status: 500,
+      message:
+        error instanceof Error
+          ? error.message
+          : "이미지 업로드 중 오류가 발생했습니다",
     };
   }
 };

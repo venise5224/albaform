@@ -17,6 +17,7 @@ const ProfileImg = () => {
 
       if (!imgCheck) {
         setImgError("이미지는 5MB를 넘을 수 없습니다."); // 토스트 변경해야 하며, imgError 상태 불필요
+        alert("이미지는 5MB를 넘을 수 없습니다."); // 임시
         return;
       }
 
