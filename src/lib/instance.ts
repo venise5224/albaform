@@ -43,7 +43,7 @@ const instance = async (url: string, options: RequestInit = {}) => {
         response = await fetch(url, { ...options });
       } else {
         console.error("토큰갱신 실패");
-        throw new Error("토큰갱신 실패");
+        throw new Error("장기간 미활동으로 인해 로그인이 해제되었습니다.");
       }
     }
   }
