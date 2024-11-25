@@ -2,7 +2,6 @@
 
 import { usePathname } from "next/navigation";
 import { useSidebarState } from "@/hooks/useSidebarState";
-import Image from "next/image";
 import HeaderNavigation from "./HeaderNavigation";
 import AuthPageNavigation from "./AuthPageNavigation";
 import Logo from "./Logo";

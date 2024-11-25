@@ -9,8 +9,7 @@
 
 @font-face {
   font-family: "Pretendard";
-  src: url("https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff")
-    format("woff");
+  src: url("https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff") format("woff");
   font-weight: 400;
   font-style: normal;
 }
@@ -23,14 +22,10 @@ body {
 
 @layer utilities {
   .header-tablet {
-    @apply ml-[32px] h-[60px] gap-[24px] px-[72px] py-[15px] text-lg;
+    @apply h-[60px] gap-[24px] px-[72px] py-[15px] text-lg;
   }
 
   .header-pc {
-    @apply ml-[48px] h-[88px] gap-[24px] px-[240px] py-[24px] text-xl;
-  }
-
-  .sidebar-pc {
-    @apply w-[]
+    @apply h-[88px] gap-[24px] px-[240px] py-[24px] text-xl;
   }
 }
