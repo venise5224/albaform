@@ -44,7 +44,7 @@ const ProfileImg = () => {
           alt="프로필사진 변경"
           width={80}
           height={80}
-          className="size-20 rounded-full border-4 border-line-100 bg-background-200 pc:size-[100px]"
+          className="size-20 rounded-full border-4 border-line-100 bg-background-200 object-cover pc:size-[100px]"
           priority={true}
         />
         <Image

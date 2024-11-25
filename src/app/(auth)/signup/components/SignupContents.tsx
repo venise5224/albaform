@@ -82,14 +82,17 @@ const SignupContents = ({
       const response = await signupActions(formData);
 
       if (response.status === 200) {
-        setTokens(response.data.accessToken, response.data.refreshToken);
+        const { accessToken } = response.data;
 
         if (profileImg) {
           const imgFormData = new FormData();
           imgFormData.append("image", profileImg);
 
           try {
-            const profileImgResponse = await profileImgActions(imgFormData);
+            const profileImgResponse = await profileImgActions(
+              imgFormData,
+              accessToken
+            );
 
             if (profileImgResponse.status !== 200) {
               alert(profileImgResponse.message); // 토스트 변경
@@ -107,7 +110,7 @@ const SignupContents = ({
 
         alert("회원가입이 완료되었습니다."); // 토스트 변경
         reset();
-        router.push(`/signin/${userType}`);
+        setTokens(response.data.accessToken, response.data.refreshToken);
       } else {
         console.error(response.message);
         alert(response.message); // 토스트 변경
