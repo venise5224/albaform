@@ -1,4 +1,4 @@
-const formatDate = (isoDateString: string) => {
+const getCurrentTime = (isoDateString: string) => {
   const date = new Date(isoDateString);
 
   const year = date.getFullYear();
@@ -10,4 +10,4 @@ const formatDate = (isoDateString: string) => {
   return `${year}.${month}.${day} ${hours}:${minutes}`;
 };
 
-export default formatDate;
+export default getCurrentTime;
