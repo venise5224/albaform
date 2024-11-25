@@ -27,3 +27,23 @@ body {
   background: var(--background);
   font-family: Pretendard, Arial, Helvetica, sans-serif;
 }
+
+@layer components {
+  /* SolidButton 활성화 상태 */
+  .solid-button-orange {
+    @apply bg-orange-300 text-white active:scale-95;
+  }
+
+  .solid-button-outOrange {
+    @apply border border-orange-300 bg-transparent text-orange-300 active:scale-95;
+  }
+
+  /* SolidButton 비활성화 상태 */
+  .solid-disabled-button-orange {
+    @apply bg-gray-100 text-white;
+  }
+
+  .solid-disabled-button-outOrange {
+    @apply border border-gray-100 bg-transparent text-gray-100;
+  }
+}

@@ -19,41 +19,35 @@ const SolidButton = ({
   disabled = false,
   ...rest
 }: SolidButtonProps) => {
-  // 크기 설정
-  const sizeClass =
-    size === "small"
-      ? "w-full max-w-[327px] py-4 text-base"
-      : "w-full max-w-[640px] h-[72px] text-xl";
+  // 크기별 스타일
+  const sizeStyle = {
+    small: "w-full max-w-[327px] py-4 text-base",
+    large: "w-full max-w-[640px] py-5 text-xl",
+  };
 
-  // 스타일 설정
-  let styleClass = "";
+  // 활성화 상태 or 비활성화 상태 스타일
+  const buttonStyles = {
+    orange300: disabled
+      ? "solid-disabled-button-orange"
+      : "solid-button-orange",
+    orange200: disabled
+      ? "solid-disabled-button-orange"
+      : "solid-button-orange",
+    outOrange300: disabled
+      ? "solid-disabled-button-outOrange"
+      : "solid-button-outOrange",
+    outOrange200: disabled
+      ? "solid-disabled-button-outOrange"
+      : "solid-button-outOrange",
+  };
 
-  if (disabled) {
-    if (style == "orange200" || "orange300") {
-      styleClass = "bg-gray-100 text-white cursor-not-allowed";
-    } else if (style == "outOrange200" || "outOrange300") {
-      styleClass =
-        "border border-bg-gray-100 text-bg-gray-100 bg-transparent cursor-not-allowed";
-    }
-  } else {
-    if (style === "orange300")
-      styleClass = "bg-orange-300 text-white active:scale-95";
-    else if (style === "orange200")
-      styleClass = "bg-orange-200 text-white active:scale-95";
-    else if (style === "outOrange300")
-      styleClass =
-        "border border-orange-300 text-orange-300 bg-transparent active:scale-95";
-    else if (style === "outOrange200")
-      styleClass =
-        "border border-orange-200 text-orange-200 bg-transparent active:scale-95";
-  }
+  const styleClass = buttonStyles[style];
 
   // 공통
-  const commonClass =
-    "flex items-center gap-x-2 font-semibold rounded-lg justify-center transition-transform duration-200 ease-out hover:opacity-90";
+  const commonClass = `flex items-center gap-x-2 font-semibold rounded-lg justify-center transition-transform duration-200 ease-out hover:opacity-90}`;
 
   // 최종 스타일
-  const finalClassName = `${commonClass} ${sizeClass} ${styleClass}`;
+  const finalClassName = `${commonClass} ${sizeStyle[size]} ${styleClass}`;
 
   return (
     <button className={finalClassName} disabled={disabled} {...rest}>
