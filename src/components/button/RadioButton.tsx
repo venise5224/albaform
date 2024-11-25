@@ -32,6 +32,7 @@ const RadioButton = ({
         disabled={disabled}
         className="peer hidden"
       />
+      {/* input 대체 UI */}
       <div
         className={`flex h-[22px] w-[22px] items-center justify-center rounded-full border transition-transform duration-200 ease-out ${disabled ? "" : "active:scale-50"} peer-checked:border-orange-300 ${
           disabled ? "bg-line-100 border-gray-200" : "border-gray-200"
