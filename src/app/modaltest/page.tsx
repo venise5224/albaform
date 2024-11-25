@@ -22,6 +22,11 @@ const ModalPage = () => {
           이어쓰기 모달
         </button>
       </div>
+      <div>
+        <button onClick={() => openModal("GetMyApplicationModal")}>
+          내 지원 내역 모달
+        </button>
+      </div>
     </div>
   );
 };
