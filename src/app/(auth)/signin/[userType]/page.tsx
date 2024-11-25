@@ -6,8 +6,8 @@ export const metadata: Metadata = {
   title: "로그인",
 };
 
-const SigninPage = async ({ params }: { params: { userType: string } }) => {
-  const { userType } = await params;
+const SigninPage = ({ params }: { params: { userType: string } }) => {
+  const { userType } = params;
 
   return (
     <>

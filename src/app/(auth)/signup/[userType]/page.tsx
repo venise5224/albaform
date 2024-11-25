@@ -6,15 +6,15 @@ export const metadata: Metadata = {
   title: "회원가입",
 };
 
-const SignupPage = async ({
+const SignupPage = ({
   params,
   searchParams,
 }: {
   params: { userType: string };
   searchParams: { stepOneDone: string };
 }) => {
-  const { userType } = await params;
-  const { stepOneDone } = await searchParams;
+  const { userType } = params;
+  const { stepOneDone } = searchParams;
 
   return (
     <>
