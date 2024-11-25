@@ -3,18 +3,22 @@ import Image from "next/image";
 const HomePage = () => {
   const imageList = [
     {
+      id: 0,
       lg: "/image/landing/landing-1-lg.png",
       sm: "/image/landing/landing-1-sm.png",
     },
     {
+      id: 1,
       lg: "/image/landing/landing-2-lg.png",
       sm: "/image/landing/landing-2-sm.png",
     },
     {
+      id: 2,
       lg: "/image/landing/landing-3-lg.png",
       sm: "/image/landing/landing-3-sm.png",
     },
     {
+      id: 3,
       lg: "/image/landing/landing-4-lg.png",
       sm: "/image/landing/landing-4-sm.png",
     },
@@ -41,7 +45,10 @@ const HomePage = () => {
       <section className="bg-white">
         <div className="flex flex-col items-center gap-[160px] py-[120px] pc:gap-[240px] pc:pt-[400px] tablet:pt-[240px]">
           {imageList.map((list) => (
-            <div className="relative h-[344px] w-[327px] pc:h-[640px] pc:w-[1140px] tablet:h-[320px] tablet:w-[570px]">
+            <div
+              key={list.id}
+              className="relative h-[344px] w-[327px] pc:h-[640px] pc:w-[1140px] tablet:h-[320px] tablet:w-[570px]"
+            >
               <Image
                 src={list.lg}
                 fill
