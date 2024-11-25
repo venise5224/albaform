@@ -1,6 +1,6 @@
 "use client";
 
-import { useModal } from "@/atoms/modalAtom";
+import { useModal } from "@/hooks/useModal";
 import Image from "next/image";
 import { ReactNode, useEffect, useRef } from "react";
 

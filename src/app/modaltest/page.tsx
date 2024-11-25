@@ -1,6 +1,6 @@
 "use client";
 
-import { useModal } from "@/atoms/modalAtom";
+import { useModal } from "@/hooks/useModal";
 
 const ModalPage = () => {
   const { openModal } = useModal();

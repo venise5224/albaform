@@ -5,13 +5,14 @@ const DeleteAlbaformModal = () => {
   return (
     <ModalContainer>
       <div className="flex flex-col items-center">
-        <Image
-          src="/images/close-albaform.svg"
-          width={120}
-          height={120}
-          alt="모집마감"
-          className="animate-bounceIn h-[80px]] w-[80px] pc:h-[120px] pc:w-[120px]"
-        />
+        <div className="modal-image-container">
+          <Image
+            src="/images/close-albaform.svg"
+            fill
+            alt="모집마감"
+            className="object-cover"
+          />
+        </div>
         <strong className="mt-[24px] text-2lg font-semibold text-black-400 pc:text-2xl">
           알바폼을 삭제할까요?
         </strong>

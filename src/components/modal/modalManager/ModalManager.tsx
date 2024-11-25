@@ -1,13 +1,13 @@
 "use client";
 
-import { useAtom } from "jotai";
+import { useAtomValue } from "jotai";
 import { modalAtom } from "@/atoms/modalAtom";
 import CloseAlbaformModal from "../modalContent/ClosedAlbaformModal";
 import DeleteAlbaformModal from "../modalContent/DeleteAlbaformModal";
 import PatchAlbaformModal from "../modalContent/PatchAlbaformModal";
 
 const ModalManager = () => {
-  const [modalType] = useAtom(modalAtom);
+  const modalType = useAtomValue(modalAtom);
 
   if (!modalType) return null;
 
