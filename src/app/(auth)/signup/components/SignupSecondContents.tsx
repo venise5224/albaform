@@ -7,7 +7,7 @@ import {
 import Image from "next/image";
 import PrimaryCTA from "@/components/button/PrimaryCTA";
 import { StepTwoInput } from "./StepTwoInput";
-import { cls } from "@/util/DynamicTailwind";
+import { cls } from "@/utils/DynamicTailwind";
 import ProfileImg from "./ProfileImg";
 import FormInput from "@/components/input/FormInput";
 import ErrorText from "@/components/errorText/ErrorText";
