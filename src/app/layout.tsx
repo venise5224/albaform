@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "../components/header/Header";
 import Sidebar from "@/components/header/Sidebar";
+import ModalManager from "@/components/modal/modalManager/ModalManager";
 
 export const metadata: Metadata = {
   title: "Albaform",
@@ -19,6 +20,7 @@ export default function RootLayout({
         <Sidebar />
         <Header />
         {children}
+        <ModalManager />
       </body>
     </html>
   );
