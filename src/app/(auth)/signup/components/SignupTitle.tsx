@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { cls } from "@/lib/utils";
+import { cls } from "@/util/DynamicTailwind";
 
 const SignupTitle = ({
   userType,

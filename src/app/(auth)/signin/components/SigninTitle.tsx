@@ -1,4 +1,4 @@
-import { cls } from "@/lib/utils";
+import { cls } from "@/util/DynamicTailwind";
 import Link from "next/link";
 
 const SigninTitle = ({ userType }: { userType: string }) => {

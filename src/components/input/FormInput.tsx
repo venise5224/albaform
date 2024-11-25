@@ -1,4 +1,4 @@
-import { cls } from "@/lib/utils";
+import { cls } from "@/util/DynamicTailwind";
 import { HTMLInputTypeAttribute } from "react";
 import {
   FieldErrors,
