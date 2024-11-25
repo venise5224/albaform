@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import SignupSecondContents from "./SignupSecondContents";
 import PrimaryCTA from "@/components/button/PrimaryCTA";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
