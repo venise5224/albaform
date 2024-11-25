@@ -6,7 +6,7 @@ const Logo = () => {
   const viewport = useViewPort();
 
   return (
-    <div className="relative h-[30px] w-[45px] pc:h-[40px] pc:w-[284px] tablet:h-[30px] tablet:w-[177px]">
+    <h1 className="relative h-[30px] w-[45px] pc:h-[40px] pc:w-[284px] tablet:h-[30px] tablet:w-[177px]">
       <Link href="/">
         <Image
           src={
@@ -18,7 +18,7 @@ const Logo = () => {
           alt="logo"
         />
       </Link>
-    </div>
+    </h1>
   );
 };
 

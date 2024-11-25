@@ -19,13 +19,3 @@ body {
   background: var(--background);
   font-family: Pretendard, Arial, Helvetica, sans-serif;
 }
-
-@layer utilities {
-  .header-tablet {
-    @apply h-[60px] gap-[24px] px-[72px] py-[15px] text-lg;
-  }
-
-  .header-pc {
-    @apply h-[88px] gap-[24px] px-[240px] py-[24px] text-xl;
-  }
-}

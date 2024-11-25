@@ -10,14 +10,17 @@ const HeaderNavigation = ({ isAuthPage }: { isAuthPage: boolean }) => {
 
   const navList = [
     {
+      id: 0,
       name: "알바 목록",
       href: "/albalist",
     },
     {
+      id: 1,
       name: "알바토크",
       href: "/albatalk",
     },
     {
+      id: 2,
       name: "내 알바폼",
       href: "/myalbaform",
     },
@@ -28,6 +31,7 @@ const HeaderNavigation = ({ isAuthPage }: { isAuthPage: boolean }) => {
       <ul className="flex gap-[16px] text-gray-300">
         {navList.map((list) => (
           <Link
+            key={list.id}
             href={list.href}
             className={currentPathname === list.href ? "text-orange-100" : ""}
           >
