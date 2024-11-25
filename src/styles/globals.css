@@ -35,6 +35,7 @@ body {
 }
 
 @layer components {
+  /* 모든 form에서 base 스타일로 사용하실 수 있습니다. */
   .form-input-base {
     @apply max-w-[640px] rounded-lg border-[0.5px] border-gray-200 p-[14px] placeholder:text-gray-400 focus:border-orange-300;
   }
