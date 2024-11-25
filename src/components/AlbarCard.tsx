@@ -11,7 +11,6 @@ interface AlbarCardProps {
 const AlbarCard = ({ info }: AlbarCardProps) => {
   const isRecruiting = isPast(info.recruitmentEndDate);
   const dday = getDday(info.recruitmentEndDate);
-  console.log(dday);
 
   const [formattedStartDate, formattedEndDate] = formatDate(
     info.recruitmentStartDate,
@@ -43,9 +42,9 @@ const AlbarCard = ({ info }: AlbarCardProps) => {
         </button>
       </time>
       <div className="mt-[16px] h-[52px] pc:mt-[24px] pc:h-[64px]">
-        <h1 className="w-[80%] text-2lg font-semibold pc:text-xl">
+        <h2 className="w-[80%] text-2lg font-semibold pc:text-xl">
           {info.title}
-        </h1>
+        </h2>
       </div>
       <div className="mt-[24px] flex h-[38px] items-center justify-around rounded-[16px] border border-line-100 text-sm text-black-200 pc:h-[50px] pc:text-lg">
         <span className="border-r border-line-100 pr-[20px]">
