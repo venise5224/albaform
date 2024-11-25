@@ -9,17 +9,9 @@
 
 @font-face {
   font-family: "Pretendard";
-  src: url("https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff")
-    format("woff");
+  src: url("https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff") format("woff");
   font-weight: 400;
   font-style: normal;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
@@ -28,15 +20,63 @@ body {
   font-family: Pretendard, Arial, Helvetica, sans-serif;
 }
 
-@layer base {
-  input:focus {
-    @apply caret-orange-300 outline-none;
+@keyframes bounceIn {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
   }
 }
 
+.animate-bounceIn {
+  animation: bounceIn 0.6s ease-out;
+}
+
 @layer components {
+  .modal-image-container {
+    @apply animate-bounceIn relative h-[80px] w-[80px];
+  }
+
+  .modal-title {
+    @apply mt-[24px] text-2lg font-semibold text-black-400;
+  }
+
+  .modal-sub-title {
+    @apply mt-[8px] text-md font-regular text-gray-400;
+  }
+
   /* 모든 form에서 base 스타일로 사용하실 수 있습니다. */
   .form-input-base {
     @apply max-w-[640px] rounded-lg border-[0.5px] border-gray-200 p-[14px] placeholder:text-gray-400 focus:border-orange-300;
+  }
+
+  /* PC 크기에서 적용될 스타일 */
+  @media (min-width: 1200px) {
+    .modal-image-container {
+      @apply h-[120px] w-[120px];
+    }
+
+    .modal-title {
+      @apply text-2xl;
+    }
+
+    .modal-sub-title {
+      @apply text-xl;
+    }
+  }
+}
+
+@layer base {
+  /* input 태그에 포커스가 되었을 때 캐럿 색상과 테두리 제거 */
+  input:focus {
+    @apply caret-orange-300 outline-none;
   }
 }
