@@ -43,7 +43,7 @@ const ChangeMyInfoModal = () => {
           />
           <Image
             src="/icon/write-lg.svg"
-            alt="프로필사진 변경 버튼"
+            alt="프로필사진 변경버튼"
             width={24}
             height={24}
             className="absolute bottom-2 right-0 size-6 rounded-full border-[3px] border-gray-50 bg-background-300 pc:bottom-0 pc:size-9"
