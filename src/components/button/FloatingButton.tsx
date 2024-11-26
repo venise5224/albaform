@@ -8,7 +8,6 @@ interface FloatingButtonProps {
   color?: "orange300" | "oldLace50" | "white";
   children?: string;
   className?: string;
-  [key: string]: any;
 }
 
 const FloatingButton = ({
