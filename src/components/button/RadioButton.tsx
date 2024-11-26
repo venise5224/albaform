@@ -22,7 +22,7 @@ const RadioButton = ({
   };
 
   return (
-    <label className={"h-fit w-fit cursor-pointer"}>
+    <label className={"w-fit cursor-pointer"}>
       <input
         type="radio"
         name={name}
@@ -35,10 +35,10 @@ const RadioButton = ({
       {/* input 대체 UI */}
       <div
         className={`flex h-[22px] w-[22px] items-center justify-center rounded-full border transition-transform duration-200 ease-out ${disabled ? "" : "active:scale-50"} peer-checked:border-orange-300 ${
-          disabled ? "bg-line-100 border-gray-200" : "border-gray-200"
+          disabled ? "cursor-default bg-line-100 border-gray-200" : "border-gray-200"
         }`}
       >
-        {checked && <div className="h-2.5 w-2.5 rounded-full bg-orange-300" />}
+        {checked && <div className="size-2.5 rounded-full bg-orange-300" />}
       </div>
     </label>
   );
