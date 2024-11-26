@@ -5,7 +5,7 @@ import ErrorText from "@/components/errorText/ErrorText";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { changeMyInfoSchema } from "@/schema/modal/ChangeMyinfoSchema";
+import { changeMyInfoSchema } from "@/schema/modal/changeMyInfoSchema";
 import { z } from "zod";
 
 const ChangeMyInfoModal = () => {
