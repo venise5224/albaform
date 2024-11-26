@@ -26,18 +26,18 @@ const ApplicantStats = ({ info }: ApplicantStatsProps) => {
   ];
 
   return (
-    <section className="h-[84px] w-[327px] border-b border-t border-line-100 px-2 py-4">
+    <section className="h-[84px] w-[327px] border-b border-t border-line-100 px-2 py-4 text-xs pc:h-[152px] pc:w-[770px] pc:px-4 pc:py-8 pc:text-2lg">
       {contentList.map((list) => (
-        <div key={list.id} className="flex">
-          <div className="relative size-6">
-            <Image src={list.href} fill alt={list.alt} />
+        <div key={list.id} className="flex items-center gap-3">
+          <div className="flex h-[26px] w-[100px] items-center pc:h-[38px] pc:w-[120px]">
+            <div className="relative size-6 pc:size-9">
+              <Image src={list.href} fill alt={list.alt} />
+            </div>
+            <h3 className="ml-2 font-semibold text-black-400">{list.title}</h3>
           </div>
-          <h3 className="ml-2 text-xs font-semibold text-black-400">
-            {list.title}
-          </h3>
-          <p className="ml-[44px] flex-grow text-xs font-semibold text-black-200">
+          <div className="flex-grow items-center font-semibold text-black-200">
             {list.content}
-          </p>
+          </div>
         </div>
       ))}
     </section>
