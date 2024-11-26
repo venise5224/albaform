@@ -1,7 +1,7 @@
 import { AlbarformData } from "@/types/alba";
 import { formatDate } from "@/utils/formatDate";
 import { getDday } from "@/utils/getDday";
-import { isPast } from "@/utils/isPast";
+import isPast from "@/utils/isPast";
 import Image from "next/image";
 
 interface AlbarCardProps {
