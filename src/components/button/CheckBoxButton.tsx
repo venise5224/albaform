@@ -1,0 +1,61 @@
+"use client";
+
+interface CheckBoxButtonProps {
+  size?: "small" | "large";
+  name: string;
+  value: string;
+  checked?: boolean;
+  disabled?: boolean;
+  onChange?: (value: string) => void;
+}
+
+const CheckBoxButton = ({
+  size = "small",
+  name,
+  value,
+  checked = false,
+  disabled = false,
+  onChange,
+}: CheckBoxButtonProps) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!disabled && onChange) {
+      onChange(e.target.value);
+    }
+  };
+
+  const sizeClass = size === "small" ? "size-5" : "size-6";
+
+  const backgroundIconClass =
+    checked &&
+    (size === "small"
+      ? "checked:bg-[url('/icon/check-md.svg')]"
+      : "checked:bg-[url('/icon/check-lg.svg')]");
+
+  const disabledClass = disabled
+    ? "cursor-default bg-line-100"
+    : "cursor-pointer transition-transform duration-200 ease-out active:scale-50";
+
+  const classes = [
+    sizeClass,
+    "appearance-none rounded border border-gray-200 bg-center bg-no-repeat",
+    "checked:border-none checked:bg-orange-300",
+    backgroundIconClass,
+    disabledClass,
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  return (
+    <input
+      type="checkbox"
+      name={name}
+      value={value}
+      checked={checked}
+      onChange={handleChange}
+      disabled={disabled}
+      className={classes}
+    />
+  );
+};
+
+export default CheckBoxButton;
