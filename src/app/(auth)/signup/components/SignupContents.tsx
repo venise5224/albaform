@@ -3,7 +3,6 @@
 import Image from "next/image";
 import Link from "next/link";
 import SignupSecondContents from "./SignupSecondContents";
-import PrimaryCTA from "@/components/button/PrimaryCTA";
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -22,6 +21,7 @@ import { profileImgActions } from "../actions/profileImgActions";
 import FormInput from "@/components/input/FormInput";
 import ErrorText from "@/components/errorText/ErrorText";
 import Cookies from "js-cookie";
+import SolidButton from "@/components/button/SolidButton";
 export type FormSchema =
   | z.infer<typeof applicantSchema>
   | z.infer<typeof ownerSchema>;
@@ -208,13 +208,15 @@ const SignupContents = ({
               <ErrorText error={item.error}>{item.error}</ErrorText>
             </div>
           ))}
-          <PrimaryCTA
+          <SolidButton
             disabled={isValidFirstStep}
             type="button"
             onClick={handleNextStep}
+            style="orange300"
+            size="large"
           >
             다음
-          </PrimaryCTA>
+          </SolidButton>
           <p className="text-center text-xs text-black-100 pc:text-lg">
             가입 시
             <Link

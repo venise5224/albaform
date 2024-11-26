@@ -5,12 +5,12 @@ import {
   ownerSchema,
 } from "../../../../schema/signup/signupSchema";
 import Image from "next/image";
-import PrimaryCTA from "@/components/button/PrimaryCTA";
 import { StepTwoInput } from "./StepTwoInput";
 import { cls } from "@/utils/DynamicTailwind";
 import ProfileImg from "./ProfileImg";
 import FormInput from "@/components/input/FormInput";
 import ErrorText from "@/components/errorText/ErrorText";
+import SolidButton from "@/components/button/SolidButton";
 
 interface SignupSecondContentsProps {
   register: UseFormRegister<
@@ -96,9 +96,14 @@ const SignupSecondContents = ({
           </div>
         </div>
       )}
-      <PrimaryCTA disabled={!isValid || isSubmitting} type="submit">
+      <SolidButton
+        disabled={!isValid || isSubmitting}
+        type="submit"
+        style="orange300"
+        size="large"
+      >
         {isSubmitting ? "잠시만 기다려주세요." : "시작하기"}
-      </PrimaryCTA>
+      </SolidButton>
     </div>
   );
 };

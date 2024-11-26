@@ -1,6 +1,5 @@
 "use client";
 
-import PrimaryCTA from "@/components/button/PrimaryCTA";
 import ErrorText from "@/components/errorText/ErrorText";
 import FormInput from "@/components/input/FormInput";
 import { cls } from "@/utils/DynamicTailwind";
@@ -14,6 +13,7 @@ import { signinAction } from "../actions/signinActions";
 import { useRouter } from "next/navigation";
 import useToken from "@/hooks/useToken";
 import Cookies from "js-cookie";
+import SolidButton from "@/components/button/SolidButton";
 
 const SigninContents = () => {
   const router = useRouter();
@@ -101,9 +101,14 @@ const SigninContents = () => {
             </ErrorText>
           </div>
         </div>
-        <PrimaryCTA disabled={!isValid || isSubmitting} type="submit">
+        <SolidButton
+          disabled={!isValid || isSubmitting}
+          type="submit"
+          style="orange300"
+          size="large"
+        >
           로그인 하기
-        </PrimaryCTA>
+        </SolidButton>
       </div>
     </form>
   );
