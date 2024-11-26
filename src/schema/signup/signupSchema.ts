@@ -11,13 +11,21 @@ const baseSchema = z.object({
       message: "특수문자 포함 7자 이상 입력해주세요.",
     })
     .trim(),
-  passwordConfirm: z
-    .string()
-    .regex(passwordRegex, {
-      message: "특수문자 포함 7자 이상 입력해주세요.",
-    })
-    .optional(),
+  passwordConfirm: z.string().optional(),
 });
+
+baseSchema.refine(
+  (data) => {
+    if (data.passwordConfirm !== undefined) {
+      return data.password === data.passwordConfirm;
+    }
+    return true;
+  },
+  {
+    message: "비밀번호가 일치하지 않습니다.",
+    path: ["passwordConfirm"],
+  }
+);
 
 export const applicantSchema = baseSchema.extend({
   role: z.literal("APPLICANT"),

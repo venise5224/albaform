@@ -37,6 +37,7 @@ const SignupContents = ({
   const searchParams = useSearchParams();
   const [visiblePassword, setVisiblePassword] = useState(false);
   const [visiblePasswordConfirm, setVisiblePasswordConfirm] = useState(false);
+  const [confirmMsg, setConfirmMsg] = useState("");
   const currentParams = new URLSearchParams(searchParams.toString());
   const profileImg = useAtomValue(profileImgAtom);
   const { setTokens } = useToken();
@@ -64,8 +65,21 @@ const SignupContents = ({
       location: "",
     },
   });
+
   const isValidFirstStep =
-    !watch("email") || !watch("password") || !watch("passwordConfirm");
+    !watch("email") ||
+    !watch("password") ||
+    !watch("passwordConfirm") ||
+    watch("password") !== watch("passwordConfirm");
+
+  useEffect(() => {
+    if (watch("password") !== watch("passwordConfirm")) {
+      setConfirmMsg("비밀번호가 일치하지 않습니다.");
+    } else {
+      setConfirmMsg("");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [watch("passwordConfirm")]);
 
   const handleNextStep = () => {
     currentParams.set("stepOneDone", "true");
@@ -112,6 +126,7 @@ const SignupContents = ({
         reset();
         setTokens(response.data.accessToken, response.data.refreshToken);
         Cookies.set("role", response.data.user.role);
+        router.push("/");
       } else {
         console.error(response.message);
         alert(response.message); // 토스트 변경
@@ -139,7 +154,7 @@ const SignupContents = ({
       visible: visiblePasswordConfirm,
       visibleFn: setVisiblePasswordConfirm,
       register: { ...register("passwordConfirm") },
-      error: errors.passwordConfirm?.message,
+      error: confirmMsg,
     },
   ];
 
@@ -152,6 +167,7 @@ const SignupContents = ({
               이메일
             </label>
             <FormInput
+              id="email"
               type="email"
               placeholder="이메일을 입력해주세요."
               register={register}
@@ -172,6 +188,7 @@ const SignupContents = ({
                 )}
               >
                 <input
+                  id={item.name}
                   {...item.register}
                   type={item.visible ? "text" : "password"}
                   name={item.name}

@@ -14,6 +14,7 @@ interface FormInputProps<T extends FieldValues> {
   error?: FieldErrors<T>;
   className?: string;
   name: Path<T>;
+  id?: string;
 }
 
 const FormInput = <T extends FieldValues>({
@@ -23,10 +24,12 @@ const FormInput = <T extends FieldValues>({
   error,
   className,
   name,
+  id,
   ...rest
 }: FormInputProps<T>) => {
   return (
     <input
+      id={id}
       {...register(name)}
       type={type}
       name={name}

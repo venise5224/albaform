@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { cls } from "@/utils/DynamicTailwind";
+import AuthNav from "../../components/AuthNav";
 
 const SignupTitle = ({
   userType,
@@ -9,38 +9,11 @@ const SignupTitle = ({
   stepOneDone: string;
 }) => {
   const userTypeText = userType === "applicant" ? "사장님" : "지원자";
-  const linkArr = [
-    {
-      type: "owner",
-      title: "사장님 전용",
-      href: "/signup/owner",
-      signinHref: "/signin/owner",
-    },
-    {
-      type: "applicant",
-      title: "지원자 전용",
-      href: "/signup/applicant",
-      signinHref: "/signin/applicant",
-    },
-  ];
 
   return (
     <div className="flex flex-col space-y-10">
       {stepOneDone !== "true" && (
-        <nav className="flex items-center justify-center space-x-4 pc:hidden">
-          {linkArr.map((link) => (
-            <Link
-              key={link.type}
-              href={link.href}
-              className={cls(
-                "text-lg font-bold leading-[26px] text-gray-300",
-                link.type === userType ? "text-orange-300" : ""
-              )}
-            >
-              {link.title}
-            </Link>
-          ))}
-        </nav>
+        <AuthNav userType={userType} location="signup" />
       )}
       <div className="flex flex-col items-center space-y-4">
         <h1 className="text-2xl font-semibold text-black-500 pc:text-3xl">

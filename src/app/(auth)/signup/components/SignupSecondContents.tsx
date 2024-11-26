@@ -47,6 +47,7 @@ const SignupSecondContents = ({
             {input.isRequired && <span className="text-orange-300">*</span>}
           </label>
           <FormInput
+            id={input.name}
             register={register}
             type={input.type}
             name={
@@ -82,6 +83,7 @@ const SignupSecondContents = ({
               height={36}
             />
             <input
+              id="storeLocation"
               {...register("location")}
               type="text"
               name="location"
@@ -95,7 +97,7 @@ const SignupSecondContents = ({
         </div>
       )}
       <PrimaryCTA disabled={!isValid || isSubmitting} type="submit">
-        시작하기
+        {isSubmitting ? "잠시만 기다려주세요." : "시작하기"}
       </PrimaryCTA>
     </div>
   );

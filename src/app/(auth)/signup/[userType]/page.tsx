@@ -2,19 +2,18 @@ import SignupTitle from "../components/SignupTitle";
 import SignupContents from "../components/SignupContents";
 import { Metadata } from "next";
 
+interface SignupPageProps {
+  params: Promise<{ userType: string }>;
+  searchParams: Promise<{ stepOneDone: string }>;
+}
+
 export const metadata: Metadata = {
   title: "회원가입",
 };
 
-const SignupPage = ({
-  params,
-  searchParams,
-}: {
-  params: { userType: string };
-  searchParams: { stepOneDone: string };
-}) => {
-  const { userType } = params;
-  const { stepOneDone } = searchParams;
+const SignupPage = async ({ params, searchParams }: SignupPageProps) => {
+  const { userType } = await params;
+  const { stepOneDone } = await searchParams;
 
   return (
     <>
