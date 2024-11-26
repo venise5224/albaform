@@ -15,32 +15,26 @@ const RadioButton = ({
   disabled = false,
   onChange,
 }: RadioButtonProps) => {
-  const handleChange = () => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!disabled && onChange) {
-      onChange(value);
+      onChange(e.target.value);
     }
   };
 
   return (
-    <label className={"w-fit cursor-pointer"}>
-      <input
-        type="radio"
-        name={name}
-        value={value}
-        checked={checked}
-        onChange={handleChange}
-        disabled={disabled}
-        className="peer hidden"
-      />
-      {/* input 대체 UI */}
-      <div
-        className={`flex h-[22px] w-[22px] items-center justify-center rounded-full border transition-transform duration-200 ease-out ${disabled ? "" : "active:scale-50"} peer-checked:border-orange-300 ${
-          disabled ? "cursor-default bg-line-100 border-gray-200" : "border-gray-200"
-        }`}
-      >
-        {checked && <div className="size-2.5 rounded-full bg-orange-300" />}
-      </div>
-    </label>
+    <input
+      type="radio"
+      name={name}
+      value={value}
+      checked={checked}
+      onChange={handleChange}
+      disabled={disabled}
+      className={`size-5 cursor-pointer appearance-none rounded-full border-[5px] checked:bg-orange-300 checked:ring-orange-300 ${
+        disabled
+          ? "cursor-default border-line-100 bg-line-100 ring-gray-200"
+          : "border-gray-50 ring-1 ring-gray-100 transition-transform duration-200 ease-out active:scale-50"
+      }`}
+    />
   );
 };
 
