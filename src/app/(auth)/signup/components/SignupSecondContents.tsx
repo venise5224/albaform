@@ -6,11 +6,11 @@ import {
 } from "../../../../schema/signup/signupSchema";
 import Image from "next/image";
 import { StepTwoInput } from "./StepTwoInput";
-import { cls } from "@/utils/DynamicTailwind";
 import ProfileImg from "./ProfileImg";
 import FormInput from "@/components/input/FormInput";
 import ErrorText from "@/components/errorText/ErrorText";
 import SolidButton from "@/components/button/SolidButton";
+import { cls } from "@/utils/dynamicTailwinds";
 
 interface SignupSecondContentsProps {
   register: UseFormRegister<
