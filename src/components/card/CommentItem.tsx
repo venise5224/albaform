@@ -42,7 +42,7 @@ const CommentItem = ({ info }: CommentItemProps) => {
           />
         </button>
       </div>
-      <div className="tablet:h-[26px line-clamp-2 h-[48px] w-full text-md pc:text-2lg">
+      <div className="line-clamp-2 h-[48px] w-full text-md pc:text-2lg tablet:h-[26px]">
         {info.content}
       </div>
     </section>
