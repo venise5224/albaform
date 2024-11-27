@@ -7,7 +7,7 @@ const PatchAlbaformModal = () => {
       <div className="flex flex-col items-center">
         <div className="modal-image-container">
           <Image
-            src="/images/patch-albaform.svg"
+            src="/image/document-edit-orange.svg"
             fill
             alt="작성 중"
             className="object-cover"

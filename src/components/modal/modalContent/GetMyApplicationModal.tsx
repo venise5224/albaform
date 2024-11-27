@@ -3,7 +3,7 @@
 import ModalContainer from "../modalContainer/ModalContainer";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
-import { getMyApplicationSchema } from "@/schema/modal/GetMyApplicationSchema";
+import { getMyApplicationSchema } from "@/schema/modal/getMyApplicationSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import FormInput from "@/components/input/FormInput";
 import ErrorText from "@/components/errorText/ErrorText";

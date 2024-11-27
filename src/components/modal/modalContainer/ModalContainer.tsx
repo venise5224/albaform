@@ -39,7 +39,7 @@ const ModalContainer = ({ children }: { children: ReactNode }) => {
           className="absolute right-[16px] top-[16px] pc:right-[24px] pc:top-[24px]"
         >
           <Image
-            src="/icons/X.svg"
+            src="/icon/close-lg.svg"
             width={36}
             height={36}
             alt="닫기"
