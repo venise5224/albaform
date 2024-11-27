@@ -57,6 +57,7 @@ const EditDeleteDropdown = () => {
           alt="수정 및 삭제 드롭다운"
           width={24}
           height={24}
+          className="pc:size-[30px]"
         />
       </DropdownMenuTrigger>
       <DropdownMenuContent
