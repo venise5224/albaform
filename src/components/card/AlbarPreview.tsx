@@ -4,11 +4,11 @@ import { getDday } from "@/utils/getDday";
 import isPast from "@/utils/isPast";
 import Image from "next/image";
 
-interface AlbarInfoPreviewProps {
+interface AlbarPreviewProps {
   info: AlbarformData;
 }
 
-const AlbarInfoPreview = ({ info }: AlbarInfoPreviewProps) => {
+const AlbarPreview = ({ info }: AlbarPreviewProps) => {
   const isRecruiting = isPast(info.recruitmentEndDate);
   const dday = getDday(info.recruitmentEndDate);
 
@@ -59,4 +59,4 @@ const AlbarInfoPreview = ({ info }: AlbarInfoPreviewProps) => {
   );
 };
 
-export default AlbarInfoPreview;
+export default AlbarPreview;
