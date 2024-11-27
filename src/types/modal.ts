@@ -4,4 +4,5 @@ export enum ModalType {
   PatchAlbaformModal = "PatchAlbaformModal", // 알바폼 이어쓰기 모달
   SelectProgressModal = "SelectProgressModal", // 진행상태 선택 모달
   ChangeMyInfoModal = "ChangeMyInfoModal", // 내 정보 수정 모달
+  GetMyApplicationModal = "GetMyApplicationModal", // 내 지원 내역 모달
 }

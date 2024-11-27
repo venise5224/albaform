@@ -5,6 +5,7 @@ import { modalAtom } from "@/atoms/modalAtom";
 import CloseAlbaformModal from "../modalContent/ClosedAlbaformModal";
 import DeleteAlbaformModal from "../modalContent/DeleteAlbaformModal";
 import PatchAlbaformModal from "../modalContent/PatchAlbaformModal";
+import GetMyApplicationModal from "../modalContent/GetMyApplicationModal";
 import SelectProgressModal from "../modalContent/SelectProgressModal";
 import ChangeMyInfoModal from "../modalContent/ChangeMyInfoModal";
 
@@ -20,6 +21,8 @@ const ModalManager = () => {
       return <DeleteAlbaformModal />;
     case "PatchAlbaformModal":
       return <PatchAlbaformModal />;
+    case "GetMyApplicationModal":
+      return <GetMyApplicationModal />;
     case "SelectProgressModal":
       return <SelectProgressModal />;
     case "ChangeMyInfoModal":

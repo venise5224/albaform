@@ -60,7 +60,7 @@ const ChangeMyInfoModal = () => {
             <FormInput
               id="name"
               name="name"
-              type="name"
+              type="text"
               register={register}
               error={errors.name}
               className={inputStyle}
@@ -78,7 +78,7 @@ const ChangeMyInfoModal = () => {
             <FormInput
               id="nickName"
               name="nickName"
-              type="nickName"
+              type="text"
               register={register}
               error={errors.nickName}
               className={inputStyle}
@@ -98,7 +98,7 @@ const ChangeMyInfoModal = () => {
             <FormInput
               id="phoneNumber"
               name="phoneNumber"
-              type="phoneNumber"
+              type="tel"
               register={register}
               error={errors.phoneNumber}
               className={inputStyle}

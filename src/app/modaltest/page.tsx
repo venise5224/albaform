@@ -24,6 +24,11 @@ const ModalPage = () => {
         </button>
       </div>
       <div>
+        <button onClick={() => openModal("GetMyApplicationModal")}>
+          내 지원 내역 모달
+        </button>
+      </div>
+      <div>
         <button onClick={() => openModal("SelectProgressModal")}>
           진행상태 선택
         </button>
