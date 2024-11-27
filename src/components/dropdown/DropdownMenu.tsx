@@ -28,11 +28,15 @@ const DropdownMenu = ({
 const DropdownMenuTrigger = ({
   checkedValue,
   className,
+  id,
 }: {
   checkedValue: string;
   className?: string;
+  id: string;
 }) => {
-  const [dropdownTrigger, setDropdownTrigger] = useAtom(dropdownTriggerAtom);
+  const [dropdownTrigger, setDropdownTrigger] = useAtom(
+    dropdownTriggerAtom(id)
+  );
 
   const triggerRef = useRef<HTMLButtonElement>(null);
 
@@ -75,8 +79,14 @@ const DropdownMenuTrigger = ({
 };
 
 // 드롭다운 메뉴 컨텐츠 (menuItem들을 감싸야 합니다.)
-const DropdownMenuContent = ({ children }: { children: React.ReactNode }) => {
-  const dropdownTrigger = useAtomValue(dropdownTriggerAtom);
+const DropdownMenuContent = ({
+  children,
+  id,
+}: {
+  children: React.ReactNode;
+  id: string;
+}) => {
+  const dropdownTrigger = useAtomValue(dropdownTriggerAtom(id));
 
   return (
     dropdownTrigger && (
