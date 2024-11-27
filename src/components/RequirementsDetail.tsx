@@ -1,9 +1,9 @@
 interface RequirementsDetailProps {
   info: {
     preferred: string;
-    age: string | "성별무관";
+    age: string | "연령무관";
     education: string | "학력무관";
-    gender: string | "연령무관";
+    gender: string | "성별무관";
     numberOfPositions: number | "00명(인원미정)";
   };
 }
