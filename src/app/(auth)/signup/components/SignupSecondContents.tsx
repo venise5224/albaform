@@ -6,7 +6,7 @@ import {
 } from "../../../../schema/signup/signupSchema";
 import Image from "next/image";
 import { StepTwoInput } from "./StepTwoInput";
-import { cls } from "@/utils/DynamicTailwind";
+import { cls } from "@/utils/dynamicTailwind";
 import ProfileImg from "./ProfileImg";
 import FormInput from "@/components/input/FormInput";
 import ErrorText from "@/components/errorText/ErrorText";

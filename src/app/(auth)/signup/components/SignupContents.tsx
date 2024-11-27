@@ -12,7 +12,7 @@ import {
   applicantSchema,
   ownerSchema,
 } from "../../../../schema/signup/signupSchema";
-import { cls } from "@/utils/DynamicTailwind";
+import { cls } from "@/utils/dynamicTailwind";
 import { signupActions } from "../actions/signupActions";
 import { profileImgAtom } from "@/atoms/signupAtomStore";
 import { useAtomValue } from "jotai";

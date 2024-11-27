@@ -2,7 +2,7 @@
 
 import ErrorText from "@/components/errorText/ErrorText";
 import FormInput from "@/components/input/FormInput";
-import { cls } from "@/utils/DynamicTailwind";
+import { cls } from "@/utils/dynamicTailwind";
 import { signInSchema } from "@/schema/signin/signinSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";

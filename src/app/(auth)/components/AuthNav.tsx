@@ -1,4 +1,4 @@
-import { cls } from "@/utils/DynamicTailwind";
+import { cls } from "@/utils/dynamicTailwind";
 import Link from "next/link";
 
 const AuthNav = ({
