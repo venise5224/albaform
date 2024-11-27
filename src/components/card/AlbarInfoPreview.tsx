@@ -4,11 +4,11 @@ import { getDday } from "@/utils/getDday";
 import isPast from "@/utils/isPast";
 import Image from "next/image";
 
-interface AlbarCardProps {
+interface AlbarInfoPreviewProps {
   info: AlbarformData;
 }
 
-const AlbarCard = ({ info }: AlbarCardProps) => {
+const AlbarInfoPreview = ({ info }: AlbarInfoPreviewProps) => {
   const isRecruiting = isPast(info.recruitmentEndDate);
   const dday = getDday(info.recruitmentEndDate);
 
@@ -59,4 +59,4 @@ const AlbarCard = ({ info }: AlbarCardProps) => {
   );
 };
 
-export default AlbarCard;
+export default AlbarInfoPreview;
