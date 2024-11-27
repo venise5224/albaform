@@ -19,7 +19,7 @@ const CommentCard = ({ info }: CommentCardProps) => {
   const [_, formattedDate] = formatDate("", info.createdAt);
 
   return (
-    <section className="flex h-[202px] w-[327px] flex-col justify-between rounded-2xl border border-line-100 bg-white px-4 py-5 pc:h-[264px] pc:w-[477px]">
+    <section className="flex h-[202px] w-[327px] flex-col justify-between rounded-2xl border border-line-100 bg-white px-4 py-5 hover:bg-oldLace-50 pc:h-[264px] pc:w-[477px]">
       <div className="flex items-center justify-between gap-[6px]">
         <div className="relative size-6">
           <Image src={"/icon/document-empty-md.svg"} fill alt="" />
