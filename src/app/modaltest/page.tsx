@@ -1,5 +1,6 @@
 "use client";
 
+//삭제 될 파일 입니다. (모달 실험용)
 import { useModal } from "@/hooks/useModal";
 
 const ModalPage = () => {
@@ -23,6 +24,11 @@ const ModalPage = () => {
         </button>
       </div>
       <div>
+        <button onClick={() => openModal("GetMyApplicationModal")}>
+          내 지원 내역 모달
+        </button>
+      </div>
+      <div>
         <button onClick={() => openModal("SelectProgressModal")}>
           진행상태 선택
         </button>
@@ -30,6 +36,11 @@ const ModalPage = () => {
       <div>
         <button onClick={() => openModal("ChangePasswordModal")}>
           비밀번호 변경
+        </button>
+      </div>
+      <div>
+        <button onClick={() => openModal("ChangeMyInfoModal")}>
+          내 정보 수정
         </button>
       </div>
     </div>

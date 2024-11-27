@@ -7,7 +7,7 @@ const DeleteAlbaformModal = () => {
       <div className="flex flex-col items-center">
         <div className="modal-image-container">
           <Image
-            src="/images/close-albaform.svg"
+            src="/image/email-orange.svg"
             fill
             alt="모집마감"
             className="object-cover"
