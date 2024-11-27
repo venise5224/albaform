@@ -1,4 +1,4 @@
-import { cls } from "@/utils/dynamicTailwind";
+import { cls } from "@/utils/dynamicTailwinds";
 import { FieldError } from "react-hook-form";
 
 // form에서 에러 메시지를 출력할 때 사용하는 컴포넌트입니다.
