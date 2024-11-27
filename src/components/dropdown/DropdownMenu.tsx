@@ -1,5 +1,5 @@
 import { dropdownTriggerAtom } from "@/atoms/dropdownAtomStore";
-import { cls } from "@/utils/dynamicTailwind";
+import { cls } from "@/utils/dynamicTailwinds";
 import { useAtom, useAtomValue } from "jotai";
 import Image from "next/image";
 import { useEffect, useRef } from "react";
