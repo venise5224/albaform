@@ -15,7 +15,7 @@ const DropdownMenu = ({
   return (
     <div
       className={cls(
-        "flex w-20 flex-col overflow-hidden rounded bg-white pc:w-[126px]",
+        "w-20 flex-col overflow-hidden rounded bg-white pc:w-[126px]",
         className ? className : ""
       )}
     >
@@ -63,7 +63,7 @@ const DropdownMenuTrigger = ({
       ref={triggerRef}
       onClick={handleClick}
       className={cls(
-        "mb-1 flex items-center justify-between rounded border-[1px] bg-white py-1.5 pl-2.5 pr-2 text-start text-xs text-black-100 pc:py-2 pc:pl-4 pc:pr-3 pc:text-2lg",
+        "relative mb-1 flex w-full items-center justify-between rounded border-[1px] bg-white py-1.5 pl-2.5 pr-2 text-start text-xs text-black-100 pc:py-2 pc:pl-4 pc:pr-3 pc:text-2lg",
         className ? className : ""
       )}
     >
@@ -90,7 +90,7 @@ const DropdownMenuContent = ({
 
   return (
     dropdownTrigger && (
-      <div className="flex flex-col overflow-hidden rounded border-[1px]">
+      <div className="absolute z-10 flex w-20 flex-col overflow-hidden rounded border-[1px] pc:w-[126px]">
         {children}
       </div>
     )
