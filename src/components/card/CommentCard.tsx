@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { formatDate } from "@/utils/formatDate";
 import Image from "next/image";
 
@@ -16,13 +19,26 @@ interface CommentCardProps {
 }
 
 const CommentCard = ({ info }: CommentCardProps) => {
+  const [isHover, setIsHover] = useState(false);
   const [_, formattedDate] = formatDate("", info.createdAt);
 
   return (
-    <section className="flex h-[202px] w-[327px] flex-col justify-between rounded-2xl border border-line-100 bg-white px-4 py-5 hover:bg-oldLace-50 pc:h-[264px] pc:w-[477px]">
-      <div className="flex items-center justify-between gap-[6px]">
-        <div className="relative size-6">
-          <Image src={"/icon/document-empty-md.svg"} fill alt="" />
+    <section
+      className="flex h-[202px] w-[327px] flex-col justify-between rounded-2xl border border-line-100 bg-white px-4 py-5 hover:bg-oldLace-50 pc:h-[264px] pc:w-[477px]"
+      onMouseEnter={() => setIsHover(true)}
+      onMouseLeave={() => setIsHover(false)}
+    >
+      <div className="flex items-center justify-between gap-3">
+        <div className="relative size-4 pc:size-6">
+          <Image
+            src={
+              isHover
+                ? "/icon/document-hover.svg"
+                : "/icon/document-empty-md.svg"
+            }
+            fill
+            alt=""
+          />
         </div>
         <h3 className="flex-grow text-xs text-black-100 pc:text-lg">
           {info.post.title}
