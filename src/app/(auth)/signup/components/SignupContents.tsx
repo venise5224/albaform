@@ -12,7 +12,6 @@ import {
   applicantSchema,
   ownerSchema,
 } from "../../../../schema/signup/signupSchema";
-import { cls } from "@/utils/DynamicTailwind";
 import { signupActions } from "../actions/signupActions";
 import { profileImgAtom } from "@/atoms/signupAtomStore";
 import { useAtomValue } from "jotai";
@@ -22,6 +21,7 @@ import FormInput from "@/components/input/FormInput";
 import ErrorText from "@/components/errorText/ErrorText";
 import Cookies from "js-cookie";
 import SolidButton from "@/components/button/SolidButton";
+import { cls } from "@/utils/dynamicTailwinds";
 export type FormSchema =
   | z.infer<typeof applicantSchema>
   | z.infer<typeof ownerSchema>;
