@@ -1,10 +1,21 @@
-import { ApplicantData } from "../types/alba";
-
-interface ApplicantStatsListProps {
+interface ApplicantData {
+  applicantId: number;
+  updatedAt: string;
+  createdAt: string;
+  status: "REJECTED" | "INTERVIEW_PENDING" | "INTERVIEW_COMPLETED" | "HIRED";
+  introduction: string;
+  resumeName: string;
+  resumeId: number;
+  experienceMonths: number;
+  phoneNumber: string;
+  name: string;
+  id: number;
+}
+interface ApplicantListData {
   list: ApplicantData[];
 }
 
-const ApplicantStatsList = ({ list }: ApplicantStatsListProps) => {
+const ApplicantStatsList = ({ list }: ApplicantListData) => {
   return (
     <table>
       <thead>
@@ -15,7 +26,7 @@ const ApplicantStatsList = ({ list }: ApplicantStatsListProps) => {
           <th>상태</th>
         </tr>
       </thead>
-      <tbody className="text-md text-black-400">
+      <tbody className="text-black-4 text-md">
         {list.map((el) => (
           <tr key={el.applicantId}>
             <td className="underline">{el.name}</td>
