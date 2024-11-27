@@ -2,16 +2,21 @@
 
 import ErrorText from "@/components/errorText/ErrorText";
 import ModalContainer from "../modalContainer/ModalContainer";
-import Image from "next/image";
 import FormInput from "@/components/input/FormInput";
+import Image from "next/image";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { useForm } from "react-hook-form";
+import { useForm, Path } from "react-hook-form";
 import { changePasswordSchema } from "@/schema/modal/changePasswordSchema";
 
 const ChangePasswordModal = () => {
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState({
+    currentPassword: false,
+    newPassword: false,
+    newPasswordConfirm: false,
+  });
+
   const {
     register,
     handleSubmit,
@@ -20,12 +25,49 @@ const ChangePasswordModal = () => {
     resolver: zodResolver(changePasswordSchema),
     mode: "onChange",
     defaultValues: {
-      password: "",
-      passwordConfirm: "",
+      currentPassword: "",
+      newPassword: "",
+      newPasswordConfirm: "",
     },
   });
 
-  const onSubmit = () => {};
+  const toggleVisibility = (field: keyof typeof visible) => {
+    setVisible((prev) => ({ ...prev, [field]: !prev[field] }));
+  };
+
+  const inputArr = [
+    {
+      id: "currentPassword",
+      label: "현재 비밀번호",
+      name: "currentPassword",
+      type: visible.currentPassword ? "text" : "password",
+      placeholder: "현재 비밀번호를 입력해주세요.",
+      error: errors.currentPassword,
+      register: { ...register("currentPassword") },
+    },
+    {
+      id: "newPassword",
+      label: "새 비밀번호",
+      name: "newPassword",
+      type: visible.newPassword ? "text" : "password",
+      placeholder: "새로운 비밀번호를 입력해주세요.",
+      error: errors.newPassword,
+      register: { ...register("newPassword") },
+    },
+    {
+      id: "newPasswordConfirm",
+      label: "새 비밀번호 확인",
+      name: "newPasswordConfirm",
+      type: visible.newPasswordConfirm ? "text" : "password",
+      placeholder: "새로운 비밀번호를 다시 한번 입력해주세요.",
+      error: errors.newPasswordConfirm,
+      register: { ...register("newPasswordConfirm") },
+    },
+  ];
+
+  const onSubmit = () => {
+    // 제출 기능 필요
+  };
 
   return (
     <ModalContainer>
@@ -36,86 +78,40 @@ const ChangePasswordModal = () => {
 
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="mt-6 flex flex-col pc:mt-10"
+          className="mt-[33px] flex flex-col gap-[17px] pc:mt-12 pc:gap-8"
         >
-          <div className="relative flex flex-col">
-            <label htmlFor="password" className={`${labelStyle} mt-[16px]`}>
-              현재 비밀번호
-            </label>
-            <FormInput
-              name="password"
-              type={visible ? "text" : "password"}
-              register={register}
-              error={errors.password}
-              className={`${inputStyle} pr-[50px]`}
-              placeholder="현재 비밀번호를 입력해주세요."
-              id="password"
-            />
-            <Image
-              onClick={() => setVisible(!visible)}
-              src={visible ? "/icon/visible.svg" : "/icon/non-visible.svg"}
-              alt="비밀번호 보이기 버튼"
-              width={24}
-              height={24}
-              priority={true}
-              className="absolute right-3 top-[63px] pc:top-[67px]"
-            />
-            <ErrorText error={errors.password}>
-              {errors.password?.message}
-            </ErrorText>
-          </div>
-          <div className="relative flex flex-col">
-            <label htmlFor="password" className={`${labelStyle} mt-[16px]`}>
-              새 비밀번호
-            </label>
-            <FormInput
-              name="password"
-              type={visible ? "text" : "password"}
-              register={register}
-              error={errors.password}
-              className={`${inputStyle} pr-[50px]`}
-              placeholder="새로운 비밀번호를 입력해주세요."
-              id="password"
-            />
-            <Image
-              onClick={() => setVisible(!visible)}
-              src={visible ? "/icon/visible.svg" : "/icon/non-visible.svg"}
-              alt="비밀번호 보이기 버튼"
-              width={24}
-              height={24}
-              priority={true}
-              className="absolute right-3 top-[63px] pc:top-[67px]"
-            />
-            <ErrorText error={errors.password}>
-              {errors.password?.message}
-            </ErrorText>
-          </div>
-          <div className="relative flex flex-col">
-            <label htmlFor="password" className={`${labelStyle} mt-[16px]`}>
-              새 비밀번호 확인
-            </label>
-            <FormInput
-              name="password"
-              type={visible ? "text" : "password"}
-              register={register}
-              error={errors.password}
-              className={`${inputStyle} pr-[50px]`}
-              placeholder="새로운 비밀번호를 다시 한번 입력해주세요."
-              id="password"
-            />
-            <Image
-              onClick={() => setVisible(!visible)}
-              src={visible ? "/icon/visible.svg" : "/icon/non-visible.svg"}
-              alt="비밀번호 보이기 버튼"
-              width={24}
-              height={24}
-              priority={true}
-              className="absolute right-3 top-[63px] pc:top-[67px]"
-            />
-            <ErrorText error={errors.password}>
-              {errors.password?.message}
-            </ErrorText>
-          </div>
+          {inputArr.map((input) => (
+            <div key={input.id} className="relative flex flex-col">
+              <label htmlFor={input.id} className={labelStyle}>
+                {input.label}
+              </label>
+              <FormInput
+                id={input.id}
+                name={input.name as Path<z.infer<typeof changePasswordSchema>>}
+                type={input.type}
+                placeholder={input.placeholder}
+                error={input.error}
+                register={register}
+                className={inputStyle}
+              />
+              <Image
+                onClick={() =>
+                  toggleVisibility(input.name as keyof typeof visible)
+                }
+                src={
+                  input.type === "text"
+                    ? "/icon/visible.svg"
+                    : "/icon/non-visible.svg"
+                }
+                alt="비밀번호 보이기 버튼"
+                width={24}
+                height={24}
+                priority={true}
+                className="absolute bottom-[14px] right-3"
+              />
+              <ErrorText error={input.error}>{input.error?.message}</ErrorText>
+            </div>
+          ))}
 
           <div className="mt-6 flex gap-[11px] pc:mt-[30px] pc:gap-3">
             <button className="h-[58px] w-[158px] rounded-[8px] border bg-gray-100 text-white pc:h-[72px] pc:w-[314px]">
@@ -134,6 +130,6 @@ const ChangePasswordModal = () => {
 export default ChangePasswordModal;
 
 const labelStyle =
-  "text-md font-regular text-black-400 w-fit cursor-pointer pc:text-lg";
+  "text-md font-regular text-black-400 w-fit cursor-pointer pc:text-xl";
 const inputStyle =
-  "mt-[8px] rounded-[8px] bg-background-200 p-[14px] placeholder:text-md placeholder:font-regular border focus:border-orange-300";
+  "mt-2 rounded-[8px] bg-gray-50 p-[14px] pr-10 placeholder:text-lg placeholder:font-regular border focus:border-orange-300 pc:mt-4";
