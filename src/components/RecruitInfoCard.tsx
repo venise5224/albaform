@@ -59,8 +59,8 @@ const RecruitInfoCard = ({ info }: RecruitmentCardProps) => {
             </div>
           </div>
         ))}
-        <div className="absolute bottom-[168px] left-6 h-1 w-[592px] border border-line-100 tablet:hidden mobile:hidden" />
-        <div className="absolute left-[320px] top-[39px] h-[258px] w-[1px] border border-line-100 tablet:hidden mobile:hidden" />
+        <div className="hidden pc:absolute pc:bottom-[168px] pc:left-6 pc:h-1 pc:w-[592px] pc:border pc:border-line-100" />
+        <div className="hidden pc:absolute pc:left-[320px] pc:top-[39px] pc:hidden pc:h-[258px] pc:w-[1px] pc:border pc:border-line-100" />
       </div>
     </section>
   );
