@@ -27,6 +27,11 @@ const ModalPage = () => {
           진행상태 선택
         </button>
       </div>
+      <div>
+        <button onClick={() => openModal("ChangePasswordModal")}>
+          비밀번호 변경
+        </button>
+      </div>
     </div>
   );
 };

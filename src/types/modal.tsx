@@ -3,4 +3,5 @@ export enum ModalType {
   DeleteAlbaformModal = "DeleteAlbaformModal", // 알바폼 삭제 모달
   PatchAlbaformModal = "PatchAlbaformModal", // 알바폼 이어쓰기 모달
   SelectProgressModal = "SelectProgressModal", // 진행상태 선택
+  ChangePasswordModal = "ChangePasswordModal", // 비밀번호 변경 모달
 }
