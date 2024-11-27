@@ -1,5 +1,8 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
 import { formatDate } from "../../utils/formatDate";
+import Image from "next/image";
 import CommentAndLikeCount from "../CommentAndLikeCount";
 import UserInfoInCard from "../UserInfoInCard";
 
@@ -22,10 +25,15 @@ interface PostCardProps {
 }
 
 const PostCard = ({ info }: PostCardProps) => {
+  const [isHover, setIsHover] = useState(false);
   const [_, formattedCreatedDate] = formatDate("", info.createdAt);
 
   return (
-    <section className="relative flex h-[210px] w-[327px] flex-col justify-between rounded-[16px] border border-line-100 bg-gray-50 p-6 pc:h-[280px] pc:w-[477px] tablet:h-[180px] tablet:w-[600px]">
+    <section
+      className="relative flex h-[210px] w-[327px] flex-col justify-between rounded-[16px] border border-line-100 bg-gray-50 p-6 hover:bg-oldLace-50 pc:h-[280px] pc:w-[477px] tablet:h-[180px] tablet:w-[600px]"
+      onMouseEnter={() => setIsHover(true)}
+      onMouseLeave={() => setIsHover(false)}
+    >
       <h3 className="w-[80%] font-semibold text-black-400 pc:text-2lg">
         {info.title}
       </h3>
@@ -41,6 +49,7 @@ const PostCard = ({ info }: PostCardProps) => {
         <CommentAndLikeCount
           commentCount={info.commentCount}
           likeCount={info.likeCount}
+          isHover={isHover}
         />
       </div>
       <button className="absolute right-6 top-6">

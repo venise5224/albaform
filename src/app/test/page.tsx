@@ -3,7 +3,7 @@ import PostCard from "@/components/card/PostCard";
 const page = () => {
   const mockData = {
     writer: {
-      imageUrl: "https://www.w3.org/TR/WCAG21/#text-alternatives",
+      imageUrl: "",
       nickname: "junjeong",
       id: 0,
     },
@@ -12,8 +12,9 @@ const page = () => {
     commentCount: 0,
     likeCount: 0,
     imageUrl: "string",
-    content: "",
-    title: "string",
+    content:
+      "안녕 내 이름은 정준영이야 안녕 내 이름은 정준영이야안녕 내 이름은 정준영이야안녕 내 이름은 정준영이야안녕 내 이름은 정준영이야안녕 내 이름은 정준영이야",
+    title: "제목",
     id: 0,
   };
   return <PostCard info={mockData} />;
