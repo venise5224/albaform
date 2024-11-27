@@ -20,7 +20,7 @@ interface ApplicantData {
 const ApplicantStatsList = ({ list }: { list: ApplicantData[] }) => {
   return (
     <section className="h-[474px] w-[375px] pc:h-[574px] pc:w-[770px]">
-      <h2 className="px-4 py-4 text-2lg font-semibold text-black-500 pc:text-3xl">
+      <h2 className="p-4 text-2lg font-semibold text-black-500 pc:text-3xl">
         지원 현황
       </h2>
       <div className="">
