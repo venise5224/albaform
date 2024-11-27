@@ -45,16 +45,24 @@ const CheckBoxButton = ({
     .filter(Boolean)
     .join(" ");
 
+  const sizeLableClass = size === "small" ? "text-[14px]" : "text-xl";
+
   return (
-    <input
-      type="checkbox"
-      name={name}
-      value={value}
-      checked={checked}
-      onChange={handleChange}
-      disabled={disabled}
-      className={classes}
-    />
+    <div className="flex items-center gap-x-[10px]">
+      <input
+        id={value}
+        type="checkbox"
+        name={name}
+        value={value}
+        checked={checked}
+        onChange={handleChange}
+        disabled={disabled}
+        className={classes}
+      />
+      <label htmlFor={value} className={`font-medium ${sizeLableClass}`}>
+        {name}
+      </label>
+    </div>
   );
 };
 
