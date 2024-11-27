@@ -7,6 +7,7 @@ import DeleteAlbaformModal from "../modalContent/DeleteAlbaformModal";
 import PatchAlbaformModal from "../modalContent/PatchAlbaformModal";
 import GetMyApplicationModal from "../modalContent/GetMyApplicationModal";
 import SelectProgressModal from "../modalContent/SelectProgressModal";
+import ChangeMyInfoModal from "../modalContent/ChangeMyInfoModal";
 
 const ModalManager = () => {
   const modalType = useAtomValue(modalAtom);
@@ -24,6 +25,8 @@ const ModalManager = () => {
       return <GetMyApplicationModal />;
     case "SelectProgressModal":
       return <SelectProgressModal />;
+    case "ChangeMyInfoModal":
+      return <ChangeMyInfoModal />;
     default:
       return null;
   }

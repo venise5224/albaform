@@ -44,7 +44,7 @@ body {
 
 @layer components {
   .modal-image-container {
-    @apply animate-bounceIn relative h-[80px] w-[80px];
+    @apply animate-bounceIn relative size-[80px];
   }
 
   .modal-title {
