@@ -12,6 +12,6 @@ export const getDday = (isoDateString: string) => {
   if (timeDifference < 0) {
     return "마감";
   } else {
-    return `D-${timeDifference}일`;
+    return `D-${timeDifference}`;
   }
 };
