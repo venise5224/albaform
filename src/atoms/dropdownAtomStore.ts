@@ -3,4 +3,4 @@ import { atomFamily } from "jotai/utils";
 
 export const dropdownTriggerAtom = atomFamily((id: string) => atom(false));
 
-export const applicationStatusAtom = atom<string>("전체");
+export const applicationStatusAtom = atom<boolean | undefined>(undefined);

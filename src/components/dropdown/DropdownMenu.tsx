@@ -30,7 +30,7 @@ const DropdownMenuTrigger = ({
   className,
   id,
 }: {
-  checkedValue: string;
+  checkedValue: boolean | string | undefined;
   className?: string;
   id: string;
 }) => {

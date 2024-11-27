@@ -15,23 +15,33 @@ const ApplicationDropdown = () => {
     applicationStatusAtom
   );
 
-  const handleClick = (status: string) => {
+  const handleClick = (status: boolean | undefined) => {
     setApplicationStatus(status);
   };
 
+  const valueArr = [
+    { value: "전체", status: undefined },
+    { value: "모집 중", status: true },
+    { value: "모집 마감", status: false },
+  ];
+
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger checkedValue={applicationStatus} id="application" />
+      <DropdownMenuTrigger
+        checkedValue={
+          valueArr.find((item) => item.status === applicationStatus)?.value
+        }
+        id="application"
+      />
       <DropdownMenuContent id="application">
-        <DropdownMenuItem onClick={() => handleClick("전체")}>
-          전체
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handleClick("모집 중")}>
-          모집 중
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handleClick("모집 마감")}>
-          모집 마감
-        </DropdownMenuItem>
+        {valueArr.map((item) => (
+          <DropdownMenuItem
+            key={item.value}
+            onClick={() => handleClick(item.status)}
+          >
+            {item.value}
+          </DropdownMenuItem>
+        ))}
       </DropdownMenuContent>
     </DropdownMenu>
   );
