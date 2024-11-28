@@ -15,7 +15,7 @@ const DropdownMenu = ({
   return (
     <div
       className={cls(
-        "w-20 flex-col overflow-hidden rounded bg-white pc:w-[126px]",
+        "flex-col overflow-hidden rounded",
         className ? className : ""
       )}
     >
@@ -64,13 +64,13 @@ const DropdownMenuTrigger = ({
 
   if (asChild) {
     return (
-      <div
-        ref={triggerRef as RefObject<HTMLDivElement>}
+      <button
+        ref={triggerRef}
         className="relative mb-1 w-full cursor-pointer"
         onClick={handleClick}
       >
         {children}
-      </div>
+      </button>
     );
   }
 
