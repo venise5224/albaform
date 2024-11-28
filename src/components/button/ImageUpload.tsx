@@ -12,10 +12,20 @@ interface ImageInputProps {
 const ImageUpload = ({ onImageChange }: ImageInputProps) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const MAX_FILE_SIZE_MB = 5;
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
+
+      // 파일 크기 제한 확인
+      if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
+        return;
+      }
+
       const imageUrl = URL.createObjectURL(file);
       setSelectedImage(imageUrl);
       onImageChange(imageUrl); // 부모 컴포넌트로 이미지 URL 전달
@@ -51,8 +61,14 @@ const ImageUpload = ({ onImageChange }: ImageInputProps) => {
             className="hidden"
             onChange={handleImageChange}
           />
-          {/* 선택된 이미지 없음 */}
-          {!selectedImage && (
+          {selectedImage ? (
+            <Image
+              src={selectedImage}
+              alt="selected Image"
+              fill
+              className="rounded-lg object-cover"
+            />
+          ) : (
             <div className="flex flex-col items-center">
               <Image
                 src={uploadLargeIcon}
@@ -64,16 +80,6 @@ const ImageUpload = ({ onImageChange }: ImageInputProps) => {
                 이미지 넣기
               </span>
             </div>
-          )}
-          {/* 선택된 이미지 있음 */}
-          {selectedImage && (
-            <Image
-              src={selectedImage}
-              alt="selected Image"
-              layout="fill"
-              objectFit="cover"
-              className="rounded-[8px]"
-            />
           )}
         </label>
 

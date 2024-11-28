@@ -14,10 +14,20 @@ interface ImageInputProps {
 const ImageInput = ({ onImageChange }: ImageInputProps) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const MAX_FILE_SIZE_MB = 5;
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
+
+      // 파일 크기 제한 확인
+      if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
+        if (fileInputRef.current) {
+          fileInputRef.current.value = "";
+        }
+        return;
+      }
+
       const imageUrl = URL.createObjectURL(file);
       setSelectedImage(imageUrl);
       onImageChange(imageUrl); // 부모 컴포넌트로 이미지 URL 전달
@@ -77,9 +87,8 @@ const ImageInput = ({ onImageChange }: ImageInputProps) => {
           <Image
             src={selectedImage}
             alt="selected Image"
-            layout="fill"
-            objectFit="cover"
-            className="rounded-lg"
+            fill
+            className="rounded-lg object-cover"
           />
           {/* 취소 버튼 */}
           <button
