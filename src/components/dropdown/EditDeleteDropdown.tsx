@@ -24,12 +24,12 @@ const EditDeleteDropdown = ({
 
   const handleEditClick = () => {
     setEditDeleteDropdown(!editDeleteDropdown);
-    onEdit?.();
+    onEdit();
   };
 
   const handleDeleteClick = () => {
     setEditDeleteDropdown(!editDeleteDropdown);
-    onDelete?.();
+    onDelete();
   };
 
   const itemArr = [
