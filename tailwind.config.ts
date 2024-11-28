@@ -57,6 +57,20 @@ export default {
         sm: ["13px", "22px"],
         xs: ["12px", "18px"],
       },
+      animation: {
+        "toast-in": "fadeIn 0.3s ease-in",
+        "toast-out": "fadeOut 0.4s ease-out",
+      },
+      keyframes: {
+        fadeIn: {
+          from: { opacity: "0", transform: "translateY(-20px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
+        },
+        fadeOut: {
+          from: { opacity: "1", transform: "translateY(0)" },
+          to: { opacity: "0", transform: "translateY(-20px)" },
+        },
+      },
     },
   },
   plugins: [],
