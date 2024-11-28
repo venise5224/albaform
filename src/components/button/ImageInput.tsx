@@ -12,7 +12,7 @@ interface ImageInputProps {
   onImageChange: (images: string[]) => void;
 }
 
-const ImageInput = ({ size, onImageChange }: ImageInputProps) => {
+const ImageInput = ({ size = "small", onImageChange }: ImageInputProps) => {
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const MAX_FILE_SIZE_MB = 5;
