@@ -128,7 +128,7 @@ const ChangeCEOInfoModal = () => {
                 }
               />
               <ErrorText error={input.error}>{input.error?.message}</ErrorText>
-              {input.name === "location" ? (
+              {input.name === "location" && (
                 <Image
                   src="/icon/pin-fill-lg.svg"
                   alt="가게 위치"
@@ -136,8 +136,6 @@ const ChangeCEOInfoModal = () => {
                   height={36}
                   className="absolute bottom-2 left-2"
                 />
-              ) : (
-                ""
               )}
             </div>
           ))}
@@ -161,4 +159,4 @@ export default ChangeCEOInfoModal;
 const labelStyle =
   "text-md font-regular text-black-400 w-fit cursor-pointer mt-[17px] pc:mt-8 pc:text-xl";
 const inputStyle =
-  "mt-[8px] rounded-[8px] bg-grya-50 p-[14px] placeholder:text-md placeholder:font-regular border focus:border-orange-300 pc:mt-4";
+  "mt-[8px] rounded-[8px] bg-gray-50 p-[14px] placeholder:text-md placeholder:font-regular border focus:border-orange-300 pc:mt-4";

@@ -8,7 +8,7 @@ export const changeCEOInfoSchema = z.object({
     .optional(),
   storePhoneNumber: z
     .string()
-    .regex(/^[0-9]*$/, { message: "올바르지 않은 번호입니다." })
+    .regex(/^[0-9]+$/, { message: "올바르지 않은 번호입니다." })
     .optional(),
   phoneNumber: z
     .string()
