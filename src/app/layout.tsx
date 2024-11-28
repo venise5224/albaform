@@ -33,8 +33,8 @@ export default function RootLayout({
       <body>
         <Sidebar />
         <Header />
-        {children}
         <ModalManager />
+        {children}
       </body>
     </html>
   );
