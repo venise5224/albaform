@@ -11,10 +11,12 @@ import { useAtom } from "jotai";
 
 const EditDeleteDropdown = ({
   children,
-  onClick,
+  onEdit,
+  onDelete,
 }: {
   children: React.ReactNode;
-  onClick?: () => void;
+  onEdit: () => void;
+  onDelete: () => void;
 }) => {
   const [editDeleteDropdown, setEditDeleteDropdown] = useAtom(
     editDeleteDropdownAtom
@@ -22,12 +24,12 @@ const EditDeleteDropdown = ({
 
   const handleEditClick = () => {
     setEditDeleteDropdown(!editDeleteDropdown);
-    onClick?.();
+    onEdit();
   };
 
   const handleDeleteClick = () => {
     setEditDeleteDropdown(!editDeleteDropdown);
-    onClick?.();
+    onDelete();
   };
 
   const itemArr = [

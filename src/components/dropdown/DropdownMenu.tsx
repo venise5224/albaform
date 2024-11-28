@@ -2,7 +2,7 @@ import { dropdownTriggerAtom } from "@/atoms/dropdownAtomStore";
 import { cls } from "@/utils/dynamicTailwinds";
 import { useAtom, useAtomValue } from "jotai";
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { RefObject, useEffect, useRef } from "react";
 
 // 드롭다운 메뉴 컨테이너
 const DropdownMenu = ({
@@ -42,7 +42,7 @@ const DropdownMenuTrigger = ({
     dropdownTriggerAtom(id)
   );
 
-  const triggerRef = useRef<HTMLButtonElement>(null);
+  const triggerRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -64,19 +64,19 @@ const DropdownMenuTrigger = ({
 
   if (asChild) {
     return (
-      <button
-        ref={triggerRef}
+      <div
+        ref={triggerRef as RefObject<HTMLDivElement>}
         className="relative mb-1 w-full cursor-pointer"
         onClick={handleClick}
       >
         {children}
-      </button>
+      </div>
     );
   }
 
   return (
     <button
-      ref={triggerRef}
+      ref={triggerRef as RefObject<HTMLButtonElement>}
       onClick={handleClick}
       className={cls(
         "relative mb-1 flex w-full items-center justify-between rounded border-[1px] bg-white py-1.5 pl-2.5 pr-2 text-start text-xs text-black-100 pc:py-2 pc:pl-4 pc:pr-3 pc:text-2lg",
