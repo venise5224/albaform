@@ -38,7 +38,7 @@ const ApplicationDropdown = () => {
           <DropdownMenuItem
             key={item.value}
             onClick={() => handleClick(item.status)}
-            className="py-1.5 pl-2.5 pr-2 text-start pc:py-2 pc:pl-4 pc:pr-3"
+            className="py-1.5 pl-2.5 pr-2 text-start pc:py-2 pc:pl-4 pc:pr-3 pc:text-2lg"
           >
             {item.value}
           </DropdownMenuItem>
