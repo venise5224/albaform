@@ -25,7 +25,7 @@ const RecruitDropdown = () => {
   ];
 
   return (
-    <DropdownMenu>
+    <DropdownMenu className="w-20 pc:w-[126px]">
       <DropdownMenuTrigger
         checkedValue={
           valueArr.find((item) => item.status === recruitStatus)?.value
