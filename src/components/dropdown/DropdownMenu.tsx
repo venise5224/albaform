@@ -64,13 +64,13 @@ const DropdownMenuTrigger = ({
 
   if (asChild) {
     return (
-      <button
-        ref={triggerRef}
+      <div
+        ref={triggerRef as RefObject<HTMLDivElement>}
         className="relative mb-1 w-full cursor-pointer"
         onClick={handleClick}
       >
         {children}
-      </button>
+      </div>
     );
   }
 
