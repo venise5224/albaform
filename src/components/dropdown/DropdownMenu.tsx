@@ -2,7 +2,7 @@ import { dropdownTriggerAtom } from "@/atoms/dropdownAtomStore";
 import { cls } from "@/utils/dynamicTailwinds";
 import { useAtom, useAtomValue } from "jotai";
 import Image from "next/image";
-import { RefObject, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 
 // 드롭다운 메뉴 컨테이너
 const DropdownMenu = ({
@@ -15,7 +15,7 @@ const DropdownMenu = ({
   return (
     <div
       className={cls(
-        "w-20 flex-col overflow-hidden rounded bg-white pc:w-[126px]",
+        "flex-col overflow-hidden rounded",
         className ? className : ""
       )}
     >
@@ -42,7 +42,7 @@ const DropdownMenuTrigger = ({
     dropdownTriggerAtom(id)
   );
 
-  const triggerRef = useRef<HTMLElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
@@ -64,19 +64,19 @@ const DropdownMenuTrigger = ({
 
   if (asChild) {
     return (
-      <div
-        ref={triggerRef as RefObject<HTMLDivElement>}
+      <button
+        ref={triggerRef}
         className="relative mb-1 w-full cursor-pointer"
         onClick={handleClick}
       >
         {children}
-      </div>
+      </button>
     );
   }
 
   return (
     <button
-      ref={triggerRef as RefObject<HTMLButtonElement>}
+      ref={triggerRef}
       onClick={handleClick}
       className={cls(
         "relative mb-1 flex w-full items-center justify-between rounded border-[1px] bg-white py-1.5 pl-2.5 pr-2 text-start text-xs text-black-100 pc:py-2 pc:pl-4 pc:pr-3 pc:text-2lg",

@@ -1,9 +1,6 @@
 "use client";
 
-import {
-  editDeleteDropdownAtom,
-  editDeleteOpenAtom,
-} from "@/atoms/dropdownAtomStore";
+import { editDeleteDropdownAtom } from "@/atoms/dropdownAtomStore";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,26 +8,26 @@ import {
   DropdownMenuTrigger,
 } from "@/components/dropdown/DropdownMenu";
 import { useAtom } from "jotai";
-import Image from "next/image";
 
-const EditDeleteDropdown = () => {
+const EditDeleteDropdown = ({
+  children,
+  onClick,
+}: {
+  children: React.ReactNode;
+  onClick?: () => void;
+}) => {
   const [editDeleteDropdown, setEditDeleteDropdown] = useAtom(
     editDeleteDropdownAtom
   );
 
-  const [isEditOpen, setIsEditOpen] = useAtom(editDeleteOpenAtom("edit"));
-  const [isDeleteOpen, setIsDeleteOpen] = useAtom(editDeleteOpenAtom("delete"));
-
   const handleEditClick = () => {
     setEditDeleteDropdown(!editDeleteDropdown);
-    setIsEditOpen(!isEditOpen);
-    setIsDeleteOpen(false);
+    onClick?.();
   };
 
   const handleDeleteClick = () => {
     setEditDeleteDropdown(!editDeleteDropdown);
-    setIsDeleteOpen(!isDeleteOpen);
-    setIsEditOpen(false);
+    onClick?.();
   };
 
   const itemArr = [
@@ -45,24 +42,18 @@ const EditDeleteDropdown = () => {
   ];
 
   return (
-    <DropdownMenu>
+    <DropdownMenu className="bg-transparent">
       <DropdownMenuTrigger
         asChild
         id="editDelete"
         checkedValue={editDeleteDropdown}
         className="rounded-lg"
       >
-        <Image
-          src="/icon/kebab-lg.svg"
-          alt="수정 및 삭제 드롭다운"
-          width={24}
-          height={24}
-          className="pc:size-[30px]"
-        />
+        {children}
       </DropdownMenuTrigger>
       <DropdownMenuContent
         id="editDelete"
-        className="translate-x-[-100px] items-center rounded-lg p-1 pc:w-[132px]"
+        className="translate-x-[-100px] items-center bg-white p-1 pc:w-[132px]"
       >
         {itemArr.map((item) => (
           <DropdownMenuItem
