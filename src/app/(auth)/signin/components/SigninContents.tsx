@@ -2,7 +2,6 @@
 
 import ErrorText from "@/components/errorText/ErrorText";
 import FormInput from "@/components/input/FormInput";
-import { cls } from "@/utils/DynamicTailwind";
 import { signInSchema } from "@/schema/signin/signinSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
@@ -14,6 +13,7 @@ import { useRouter } from "next/navigation";
 import useToken from "@/hooks/useToken";
 import Cookies from "js-cookie";
 import SolidButton from "@/components/button/SolidButton";
+import { cls } from "@/utils/dynamicTailwinds";
 
 const SigninContents = () => {
   const router = useRouter();
