@@ -8,29 +8,40 @@ import xCircleIcon from "@/../public/icon/Xcircle-md.svg";
 import xCircleLargeIcon from "@/../public/icon/Xcircle-lg.svg";
 
 interface ImageInputProps {
-  onImageChange: (image: string | null) => void;
+  size: "small" | "medium" | "large";
+  onImageChange: (images: string[]) => void;
 }
 
-const ImageInput = ({ onImageChange }: ImageInputProps) => {
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+const ImageInput = ({ size, onImageChange }: ImageInputProps) => {
+  const [selectedImages, setSelectedImages] = useState<string[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const MAX_FILE_SIZE_MB = 5;
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
+  // 크기별 클래스
+  const sizeClasses = {
+    small: "h-20 w-20",
+    medium: "h-[116px] w-[116px]",
+    large: "h-[240px] w-[240px]",
+  };
 
-      // 파일 크기 제한 확인
-      if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
-        if (fileInputRef.current) {
-          fileInputRef.current.value = "";
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const files = Array.from(e.target.files);
+      const newImages: string[] = [];
+
+      for (const file of files) {
+        // 파일 크기 제한 확인
+        if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
+          continue;
         }
-        return;
+
+        const imageUrl = URL.createObjectURL(file);
+        newImages.push(imageUrl);
       }
 
-      const imageUrl = URL.createObjectURL(file);
-      setSelectedImage(imageUrl);
-      onImageChange(imageUrl); // 부모 컴포넌트로 이미지 URL 전달
+      const updatedImages = [...selectedImages, ...newImages];
+      setSelectedImages(updatedImages);
+      onImageChange(updatedImages); // 부모 컴포넌트로 이미지 URL 배열 전달
 
       // 파일 input 초기화
       if (fileInputRef.current) {
@@ -39,79 +50,76 @@ const ImageInput = ({ onImageChange }: ImageInputProps) => {
     }
   };
 
-  const handleRemoveImage = () => {
-    if (selectedImage) {
-      URL.revokeObjectURL(selectedImage);
-    }
-    setSelectedImage(null); // 이미지 초기화
-    onImageChange(null); // 부모 컴포넌트로 null 전달
+  const handleRemoveImage = (index: number) => {
+    const imageToRemove = selectedImages[index];
 
-    // 파일 input 초기화
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
+    URL.revokeObjectURL(imageToRemove);
+
+    const updatedImages = selectedImages.filter((_, i) => i !== index);
+    setSelectedImages(updatedImages);
+    onImageChange(updatedImages); // 부모 컴포넌트로 업데이트된 이미지 배열 전달
   };
 
   return (
-    <div className="flex items-center">
+    <div className="flex flex-wrap gap-4">
       {/* Input */}
-      <label className="flex h-20 w-20 cursor-pointer items-center justify-center rounded-lg bg-background-200 p-7 pc:h-[116px] pc:w-[116px]">
+      <label
+        className={`flex cursor-pointer items-center justify-center rounded-lg bg-background-200 p-7 ${sizeClasses[size]}`}
+      >
         <input
           ref={fileInputRef}
           type="file"
           accept="image/*"
+          multiple
           className="hidden"
           onChange={handleImageChange}
         />
         <span>
-          <Image
-            src={uploadIcon}
-            width={24}
-            height={24}
-            alt="image Upload"
-            className="pc:hidden"
-          />
-          <Image
-            src={uploadLargeIcon}
-            width={36}
-            height={36}
-            alt="image Upload"
-            className="hidden pc:block"
-          />
+          {size === "small" ? (
+            <Image src={uploadIcon} width={24} height={24} alt="image Upload" />
+          ) : (
+            <Image
+              src={uploadLargeIcon}
+              width={36}
+              height={36}
+              alt="image Upload"
+            />
+          )}
         </span>
       </label>
 
       {/* 선택된 이미지 */}
-      {selectedImage && (
-        <div className="relative ml-5 h-20 w-20 pc:h-[116px] pc:w-[116px]">
+      {selectedImages.map((image, index) => (
+        <div key={index} className={`relative ${sizeClasses[size]}`}>
           <Image
-            src={selectedImage}
-            alt="selected Image"
+            src={image}
+            alt={`selected Image ${index + 1}`}
             fill
             className="rounded-lg object-cover"
           />
           {/* 취소 버튼 */}
           <button
-            onClick={handleRemoveImage}
+            onClick={() => handleRemoveImage(index)}
             className="absolute right-0 top-0 -translate-y-1/2 translate-x-1/2 cursor-pointer border-0 bg-transparent p-0"
           >
-            <Image
-              src={xCircleIcon}
-              alt="cancel Icon"
-              width={24}
-              height={24}
-              className="pc:hidden"
-            />
-            <Image
-              src={xCircleLargeIcon}
-              alt="cancel Icon"
-              width={32}
-              height={32}
-              className="hidden pc:block"
-            />
+            {size === "small" ? (
+              <Image
+                src={xCircleIcon}
+                alt="cancel Icon"
+                width={24}
+                height={24}
+              />
+            ) : (
+              <Image
+                src={xCircleLargeIcon}
+                alt="cancel Icon"
+                width={32}
+                height={32}
+              />
+            )}
           </button>
         </div>
-      )}
+      ))}
     </div>
   );
 };
