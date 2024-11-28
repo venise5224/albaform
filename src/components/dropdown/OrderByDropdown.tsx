@@ -37,7 +37,7 @@ const OrderByDropdown = ({ children }: { children: React.ReactNode }) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent
         id="orderBy"
-        className="w-24 translate-x-3 items-center bg-white p-1 shadow-lg pc:w-[132px] pc:translate-x-[-20px]"
+        className="w-24 translate-x-[-45px] items-center bg-white p-1 shadow-lg pc:w-[132px] pc:translate-x-[-70px]"
       >
         {valueArr.map((item) => (
           <DropdownMenuItem
