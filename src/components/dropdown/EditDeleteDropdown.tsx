@@ -9,6 +9,7 @@ import {
 } from "@/components/dropdown/DropdownMenu";
 import { useAtom } from "jotai";
 
+// 트리거 요소를 넣으시고, 수정 및 삭제 함수도 전달해서 사용해주세요.
 const EditDeleteDropdown = ({
   children,
   onEdit,
@@ -61,7 +62,7 @@ const EditDeleteDropdown = ({
           <DropdownMenuItem
             key={item.text}
             onClick={item.onClick}
-            className="rounded-lg px-3 py-2 text-center"
+            className="rounded-lg px-3 py-2 text-center pc:text-base"
           >
             {item.text}
           </DropdownMenuItem>
