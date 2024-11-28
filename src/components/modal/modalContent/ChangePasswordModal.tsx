@@ -107,7 +107,7 @@ const ChangePasswordModal = () => {
                 width={24}
                 height={24}
                 priority={true}
-                className="absolute bottom-[14px] right-3"
+                className="absolute bottom-[14px] right-3 cursor-pointer"
               />
               <ErrorText error={input.error}>{input.error?.message}</ErrorText>
             </div>
