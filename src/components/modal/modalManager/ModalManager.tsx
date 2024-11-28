@@ -7,6 +7,7 @@ import DeleteAlbaformModal from "../modalContent/DeleteAlbaformModal";
 import PatchAlbaformModal from "../modalContent/PatchAlbaformModal";
 import GetMyApplicationModal from "../modalContent/GetMyApplicationModal";
 import SelectProgressModal from "../modalContent/SelectProgressModal";
+import ChangePasswordModal from "../modalContent/ChangePasswordModal";
 import ChangeMyInfoModal from "../modalContent/ChangeMyInfoModal";
 import ChangeCEOInfoModal from "../modalContent/ChangeCEOInfoModal";
 
@@ -26,6 +27,8 @@ const ModalManager = () => {
       return <GetMyApplicationModal />;
     case "SelectProgressModal":
       return <SelectProgressModal />;
+    case "ChangePasswordModal":
+      return <ChangePasswordModal />;
     case "ChangeMyInfoModal":
       return <ChangeMyInfoModal />;
     case "ChangeCEOInfoModal":
