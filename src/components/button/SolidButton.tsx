@@ -51,7 +51,7 @@ const SolidButton = ({
   };
 
   // 공통
-  const commonClass = `flex items-center gap-x-2 font-semibold rounded-lg justify-center transition-transform duration-200 ease-out hover:opacity-90}`;
+  const commonClass = `flex items-center gap-x-2 font-semibold rounded-lg justify-center transition-transform duration-200 ease-out hover:opacity-90`;
 
   // 최종 스타일
   const finalClassName = `${commonClass} ${sizeStyle[size]} ${buttonStyles[style]}`;
