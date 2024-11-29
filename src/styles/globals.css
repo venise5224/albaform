@@ -85,7 +85,7 @@ body {
     }
   }
 
-  /* Toast 애니메이션 */
+  /* Toast 애니메이션 - 정우영 */
   @keyframes fadeIn {
     from {
       opacity: 0;
