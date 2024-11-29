@@ -13,12 +13,14 @@ export const useToast = () => {
     const id = Math.random().toString(36).slice(2, 11);
 
     const newToast = { id, message, type };
-    setToasts((prev) => [...prev, newToast]);
 
-    // 자동 제거
-    setTimeout(() => {
-      setToasts((prev) => prev.filter((toast) => toast.id !== id));
-    }, 3000);
+    setToasts((prev) => {
+      // Toast 개수 제한 - 최대 3개
+      const updatedToasts = [...prev, newToast];
+      return updatedToasts.length > 3
+        ? updatedToasts.slice(updatedToasts.length - 3)
+        : updatedToasts;
+    });
   };
 
   return { addToast };
