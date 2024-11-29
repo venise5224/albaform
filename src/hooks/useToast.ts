@@ -16,9 +16,9 @@ export const useToast = () => {
     setToasts((prev) => [...prev, newToast]);
 
     // 자동 제거
-    // setTimeout(() => {
-    //   setToasts((prev) => prev.filter((toast) => toast.id !== id));
-    // }, 3000);
+    setTimeout(() => {
+      setToasts((prev) => prev.filter((toast) => toast.id !== id));
+    }, 3000);
   };
 
   return { addToast };
