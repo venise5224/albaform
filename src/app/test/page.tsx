@@ -1,7 +1,7 @@
-import DatePicker from "@/components/datepicker/DatepickerCalendar";
+import DatePickerCalendar from "@/components/datepicker/DatepickerCalendar";
 
 const page = () => {
-  return <DatePicker />;
+  return <DatePickerCalendar />;
 };
 
 export default page;
