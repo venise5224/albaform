@@ -37,12 +37,12 @@ const ToastContainer = () => {
   };
 
   return (
-    <div className="fixed left-1/2 top-[62px] z-50 flex -translate-x-1/2 flex-col gap-y-2 pc:top-[104px] pc:gap-y-4 tablet:top-[72px] tablet:gap-y-3">
+    <div className="fixed left-1/2 top-[62px] z-50 flex -translate-x-1/2 flex-col-reverse gap-y-2 pc:top-[104px] pc:gap-y-4 tablet:top-[72px] tablet:gap-y-3">
       {toasts.map((toast) => (
         <ToastItem
           key={toast.id}
           toast={toast}
-          isAnimating={animatingToast === toast.id}
+          isOutAnimating={animatingToast === toast.id}
           onRemove={removeToast}
         />
       ))}
