@@ -6,41 +6,38 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/dropdown/DropdownMenu";
+import Image from "next/image";
 
-// 트리거 요소를 넣으시고, 수정 및 삭제 함수도 전달해서 사용해주세요.
-const EditDeleteDropdown = ({
-  children,
-  onEdit,
-  onDelete,
+const MyInfoEditDropdown = ({
+  onMyInfoEdit,
+  onPasswordEdit,
 }: {
-  children: React.ReactNode;
-  onEdit: () => void;
-  onDelete: () => void;
+  onMyInfoEdit: () => void;
+  onPasswordEdit: () => void;
 }) => {
   const itemArr = [
-    {
-      text: "수정하기",
-      onClick: onEdit,
-    },
-    {
-      text: "삭제하기",
-      onClick: onDelete,
-    },
+    { text: "내 정보 수정", onClick: onMyInfoEdit },
+    { text: "비밀번호 변경", onClick: onPasswordEdit },
   ];
 
   return (
-    <DropdownMenu className="bg-transparent">
+    <DropdownMenu className="bg-transparent pc:hidden">
       <DropdownMenuTrigger
         asChild
-        id="editDelete"
+        id="myInfoEdit"
         checkedValue={undefined}
         className="rounded-lg"
       >
-        {children}
+        <Image
+          src="/icon/kebab-lg.svg"
+          alt="정보 수정 드롭다운"
+          width={24}
+          height={24}
+        />
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        id="editDelete"
-        className="translate-x-[-50px] items-center bg-white p-1 pc:w-[132px] pc:translate-x-[-100px]"
+        id="myInfoEdit"
+        className="w-fit translate-x-[-70px] items-center bg-white p-1"
       >
         {itemArr.map((item) => (
           <DropdownMenuItem
@@ -56,4 +53,4 @@ const EditDeleteDropdown = ({
   );
 };
 
-export default EditDeleteDropdown;
+export default MyInfoEditDropdown;
