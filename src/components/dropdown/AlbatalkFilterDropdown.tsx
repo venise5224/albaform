@@ -50,7 +50,7 @@ const AlbatalkFilterDropdown = () => {
           <DropdownMenuItem
             key={item.value}
             onClick={() => handleClick(item.value, item.title)}
-            className="rounded-lg px-3 py-2 text-center tracking-tighter pc:text-base"
+            className="rounded-lg px-3 py-2 text-center font-semibold tracking-tighter text-gray-400 hover:text-black-400 pc:text-base"
           >
             {item.title}
           </DropdownMenuItem>
