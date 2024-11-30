@@ -131,7 +131,7 @@ const SignupContents = ({
         Cookies.set("role", response.data.user.role);
         router.push("/");
       } else {
-        console.error(response.message);
+        console.error(response.message, response.status);
         addToast(response.message as string, "error");
       }
     } catch (error) {
