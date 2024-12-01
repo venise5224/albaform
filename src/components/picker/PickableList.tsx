@@ -11,8 +11,6 @@ const PickableList = ({
 }) => {
   let list = selectRequirementsByLabel(label);
 
-  console.log(label);
-
   const handleClick = (el: string) => {
     setValue(el);
     setIsOpen(false);
