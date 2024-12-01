@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useAtomValue } from "jotai";
 import { calendarAtom } from "@/atoms/calendarAtom";
 import RangePicker from "./RangePicker";
-import CalendarContainer from "./CalendarContainer";
+import Calendar from "./Calendar";
 
 const DatePickerCalendar = () => {
   const isOpen = useAtomValue(calendarAtom);
@@ -13,7 +13,7 @@ const DatePickerCalendar = () => {
   return (
     <div className="relative">
       <RangePicker range={range} />
-      {isOpen && <CalendarContainer setRange={setRange} />}
+      {isOpen && <Calendar setRange={setRange} />}
     </div>
   );
 };

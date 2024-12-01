@@ -2,13 +2,13 @@
 
 import { useSetAtom } from "jotai";
 import { calendarAtom } from "@/atoms/calendarAtom";
-import Calendar from "react-calendar";
+import { Calendar as CalendarItem } from "react-calendar";
 import Image from "next/image";
 import "@/styles/customCalendar.css";
 
 type SetRangeType = (range: [string, string]) => void;
 
-const CalendarContainer = ({ setRange }: { setRange: SetRangeType }) => {
+const Calendar = ({ setRange }: { setRange: SetRangeType }) => {
   const setIsOpen = useSetAtom(calendarAtom);
 
   const selectRange = (range: Date[]) => {
@@ -31,7 +31,7 @@ const CalendarContainer = ({ setRange }: { setRange: SetRangeType }) => {
           <Image src="/icon/close-md.svg" fill alt="close button" />
         </button>
       </div>
-      <Calendar
+      <CalendarItem
         selectRange={true} // 범위 선택 활성화
         onChange={(range) => selectRange(range as Date[])} // 범위 선택 활성화 하면 인자로 Date 객체의 배열이 ([start,end]) 들어감
         formatMonthYear={(_, date) => {
@@ -63,4 +63,4 @@ const CalendarContainer = ({ setRange }: { setRange: SetRangeType }) => {
   );
 };
 
-export default CalendarContainer;
+export default Calendar;
