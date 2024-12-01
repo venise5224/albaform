@@ -1,6 +1,6 @@
 "use client";
 
-import RequirementPicker from "../../components/picker/RequirementPicker";
+import RequirementPicker from "@/components/picker/RequirementPicker";
 
 const testPage = () => {
   return (
