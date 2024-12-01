@@ -2,8 +2,9 @@ import { calendarAtom } from "@/atoms/calendarAtom";
 import { useAtom } from "jotai";
 import Image from "next/image";
 
-const RangePicker = () => {
+const RangePicker = ({ range }: { range: [string, string] }) => {
   const [isOpen, setIsOpen] = useAtom(calendarAtom);
+  const [startDay, endDay] = range;
 
   return (
     <button
@@ -13,8 +14,14 @@ const RangePicker = () => {
       <span className="relative size-6 pc:size-8">
         <Image src="/icon/calendar-md.svg" fill alt="" />
       </span>
-      <span className="ml-2 text-lg text-gray-400 pc:text-xl">
-        시작일 ~ 종료일
+      <span
+        className={
+          range[0]
+            ? "ml-2 text-lg text-black-400 pc:text-xl"
+            : "ml-2 text-lg text-gray-400 pc:text-xl"
+        }
+      >
+        {range[0] ? `${startDay} ~ ${endDay}` : "시작일 ~ 종료일"}
       </span>
       <div className="ml-auto">
         <Image

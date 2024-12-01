@@ -1,22 +1,24 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useSetAtom } from "jotai";
 import { calendarAtom } from "@/atoms/calendarAtom";
 import Calendar from "react-calendar";
 import Image from "next/image";
 import "@/styles/customCalendar.css";
+import { formatDate } from "@/utils/formatDate";
 
-const CalendarContainer = () => {
+const CalendarContainer = ({ setRange }: { setRange }) => {
   const [dateRange, setDateRange] = useState<Date[] | null>(null); // 시작일과 종료일 관리
   const setIsOpen = useSetAtom(calendarAtom);
 
   // 범위 내 날짜인지 확인
-  const isInRange = (date: Date) => {
-    if (!dateRange || dateRange.length !== 2) return false; // 범위가 없으면 false
+  const isInRange = useMemo(() => {
+    if (!dateRange || dateRange.length !== 2) return () => false;
     const [start, end] = dateRange;
-    return date >= start && date <= end; // 시작일과 종료일 사이인지 확인
-  };
+    setRange([start.toLocaleDateString(), end.toLocaleDateString()]);
+    return (date: Date) => date >= start && date <= end;
+  }, [dateRange, setRange]);
 
   return (
     <div className="absolute left-0 top-full z-10 mt-2 flex h-[388px] w-[327px] flex-col rounded-[12px] border border-gray-100 bg-white p-3 shadow-sm pc:h-[480px] pc:w-[640px]">
