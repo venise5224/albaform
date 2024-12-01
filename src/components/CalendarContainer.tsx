@@ -19,7 +19,7 @@ const CalendarContainer = () => {
   };
 
   return (
-    <div className="z-1 mt-3 flex h-[388px] w-[327px] flex-col rounded-[12px] border border-gray-100 p-3 shadow-sm pc:h-[480px] pc:w-[640px]">
+    <div className="absolute left-0 top-full z-10 mt-2 flex h-[388px] w-[327px] flex-col rounded-[12px] border border-gray-100 bg-white p-3 shadow-sm pc:h-[480px] pc:w-[640px]">
       <div className="flex h-[48px] items-center justify-between p-3 pc:h-[60px]">
         <span className="ml-3 flex flex-grow justify-center text-lg text-black-400 pc:ml-8 pc:text-xl">
           기간 선택
