@@ -1,24 +1,22 @@
 "use client";
 
-import { useMemo, useState } from "react";
 import { useSetAtom } from "jotai";
 import { calendarAtom } from "@/atoms/calendarAtom";
 import Calendar from "react-calendar";
 import Image from "next/image";
 import "@/styles/customCalendar.css";
-import { formatDate } from "@/utils/formatDate";
 
-const CalendarContainer = ({ setRange }: { setRange }) => {
-  const [dateRange, setDateRange] = useState<Date[] | null>(null); // 시작일과 종료일 관리
+type SetRangeType = (range: [string, string]) => void;
+
+const CalendarContainer = ({ setRange }: { setRange: SetRangeType }) => {
   const setIsOpen = useSetAtom(calendarAtom);
 
-  // 범위 내 날짜인지 확인
-  const isInRange = useMemo(() => {
-    if (!dateRange || dateRange.length !== 2) return () => false;
-    const [start, end] = dateRange;
-    setRange([start.toLocaleDateString(), end.toLocaleDateString()]);
-    return (date: Date) => date >= start && date <= end;
-  }, [dateRange, setRange]);
+  const selectRange = (range: Date[]) => {
+    if (range.length === 2) {
+      setRange([range[0].toLocaleDateString(), range[1].toLocaleDateString()]); //Date 객체를 string으로 바꿔줌.
+      setIsOpen(false); // 기간 선택하면 Calendar 닫히게 함.
+    }
+  };
 
   return (
     <div className="absolute left-0 top-full z-10 mt-2 flex h-[388px] w-[327px] flex-col rounded-[12px] border border-gray-100 bg-white p-3 shadow-sm pc:h-[480px] pc:w-[640px]">
@@ -35,16 +33,13 @@ const CalendarContainer = ({ setRange }: { setRange }) => {
       </div>
       <Calendar
         selectRange={true} // 범위 선택 활성화
-        onChange={(range) => setDateRange(range as Date[])} // 선택 범위를 상태로 설정
-        formatMonthYear={(locale, date) => {
+        onChange={(range) => selectRange(range as Date[])} // 범위 선택 활성화 하면 인자로 Date 객체의 배열이 ([start,end]) 들어감
+        formatMonthYear={(_, date) => {
           const year = date.getFullYear();
           const month = (date.getMonth() + 1).toString().padStart(2, "0");
           return `${year}. ${month}`; // "." 뒤에 추가 기호 없음
         }}
         formatDay={(locale, date) => `${date.getDate()}`} // 날짜에 숫자만 보이게
-        tileClassName={({ date, view }) =>
-          view === "month" && isInRange(date) ? "in-range" : null
-        }
         prevLabel={
           <Image
             src="/icon/arrow-left.svg"
@@ -61,8 +56,8 @@ const CalendarContainer = ({ setRange }: { setRange }) => {
             alt="next button"
           />
         }
-        prev2Label={null} // << 버튼 숨기기
-        next2Label={null} // >> 버튼 숨기기
+        prev2Label={null} // 기본 스타일링인 << 버튼 숨기기
+        next2Label={null} // 위와 동일
       />
     </div>
   );
