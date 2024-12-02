@@ -134,7 +134,7 @@ const DropdownMenuItem = ({
     <button
       onClick={onClick}
       className={cls(
-        "w-full border-gray-100 bg-white text-xs text-black-100 transition-all hover:bg-orange-500 hover:text-orange-300",
+        "w-full border-gray-100 bg-white text-xs transition-all hover:bg-orange-500",
         className ? className : ""
       )}
     >
