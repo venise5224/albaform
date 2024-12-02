@@ -15,19 +15,6 @@ const baseSchema = z.object({
   passwordConfirm: z.string().optional(),
 });
 
-baseSchema.refine(
-  (data) => {
-    if (data.passwordConfirm !== undefined) {
-      return data.password === data.passwordConfirm;
-    }
-    return true;
-  },
-  {
-    message: "비밀번호가 일치하지 않습니다.",
-    path: ["passwordConfirm"],
-  }
-);
-
 export const applicantSchema = baseSchema.extend({
   role: z.literal("APPLICANT"),
   name: z.string().min(1, { message: "이름을 입력해주세요." }).optional(),
