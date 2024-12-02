@@ -1,7 +1,7 @@
-import Weekpicker from "@/components/picker/Weekpicker";
+import WeekPicker from "@/components/picker/Weekpicker";
 
 const page = () => {
-  return <Weekpicker />;
+  return <WeekPicker />;
 };
 
 export default page;
