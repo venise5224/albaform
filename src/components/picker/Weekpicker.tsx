@@ -10,7 +10,7 @@ const WeekPicker = () => {
     return selectedWeeks.includes(week);
   };
 
-  const toggleWeek = (week: string) => {
+  const toggleSelect = (week: string) => {
     setSelectedWeeks((prev) =>
       prev.includes(week)
         ? prev.filter((item) => item !== week)
@@ -23,7 +23,7 @@ const WeekPicker = () => {
       {weekList.map((week) => (
         <button
           key={week}
-          onClick={() => toggleWeek(week)}
+          onClick={() => toggleSelect(week)}
           className={
             isSelectedWeek(week)
               ? "flex h-[48px] w-[38px] items-center justify-center rounded-[12px] bg-orange-200 px-3 py-[6px] text-white hover:bg-orange-200 hover:text-white pc:h-[64px] pc:w-[50px] pc:px-[16px] pc:py-[10px]"
