@@ -69,7 +69,11 @@ body {
 
   .scrollbar-hidden::-webkit-scrollbar {
     display: none;
-    /* Chrome; Safari; Edge */
+    /* Chrome, Safari, Edge */
+  }
+
+  .picker-container {
+    @apply z-10 px-6 flex flex-col gap-5 absolute right-0 top-full mt-2 max-h-[148px] text-left w-full overflow-auto rounded-md border border-gray-100 bg-gray-50 py-[14px] text-lg text-black-100 pc:text-xl pc:max-h-[164px];
   }
 
   /* PC 크기에서 적용될 스타일 */
