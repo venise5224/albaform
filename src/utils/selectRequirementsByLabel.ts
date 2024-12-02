@@ -15,10 +15,9 @@ const selectRequirementsByLabel = (
         "8명",
         "9명",
         "10명",
-        "직접입력",
       ];
     case "성별":
-      return ["성별무관", "남자", "여자","직접입력",];
+      return ["성별무관", "남자", "여자"];
     case "학력":
       return ["학력무관", "고졸", "초대졸", "대졸"];
     case "연령":
