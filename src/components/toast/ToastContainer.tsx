@@ -25,7 +25,7 @@ const ToastContainer = () => {
 
       return () => clearTimeout(timer);
     }
-  }, [toasts]);
+  }, [toasts, setToasts]);
 
   const removeToast = (id: string) => {
     setAnimatingToast(id);
