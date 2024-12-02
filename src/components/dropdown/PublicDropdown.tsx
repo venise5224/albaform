@@ -36,7 +36,7 @@ const PublicDropdown = () => {
           <DropdownMenuItem
             key={item.value}
             onClick={() => handleClick(item.status)}
-            className="py-1.5 pl-2.5 pr-2 text-start shadow-lg pc:py-2 pc:pl-4 pc:pr-3 pc:text-2lg"
+            className="py-1.5 pl-2.5 pr-2 text-start text-black-100 shadow-lg hover:text-orange-300 pc:py-2 pc:pl-4 pc:pr-3 pc:text-2lg"
           >
             {item.value}
           </DropdownMenuItem>
