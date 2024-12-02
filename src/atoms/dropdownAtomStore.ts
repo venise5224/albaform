@@ -33,3 +33,14 @@ export const albatalkFilterAtom = atom<AlbatalkFilter>({
   title: "최신 순",
   value: "mostRecent",
 });
+
+// 알바폼 생성 드롭다운
+interface AlbaformCreateStep {
+  title: string;
+  value: string;
+}
+
+export const albaformCreateStepAtom = atom<AlbaformCreateStep>({
+  title: "모집 내용",
+  value: "stepOne",
+});
