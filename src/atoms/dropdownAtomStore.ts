@@ -12,7 +12,7 @@ export const publicStatusAtom = atom<boolean | undefined>(undefined);
 // 전체 - 거절 - 면접 대기 - 면접 완료 - 채용 완료 드롭다운 (status)
 export const recruitStatusAtom = atom<string | undefined>(undefined);
 
-// 최신 순 - 시급 높은 순 - 지원자 많은 순 - 스크랩 많은 순 (orderBy)
+// 최신 순 - 시급 높은 순 - 지원자 많은 순 - 스크랩 많은 순 (Form - orderBy)
 interface OrderBy {
   title: string;
   value: string;
@@ -21,4 +21,26 @@ interface OrderBy {
 export const orderByAtom = atom<OrderBy>({
   title: "최신 순",
   value: "mostRecent",
+});
+
+// 알바토크 최신 순 - 댓글많은순 - 좋아요순 (POST - orderBy)
+interface AlbatalkFilter {
+  title: string;
+  value: string;
+}
+
+export const albatalkFilterAtom = atom<AlbatalkFilter>({
+  title: "최신 순",
+  value: "mostRecent",
+});
+
+// 알바폼 생성 드롭다운
+interface AlbaformCreateStep {
+  title: string;
+  value: string;
+}
+
+export const albaformCreateStepAtom = atom<AlbaformCreateStep>({
+  title: "모집 내용",
+  value: "stepOne",
 });

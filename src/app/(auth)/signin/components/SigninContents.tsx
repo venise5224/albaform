@@ -14,11 +14,13 @@ import useToken from "@/hooks/useToken";
 import Cookies from "js-cookie";
 import SolidButton from "@/components/button/SolidButton";
 import { cls } from "@/utils/dynamicTailwinds";
+import { useToast } from "@/hooks/useToast";
 
 const SigninContents = () => {
   const router = useRouter();
   const [visible, setVisible] = useState(false);
   const { setTokens } = useToken();
+  const { addToast } = useToast();
   const {
     register,
     handleSubmit,
@@ -46,12 +48,12 @@ const SigninContents = () => {
 
         router.push("/");
       } else {
-        alert(response.error); // 토스트 변경
+        addToast(response.error as string, "error");
         console.error("로그인 에러", response.error, response.status);
       }
     } catch (error) {
       console.error("로그인 에러", error);
-      alert("로그인에 실패했습니다."); // 토스트 변경
+      addToast("로그인에 실패했습니다.", "error");
     }
   };
 
