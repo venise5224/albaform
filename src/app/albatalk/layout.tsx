@@ -1,13 +1,14 @@
-import SearchInput from "@/components/input/SearchInput";
+import AddtalkButton from "@/components/button/AddtalkButton";
+import AlbatalkSmartSearch from "./components/AlbatalkSmartSearch";
 
 const AlbaTalkLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="mx-auto mt-[94px] flex max-w-[600px] flex-col space-y-8 pc:max-w-[1500px]">
-      <div className="flex justify-between">
-        <SearchInput />
-        <div>임시 드랍다운</div>
+    <div className="mx-auto mt-6 max-w-[327px] pc:max-w-[1480px] tablet:max-w-[600px]">
+      <AlbatalkSmartSearch />
+      <div className="mt-[50px] pc:mt-10 tablet:mt-10">{children}</div>
+      <div className="fixed bottom-[134px] right-6 pc:bottom-[170px] pc:right-[220px] tablet:bottom-[97px] tablet:right-[72px]">
+        <AddtalkButton />
       </div>
-      {children}
     </div>
   );
 };

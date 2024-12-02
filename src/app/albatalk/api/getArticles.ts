@@ -1,7 +1,7 @@
 export interface getArticlesProps {
   limit: number;
-  cursor: number | null;
-  orderBy: string;
+  cursor?: number | null;
+  orderBy?: string;
   keyword?: string;
 }
 

@@ -1,9 +1,10 @@
 "use client";
 
 import PostCard from "@/components/card/PostCard";
-import useInfiniteScroll from "@/hooks/useInfinityScroll";
 import { PostCardProps } from "@/types/post";
 import { useEffect, useState } from "react";
+import { getArticles } from "../api/getArticles";
+import { useSearchParams } from "next/navigation";
 
 const AlbatalkList = ({
   posts: initialList,
@@ -13,9 +14,50 @@ const AlbatalkList = ({
   nextCursor: number | null;
 }) => {
   const [list, setList] = useState(initialList);
-  const { lastElementRef } = useInfiniteScroll();
+  const [cursor, setCursor] = useState(nextCursor);
+  const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {}, []);
+  const searchParams = useSearchParams(); // 쿼리스트링 값 가져오기
+
+  useEffect(() => {
+    const fetchInitialData = async () => {
+      setIsLoading(true);
+      try {
+        const response = await getArticles({
+          limit: 6,
+          cursor: 0,
+        });
+
+        setList(response.data);
+        setCursor(response.nextCursor);
+      } catch (error) {
+        console.error("초기 데이터를 불러오는데 실패했습니다.", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchInitialData();
+  }, [searchParams]);
+
+  const fetchMoreData = async () => {
+    if (!cursor || isLoading) return;
+
+    setIsLoading(true);
+    try {
+      const response = await getArticles({
+        limit: 6,
+        cursor,
+      });
+
+      setList((prevList) => [...prevList, ...response.data]);
+      setCursor(response.nextCursor);
+    } catch (error) {
+      console.error("추가 데이터를 불러오는데 실패했습니다.", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div>
@@ -28,7 +70,6 @@ const AlbatalkList = ({
       ) : (
         <div>게시글이 없습니다</div> //빈페이지 필요
       )}
-      {nextCursor && <div ref={lastElementRef}></div>}
     </div>
   );
 };
