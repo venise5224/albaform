@@ -96,26 +96,28 @@ const SignupContents = ({
 
       const response = await signupActions(formData);
 
-      if (response.status === 200 && profileImg) {
-        const imgFormData = new FormData();
-        imgFormData.append("image", profileImg);
+      if (response.status === 200) {
+        if (profileImg) {
+          const imgFormData = new FormData();
+          imgFormData.append("image", profileImg);
 
-        try {
-          const profileImgResponse = await profileImgActions(imgFormData);
+          try {
+            const profileImgResponse = await profileImgActions(imgFormData);
 
-          if (profileImgResponse.status !== 200) {
-            addToast(profileImgResponse.message as string, "warning");
-            console.error(
-              "프로필 사진 업로드 오류",
-              profileImgResponse.message
+            if (profileImgResponse.status !== 200) {
+              addToast(profileImgResponse.message as string, "warning");
+              console.error(
+                "프로필 사진 업로드 오류",
+                profileImgResponse.message
+              );
+            }
+          } catch (error) {
+            console.error("프로필 사진 업로드 오류", error);
+            addToast(
+              "회원가입은 완료되었으나 프로필 사진 업로드 중 오류가 발생했습니다.",
+              "warning"
             );
           }
-        } catch (error) {
-          console.error("프로필 사진 업로드 오류", error);
-          addToast(
-            "회원가입은 완료되었으나 프로필 사진 업로드 중 오류가 발생했습니다.",
-            "warning"
-          );
         }
 
         addToast("회원가입이 완료되었습니다.", "info");
