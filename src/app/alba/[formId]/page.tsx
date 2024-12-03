@@ -4,15 +4,15 @@ const page = () => {
   const mock = {
     id: 0,
     createdAt: "2024-12-03T07:45:51.320Z",
-    preferred: "string",
+    preferred: "경력 무관",
     isPublic: true,
-    location: "string",
+    location: "서울 종로구",
     recruitmentEndDate: "2024-12-03T07:45:51.320Z",
-    description: "string",
-    title: "string",
-    scrapCount: 0,
-    applyCount: 0,
-    storeName: "string",
+    title:
+      "코드잇 스터디카페 관리 (주말 오전) 모집합니다 서울 종로구 용산구 서대문",
+    scrapCount: 8,
+    applyCount: 5,
+    storeName: "스터디카페",
   };
 
   return (
