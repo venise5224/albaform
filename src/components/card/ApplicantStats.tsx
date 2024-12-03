@@ -1,11 +1,11 @@
 import Image from "next/image";
 
-interface ApplicantStatsProps {
+type ApplicantStatsProps = {
   info: {
     scrapCount: number;
     applyCount: number;
   };
-}
+};
 
 const ApplicantStats = ({ info }: ApplicantStatsProps) => {
   const contentList = [
