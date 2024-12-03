@@ -1,10 +1,10 @@
+import SearchInput from "@/components/input/SearchInput";
 import { ReactNode } from "react";
-import SearchBar from "./components/SearchBar";
 
 const AlbaListLayout = ({ children }: { children: ReactNode }) => {
   return (
-    <div>
-      <SearchBar />
+    <div className="h-full">
+      <SearchInput />
       {children}
     </div>
   );

@@ -11,7 +11,7 @@ export const getAlbaList = async ({
   keyword,
   isRecruiting,
 }: SearchParamsData) => {
-  const url = new URL(`https://fe-project-albaform.vercel.app/9-3/forms`);
+  const url = new URL(`${process.env.NEXT_PUBLIC_API_URL}/forms`);
 
   url.searchParams.append("orderBy", orderBy || "mostRecent");
   url.searchParams.append("limit", limit.toString());

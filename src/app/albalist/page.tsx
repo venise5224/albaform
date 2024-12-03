@@ -6,27 +6,23 @@ const AlbaListPage = async ({
 }: {
   searchParams: Promise<{
     keyword?: string;
+    orderBy?: string;
+    isRecruiting?: boolean;
   }>;
 }) => {
-  const { keyword } = await searchParams;
+  const { keyword, orderBy, isRecruiting } = await searchParams;
 
   const response = await getAlbaList({
-    orderBy: "mostRecent",
+    orderBy: orderBy || "mostRecent",
     limit: 6,
     keyword,
-    isRecruiting: true,
+    isRecruiting: isRecruiting || true,
   });
 
   const albaList = response.data || [];
   const nextCursor: number | null = response.nextCursor;
 
-  return (
-    <AlbaList
-      list={albaList}
-      initialCursor={nextCursor}
-      initialKeyword={keyword}
-    />
-  );
+  return <AlbaList list={albaList} initialCursor={nextCursor} />;
 };
 
 export default AlbaListPage;
