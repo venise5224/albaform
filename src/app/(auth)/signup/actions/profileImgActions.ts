@@ -16,7 +16,7 @@ export const profileImgActions = async (imgFormData: FormData) => {
     if (imageData.status !== 201) {
       return {
         status: imageData.status,
-        message: "이미지 업로드 실패" || imageData.error,
+        message: "이미지 업로드 실패",
       };
     }
 
