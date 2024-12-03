@@ -2,17 +2,15 @@ import { formatDate } from "@/utils/formatDate";
 import Image from "next/image";
 
 interface SimpleRequirementsProps {
-  info: {
-    workStartDate: string;
-    workEndDate: string;
-    workStartTime: string;
-    workEndTime: string;
-    workDays: string[];
-    hourlyWage: number;
-  };
+  workStartDate: string;
+  workEndDate: string;
+  workStartTime: string;
+  workEndTime: string;
+  workDays: string[];
+  hourlyWage: number;
 }
 
-const SimpleRequirements = ({ info }: SimpleRequirementsProps) => {
+const SimpleRequirements = ({ info }: { info: SimpleRequirementsProps }) => {
   const [formaatedStartDate, formaatedEndDate] = formatDate(
     info.workStartDate,
     info.workEndDate

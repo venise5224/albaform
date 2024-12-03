@@ -2,15 +2,13 @@ import { formatDate } from "@/utils/formatDate";
 import { getDday } from "@/utils/getDday";
 
 interface EmployerInfoProps {
-  info: {
-    recruitmentStartDate: string;
-    recruitmentEndDate: string;
-    storePhoneNumber: string;
-    phoneNumber: string;
-  };
+  recruitmentStartDate: string;
+  recruitmentEndDate: string;
+  storePhoneNumber: string;
+  phoneNumber: string;
 }
 
-const EmployerInfo = ({ info }: EmployerInfoProps) => {
+const EmployerInfo = ({ info }: { info: EmployerInfoProps }) => {
   const dday = getDday(info.recruitmentEndDate);
 
   const [formattedStartDay, formattedEndDay] = formatDate(
