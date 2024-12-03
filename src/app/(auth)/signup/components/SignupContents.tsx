@@ -102,7 +102,7 @@ const SignupContents = ({
 
         try {
           const profileImgResponse = await profileImgActions(imgFormData);
-          console.log("profileImgResponse", profileImgResponse);
+
           if (profileImgResponse.status !== 200) {
             addToast(profileImgResponse.message as string, "warning");
             console.error(
