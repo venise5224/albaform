@@ -16,7 +16,7 @@ const page = () => {
   };
 
   return (
-    <div className="felx-col pc:grid-row-2pc:gap-x-[150px] flex gap-[32px] pc:grid pc:grid-cols-2 pc:gap-y-[120px]">
+    <div className="flex flex-col gap-[32px] pc:grid pc:grid-cols-[770px_640px] pc:grid-rows-[900px_562px] pc:gap-x-8 pc:gap-y-[120px] mobile:w-[327px]">
       <Title info={mock} />
       <section></section>
       <section></section>
