@@ -30,7 +30,7 @@ const DropdownContainer = () => {
   }, [router, publicStatus, applicationStatus, orderby]);
 
   return (
-    <div className="border-b border-line-100 bg-background-100 px-6 pb-[10px] pt-[14px] pc:px-[220px] pc:pb-[20px] pc:pt-6 tablet:px-[72px]">
+    <div className="border-b border-line-100 bg-background-100 px-6 pb-[10px] pt-[14px] pc:px-0 pc:pb-[20px] pc:pt-6 tablet:px-[72px]">
       <div className="mx-auto flex items-center justify-between pc:max-w-[1480px]">
         <div className="flex gap-x-[10px] pc:gap-x-4">
           <PublicDropdown />
