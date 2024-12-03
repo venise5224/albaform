@@ -6,21 +6,22 @@ import { useEffect, useState } from "react";
 import { getArticles } from "../api/getArticles";
 import { useAtomValue } from "jotai";
 import { albatalkFilterAtom } from "@/atoms/dropdownAtomStore";
+import { useSearchParams } from "next/navigation";
 
 const AlbatalkList = ({
   posts: initialList,
   nextCursor: initialNextCursor,
-  keyword: initialKeyword,
 }: {
   posts: PostCardProps[];
   nextCursor: number | null;
-  keyword: string;
 }) => {
   const [posts, setPosts] = useState(initialList);
   const [cursor, setCursor] = useState(initialNextCursor);
   const [isLoading, setIsLoading] = useState(false);
   const filter = useAtomValue(albatalkFilterAtom);
-  const [keyword, setKeyword] = useState(initialKeyword);
+
+  const searchParams = useSearchParams();
+  const keyword = searchParams.get("keyword") || "";
 
   //데이터 변경 시 요청 로직
   useEffect(() => {

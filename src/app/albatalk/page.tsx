@@ -1,3 +1,5 @@
+"use server";
+
 import { PostCardProps } from "@/types/post";
 import { getArticles } from "./api/getArticles";
 import AlbatalkList from "./components/AlbatalkList";
@@ -18,9 +20,7 @@ const AlbaTalkPage = async ({
   const nextCursor: number | null = response.nextCursor;
   const posts: PostCardProps[] = response.data;
 
-  return (
-    <AlbatalkList posts={posts} nextCursor={nextCursor} keyword={keyword} />
-  );
+  return <AlbatalkList posts={posts} nextCursor={nextCursor} />;
 };
 
 export default AlbaTalkPage;
