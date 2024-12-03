@@ -42,11 +42,19 @@ export const signupActions = async (formData: FormData) => {
       }
     );
 
+    const responseErrorText = {
+      400: "이미 존재하는 이메일입니다.",
+      500: "서버 오류가 발생했습니다.",
+    };
+
     if (!response.ok) {
       console.error("회원가입 요청 실패", response.statusText, response.status);
       return {
         status: response.status,
-        message: response.statusText,
+        message:
+          responseErrorText[
+            response.status as keyof typeof responseErrorText
+          ] || response.statusText,
       };
     }
 

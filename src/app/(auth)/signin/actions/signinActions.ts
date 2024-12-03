@@ -33,13 +33,19 @@ export const signinAction = async (formData: FormData) => {
     }
   );
 
+  const responseErrorText = {
+    401: "이메일 또는 비밀번호를 확인해주세요.",
+    404: "존재하지 않는 사용자입니다.",
+    500: "서버 오류가 발생했습니다.",
+  };
+
   if (!response.ok) {
+    console.error("로그인 요청 실패", response.statusText, response.status);
     return {
       status: response.status,
       error:
-        response.status === 401
-          ? "이메일 또는 비밀번호를 확인해주세요."
-          : response.statusText,
+        responseErrorText[response.status as keyof typeof responseErrorText] ||
+        response.statusText,
     };
   }
 
