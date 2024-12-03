@@ -45,7 +45,7 @@ const AlbatalkList = ({
     };
 
     fetchInitialData();
-  }, [searchParams, keyword, fillter]);
+  }, [keyword, fillter]);
 
   return (
     <div>
