@@ -10,7 +10,6 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { signinAction } from "../actions/signinActions";
 import { useRouter } from "next/navigation";
-import Cookies from "js-cookie";
 import SolidButton from "@/components/button/SolidButton";
 import { cls } from "@/utils/dynamicTailwinds";
 import { useToast } from "@/hooks/useToast";
