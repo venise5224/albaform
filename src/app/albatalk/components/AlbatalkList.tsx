@@ -7,7 +7,6 @@ import { getArticles } from "../api/getArticles";
 import { useSearchParams } from "next/navigation";
 import { useAtomValue } from "jotai";
 import { albatalkFilterAtom } from "@/atoms/dropdownAtomStore";
-import useViewPort from "@/hooks/useViewport";
 
 const AlbatalkList = ({
   posts: initialList,
