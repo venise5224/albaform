@@ -65,7 +65,7 @@ const instance = async (url: string, options: RequestInit = {}) => {
     console.error("요청 실패", response.statusText, response.status);
     return {
       status: response.status,
-      error: "오류가 발생하여 요청이 실패했습니다." || response.statusText,
+      error: "오류가 발생하여 요청이 실패했습니다.",
     };
   }
 
