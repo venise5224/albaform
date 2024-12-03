@@ -1,3 +1,5 @@
+"use server";
+
 export interface getArticlesProps {
   limit: number;
   cursor?: number | null;
