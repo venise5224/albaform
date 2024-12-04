@@ -5,10 +5,9 @@ import { AddFormStepProps } from "@/types/addform";
 
 interface StepSidebarProps {
   temporaryDataByStep: AddFormStepProps;
-  step: string;
 }
 
-const StepSidebar = ({ temporaryDataByStep, step }: StepSidebarProps) => {
+const StepSidebar = ({ temporaryDataByStep }: StepSidebarProps) => {
   const temporaryDataArr = [
     { step: "stepOne", data: temporaryDataByStep.stepOne },
     { step: "stepTwo", data: temporaryDataByStep.stepTwo },

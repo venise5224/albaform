@@ -1,10 +1,6 @@
 import { AddFormStepProps } from "@/types/addform";
 import StepSidebar from "./components/StepSidebar";
 
-interface AddFormPageProps {
-  searchParams: Promise<{ step: string }>;
-}
-
 const mockTemporaryDataByStep: AddFormStepProps = {
   stepOne: {
     title: "테스트 타이틀",
@@ -35,12 +31,10 @@ const mockTemporaryDataByStep: AddFormStepProps = {
   },
 };
 
-const AddFormPage = async ({ searchParams }: AddFormPageProps) => {
-  const { step } = await searchParams;
-  console.log(step);
+const AddFormPage = async () => {
   return (
     <>
-      <StepSidebar temporaryDataByStep={mockTemporaryDataByStep} step={step} />
+      <StepSidebar temporaryDataByStep={mockTemporaryDataByStep} />
     </>
   );
 };
