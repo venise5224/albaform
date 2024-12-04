@@ -4,7 +4,7 @@ interface UseInfiniteScrollProps {
   fetchMoreData: () => void;
 }
 
-const useInfiniteScroll = ({ fetchMoreData }: UseInfiniteScrollProps) => {
+const useInfinityScroll = ({ fetchMoreData }: UseInfiniteScrollProps) => {
   const observerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -31,4 +31,4 @@ const useInfiniteScroll = ({ fetchMoreData }: UseInfiniteScrollProps) => {
   return observerRef;
 };
 
-export default useInfiniteScroll;
+export default useInfinityScroll;

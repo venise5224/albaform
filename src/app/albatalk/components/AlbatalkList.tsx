@@ -7,7 +7,7 @@ import { getArticles } from "../api/getArticles";
 import { useAtomValue } from "jotai";
 import { albatalkFilterAtom } from "@/atoms/dropdownAtomStore";
 import { useSearchParams } from "next/navigation";
-import useInfiniteScroll from "@/hooks/useInfinityScroll";
+import useInfinityScroll from "@/hooks/useInfinityScroll";
 
 interface AlbatalkResponse {
   data: PostCardProps[];
@@ -69,7 +69,7 @@ const AlbatalkList = ({
   };
 
   // 무한 스크롤 훅 사용
-  const observerRef = useInfiniteScroll({
+  const observerRef = useInfinityScroll({
     fetchMoreData,
   });
 
