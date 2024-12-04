@@ -31,23 +31,23 @@ const AlbarformDetailPage = async ({ params }: AlbarformDetailPageProps) => {
 
   return (
     <div className="grid gap-[32px] pc:grid-cols-[770px_640px] pc:justify-items-center pc:gap-0 pc:gap-x-[150px] pc:gap-y-[40px] pc:grid-areas-layout tablet:w-[327px] tablet:grid-cols-1 tablet:grid-rows-[270px_116px_156px_396px_302px_340px_158px] mobile:w-[327px] mobile:grid-cols-1 mobile:grid-rows-[270px_116px_156px_396px_302px_340px_158px]">
-      <div className="pc:grid-in-box1">
+      <section className="pc:grid-in-box1">
         <Title info={data} />
-      </div>
-      <div className="pc:grid-in-box4">
+      </section>
+      <section className="pc:grid-in-box4">
         <SimpleRequirements info={data} />
-      </div>
-      <div className="pc:grid-in-box5">
+      </section>
+      <section className="pc:grid-in-box5">
         <EmployerInfo info={data} />
-      </div>
-      <div className="pc:grid-in-box2">
+      </section>
+      <section className="pc:grid-in-box2">
         <Content description={data.description} />
-      </div>
-      <div className="pc:grid-in-box7">
+      </section>
+      <section className="pc:grid-in-box7">
         <DetailRequirements info={data} />
-      </div>
+      </section>
       {/* <StoreLocation/> */}
-      <div className="pc:grid-in-box6">
+      <section className="pc:grid-in-box6">
         <section className="flex flex-col gap-[10px]">
           <SolidButton icon="/icon/write-fill-md.svg" style="orange300">
             지원하기
@@ -56,7 +56,7 @@ const AlbarformDetailPage = async ({ params }: AlbarformDetailPageProps) => {
             내 지원 내역 보기
           </SolidButton>
         </section>
-      </div>
+      </section>
     </div>
   );
 };

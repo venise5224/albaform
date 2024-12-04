@@ -41,7 +41,7 @@ const SimpleRequirements = ({ info }: { info: SimpleRequirementsProps }) => {
   ];
 
   return (
-    <section className="flex w-full justify-center">
+    <div className="flex w-full justify-center">
       <div className="relative grid h-[116px] w-[327px] grid-cols-2 grid-rows-2 items-center justify-center gap-2 pc:h-[336px] pc:w-[640px] pc:rounded-md pc:border pc:border-b-line-100">
         {infoList.map((list) => (
           <div
@@ -62,7 +62,7 @@ const SimpleRequirements = ({ info }: { info: SimpleRequirementsProps }) => {
         <div className="hidden pc:absolute pc:bottom-[168px] pc:left-6 pc:h-1 pc:w-[592px] pc:border pc:border-line-100" />
         <div className="hidden pc:absolute pc:left-[320px] pc:top-[39px] pc:hidden pc:h-[258px] pc:w-[1px] pc:border pc:border-line-100" />
       </div>
-    </section>
+    </div>
   );
 };
 export default SimpleRequirements;

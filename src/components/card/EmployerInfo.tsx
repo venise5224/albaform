@@ -21,7 +21,7 @@ const EmployerInfo = ({ info }: { info: EmployerInfoProps }) => {
     "flex h-[52px] pc:h-[96px] items-center justify-between border-b border-b-line-100 text-black-100";
 
   return (
-    <section className="flex h-[156px] w-full rounded-md text-md pc:h-[336px] pc:w-[640px] pc:border pc:border-line-100 pc:bg-background-100 pc:text-xl">
+    <div className="flex h-[156px] w-full rounded-md text-md pc:h-[336px] pc:w-[640px] pc:border pc:border-line-100 pc:bg-background-100 pc:text-xl">
       <div className="flex w-full flex-col justify-between pc:p-6">
         <div className={commonStyle}>
           <span>
@@ -41,7 +41,7 @@ const EmployerInfo = ({ info }: { info: EmployerInfoProps }) => {
           <span className="text-black-400">{info.phoneNumber}</span>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 
