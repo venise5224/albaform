@@ -6,7 +6,13 @@ import EmployerInfo from "@/components/card/EmployerInfo";
 import DetailRequirements from "@/components/card/DetailRequirements";
 import SolidButton from "../../../components/button/SolidButton";
 
-const page = () => {
+const AlbarformDetailPage = async () => {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+  if (apiUrl) {
+    const data = await fetch(apiUrl).then((res) => res.json());
+  }
+
   return (
     <div className="grid gap-[32px] pc:grid-cols-2 pc:justify-items-center pc:gap-0 pc:gap-x-[150px] pc:gap-y-[40px] pc:grid-areas-layout tablet:w-[327px] tablet:grid-cols-1 tablet:grid-rows-[270px_116px_156px_396px_302px_340px_158px] mobile:w-[327px] mobile:grid-cols-1 mobile:grid-rows-[270px_116px_156px_396px_302px_340px_158px]">
       <div className="pc:grid-in-box1">
@@ -39,4 +45,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default AlbarformDetailPage;
