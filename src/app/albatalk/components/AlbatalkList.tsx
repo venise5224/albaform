@@ -2,11 +2,17 @@
 
 import PostCard from "@/components/card/PostCard";
 import { PostCardProps } from "@/types/post";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getArticles } from "../api/getArticles";
 import { useAtomValue } from "jotai";
 import { albatalkFilterAtom } from "@/atoms/dropdownAtomStore";
 import { useSearchParams } from "next/navigation";
+import useInfiniteScroll from "@/hooks/useInfinityScroll";
+
+interface AlbatalkResponse {
+  data: PostCardProps[];
+  nextCursor: number | null;
+}
 
 const AlbatalkList = ({
   posts: initialList,
@@ -19,55 +25,53 @@ const AlbatalkList = ({
   const [cursor, setCursor] = useState(initialNextCursor);
   const [isLoading, setIsLoading] = useState(false);
   const filter = useAtomValue(albatalkFilterAtom);
-
   const searchParams = useSearchParams();
   const keyword = searchParams.get("keyword") || "";
 
-  //데이터 변경 시 요청 로직
-  useEffect(() => {
-    const fetchInitialData = async () => {
-      setIsLoading(true);
-      try {
-        const response = await getArticles({
-          limit: 6,
-          cursor: 0,
-          keyword,
-          orderBy: filter.value,
-        });
-
-        setPosts(response.data);
-        setCursor(response.nextCursor);
-      } catch (error) {
-        console.error("초기 데이터를 불러오는데 실패했습니다.", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchInitialData();
-  }, [keyword, filter]);
-
-  //무한스크롤 데이터 요청 로직
-  const fetchMoreData = async () => {
-    if (!cursor || isLoading) return;
+  const fetchData = async ({ isReset = false }: { isReset: boolean }) => {
+    if (isLoading) return;
 
     setIsLoading(true);
     try {
-      const response = await getArticles({
+      const response: AlbatalkResponse = await getArticles({
         limit: 6,
-        cursor,
+        cursor: isReset ? 0 : cursor,
         keyword,
         orderBy: filter.value,
       });
 
-      setPosts((prevList) => [...prevList, ...response.data]);
+      setPosts((prevList) =>
+        isReset
+          ? response.data
+          : [
+              ...prevList,
+              ...response.data.filter(
+                (newPost) => !prevList.some((post) => post.id === newPost.id)
+              ),
+            ]
+      );
       setCursor(response.nextCursor);
     } catch (error) {
-      console.error("추가 데이터를 불러오는데 실패했습니다.", error);
+      console.error("데이터를 불러오는데 실패했습니다.", error);
     } finally {
       setIsLoading(false);
     }
   };
+  // 검색, 드랍다운 기능 사용 시 요청
+  useEffect(() => {
+    fetchData({ isReset: true });
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+  }, [filter.value, keyword]);
+
+  // 무한스크롤 요청
+  const fetchMoreData = () => {
+    fetchData({ isReset: false });
+  };
+
+  // 무한 스크롤 훅 사용
+  const observerRef = useInfiniteScroll({
+    fetchMoreData,
+  });
 
   return (
     <div>
@@ -80,6 +84,9 @@ const AlbatalkList = ({
       ) : (
         <div>게시글이 없습니다</div> //빈페이지 필요
       )}
+
+      {/* 무한 스크롤 트리거 */}
+      {cursor && <div ref={observerRef} style={{ height: "1px" }} />}
     </div>
   );
 };

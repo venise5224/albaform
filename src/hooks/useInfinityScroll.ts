@@ -1,29 +1,34 @@
-import { ArticleData } from "@/types/article";
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 
-const useInfiniteScroll = () => {
-  const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState();
+interface UseInfiniteScrollProps {
+  fetchMoreData: () => void;
+}
+
+const useInfiniteScroll = ({ fetchMoreData }: UseInfiniteScrollProps) => {
   const observerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    if (!observerRef.current) return;
+
     const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && hasMore && !loading) {
+      (entry) => {
+        if (entry[0].isIntersecting) {
+          fetchMoreData();
         }
       },
-      { rootMargin: "100px" } // 여유 공간 설정
+      { threshold: 0.5 }
     );
 
-    const currentObserver = observerRef.current;
-    if (currentObserver) observer.observe(currentObserver);
+    const target = observerRef.current;
+    observer.observe(target);
 
     return () => {
-      if (currentObserver) observer.unobserve(currentObserver);
+      observer.unobserve(target);
+      observer.disconnect();
     };
-  }, [hasMore, loading]);
+  }, [fetchMoreData]);
 
-  return { loading, hasMore, observerRef };
+  return observerRef;
 };
 
 export default useInfiniteScroll;
