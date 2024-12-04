@@ -65,7 +65,7 @@ const SolidButton = ({
             alt="buttonIcon"
             width={24}
             height={24}
-            className="pc:h-9 pc:w-9"
+            className="pc:size-9"
           />
         </span>
       )}
