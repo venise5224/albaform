@@ -1,5 +1,6 @@
 "use client";
 
+import SearchInput from "@/components/input/SearchInput";
 import PublicDropdown from "@/components/dropdown/PublicDropdown";
 import ApplicationDropdown from "@/components/dropdown/ApplicationDropdown";
 import OrderByDropdown from "@/components/dropdown/OrderByDropdown";
@@ -10,7 +11,11 @@ import { orderByAtom } from "@/atoms/dropdownAtomStore";
 import { useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-const DropdownContainer = () => {
+interface SearchContainerProps {
+  userType: string;
+}
+
+const SearchContainer = ({ userType }: SearchContainerProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const keyword = searchParams.get("keyword") || "";
@@ -26,20 +31,23 @@ const DropdownContainer = () => {
     params.set("isRecruiting", String(applicationStatus));
     params.set("orderBy", orderby.value);
 
-    router.push(`/albalist?${params.toString()}`);
+    router.push(`/albalist/${userType}?${params.toString()}`);
   }, [router, publicStatus, applicationStatus, orderby]);
 
   return (
-    <div className="border-b border-line-100 bg-background-100 px-6 pb-[10px] pt-[14px] pc:px-0 pc:pb-[20px] pc:pt-6 tablet:px-[72px]">
-      <div className="mx-auto flex items-center justify-between pc:max-w-[1480px]">
-        <div className="flex gap-x-[10px] pc:gap-x-4">
-          <PublicDropdown />
-          <ApplicationDropdown />
+    <div className="mx-auto border-b border-line-100">
+      <div className="m-auto px-6 pb-[10px] pt-[14px] pc:max-w-[1480px] pc:px-0 pc:pb-[20px] pc:pt-6 tablet:px-[72px]">
+        <SearchInput placeholder="어떤 알바를 찾고 계세요?" />
+        <div className="mt-[14px] flex items-center justify-between pc:mt-6">
+          <div className="flex gap-x-[10px] pc:gap-x-4">
+            <PublicDropdown />
+            <ApplicationDropdown />
+          </div>
+          <OrderByDropdown />
         </div>
-        <OrderByDropdown />
       </div>
     </div>
   );
 };
 
-export default DropdownContainer;
+export default SearchContainer;

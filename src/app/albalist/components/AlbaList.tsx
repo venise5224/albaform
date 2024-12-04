@@ -8,18 +8,19 @@ import { applicationStatusAtom } from "@/atoms/dropdownAtomStore";
 import { orderByAtom } from "@/atoms/dropdownAtomStore";
 import AlbarPreview from "@/components/card/AlbarPreview";
 import { AlbarformData } from "@/types/alba";
-import { getAlbaList } from "../api";
-import Empty from "./Empty";
+import { getAlbaList } from "../api/getAlbaList";
+import Empty from "./EmptyState";
 import BlurWrapper from "./BlurWrapper";
-import DropdownContainer from "./DropdownContainer";
+import SearchContainer from "./SearchContainer";
 import Link from "next/link";
 
 interface AlbaListProps {
   list: AlbarformData[];
   initialCursor: number | null;
+  userType: string;
 }
 
-const AlbaList = ({ list, initialCursor }: AlbaListProps) => {
+const AlbaList = ({ list, initialCursor, userType }: AlbaListProps) => {
   const searchParams = useSearchParams();
   const keyword = searchParams.get("keyword") || "";
   const publicStatus = useAtomValue(publicStatusAtom);
@@ -57,7 +58,7 @@ const AlbaList = ({ list, initialCursor }: AlbaListProps) => {
 
   return (
     <main className="min-h-screen bg-background-100">
-      <DropdownContainer />
+      <SearchContainer userType={userType} />
       <section className="mx-auto mt-[9px] w-[327px] pc:mt-14 pc:w-[1479px] tablet:mt-[14px]">
         {albaList.length > 0 ? (
           <ul className="flex flex-col gap-y-8 pc:flex-row pc:flex-wrap pc:gap-x-6 pc:gap-y-16 tablet:gap-y-12">
@@ -78,7 +79,7 @@ const AlbaList = ({ list, initialCursor }: AlbaListProps) => {
             ))}
           </ul>
         ) : (
-          <Empty />
+          <Empty userType={userType} />
         )}
       </section>
     </main>

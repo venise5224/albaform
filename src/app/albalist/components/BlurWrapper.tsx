@@ -12,7 +12,7 @@ const BlurWrapper = ({
   return !isPublic ? (
     <div className="relative overflow-hidden rounded-xl">
       <div className="pointer-events-none blur-sm">{children}</div>
-      <div className="bg-tuatara-900 absolute inset-0 z-10 flex flex-col items-center justify-center gap-y-4 border border-gray-200 opacity-60 pc:gap-y-6">
+      <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-y-4 border border-gray-200 bg-tuatara-900 opacity-60 pc:gap-y-6">
         <Image
           src={privateIcon}
           width={80}
