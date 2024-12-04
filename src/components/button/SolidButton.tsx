@@ -5,7 +5,6 @@ import Image from "next/image";
 interface SolidButtonProps {
   icon?: string;
   children: string;
-  size?: "small" | "large";
   style:
     | "orange300"
     | "orange200"
@@ -19,7 +18,6 @@ interface SolidButtonProps {
 const SolidButton = ({
   icon,
   children,
-  size = "small",
   style,
   disabled = false,
   ...rest
@@ -52,17 +50,11 @@ const SolidButton = ({
       : styles.outButtonOrange200,
   };
 
-  // 크기별 스타일
-  const sizeStyle = {
-    small: "w-full max-w-[327px] py-4 text-base",
-    large: "w-full max-w-[640px] py-5 text-xl",
-  };
-
   // 공통
-  const commonClass = `flex items-center gap-x-2 font-semibold rounded-lg justify-center transition-transform duration-200 ease-out hover:opacity-90`;
+  const commonClass = `w-full max-w-[327px] py-4 text-base pc:max-w-[640px] pc:py-5 pc:text-xl flex items-center gap-x-2 font-semibold rounded-lg justify-center transition-transform duration-200 ease-out hover:opacity-90`;
 
   // 최종 스타일
-  const finalClassName = `${commonClass} ${sizeStyle[size]} ${buttonStyles[style]}`;
+  const finalClassName = `${commonClass} ${buttonStyles[style]}`;
 
   return (
     <button className={finalClassName} disabled={disabled} {...rest}>
@@ -71,8 +63,9 @@ const SolidButton = ({
           <Image
             src={icon}
             alt="buttonIcon"
-            width={size === "small" ? 24 : 36}
-            height={size === "small" ? 24 : 36}
+            width={24}
+            height={24}
+            className="pc:h-9 pc:w-9"
           />
         </span>
       )}
