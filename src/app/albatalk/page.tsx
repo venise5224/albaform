@@ -3,6 +3,7 @@
 import { PostCardProps } from "@/types/post";
 import { getArticles } from "./api/getArticles";
 import AlbatalkList from "./components/AlbatalkList";
+import { Suspense } from "react";
 
 const AlbaTalkPage = async ({
   searchParams,
@@ -20,7 +21,11 @@ const AlbaTalkPage = async ({
   const nextCursor: number | null = response.nextCursor;
   const posts: PostCardProps[] = response.data;
 
-  return <AlbatalkList posts={posts} nextCursor={nextCursor} />;
+  return (
+    <Suspense fallback={<div>로딩 중...</div>}>
+      <AlbatalkList posts={posts} nextCursor={nextCursor} />
+    </Suspense>
+  );
 };
 
 export default AlbaTalkPage;
