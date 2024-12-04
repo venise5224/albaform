@@ -4,26 +4,17 @@ import { useState } from "react";
 import { cls } from "../../utils/dynamicTailwinds";
 
 const HourlyWageInput = () => {
-  const [inputValue, setInputValue] = useState<string>(""); // 입력값 관리
-  const [wage, setWage] = useState<string>("9860"); // 최종 상태
+  const [inputValue, setInputValue] = useState("");
+  const [wage, setWage] = useState("9860");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
 
-    // 숫자 및 빈 문자열만 허용
-    if (/^\d*$/.test(value)) {
-      const numericValue = Number(value);
+    const numericValue = Number(value);
 
-      // 500만 이하 값만 허용
-      if (numericValue <= 5000000 || value === "") {
-        setInputValue(value);
-      }
-    }
-  };
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      setWage(inputValue); // 엔터 키를 눌렀을 때만 최종 상태 업데이트
+    // 500만 이하 값만 허용
+    if (numericValue <= 5000000) {
+      setInputValue(value);
     }
   };
 
@@ -42,7 +33,7 @@ const HourlyWageInput = () => {
           type="number"
           value={inputValue}
           onChange={handleChange}
-          onKeyDown={handleKeyDown}
+          onBlur={() => setWage(wage)}
           placeholder="9860"
           className="w-full bg-inherit"
         />
