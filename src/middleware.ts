@@ -5,14 +5,15 @@ export const middleware = (request: NextRequest) => {
   const path = url.pathname;
   const role = request.cookies.get("role");
   const referrer = request.headers.get("referrer");
+  const ownerPath = ["/owner", "/addform"];
 
-  if (role && role.value === "APPLICANT" && path.startsWith("/owner")) {
+  if (role && role.value === "APPLICANT" && ownerPath.includes(path)) {
     // 사장님용 페이지라고 알려주는 모달 오픈 또는 경고 후 이전페이지로 리다이렉트
     return NextResponse.redirect(new URL(referrer || "/", request.url));
   }
 
   if (role && role.value === "OWNER" && path.startsWith("/applicant")) {
-    // 사장님용 페이지라고 알려주는 모달 오픈 또는 경고 후 이전페이지로 리다이렉트
+    // 지원자용 페이지라고 알려주는 모달 오픈 또는 경고 후 이전페이지로 리다이렉트
     return NextResponse.redirect(new URL(referrer || "/", request.url));
   }
 
