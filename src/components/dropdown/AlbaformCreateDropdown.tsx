@@ -37,7 +37,7 @@ const AlbaformCreateDropdown = () => {
     { title: "모집 조건", value: "stepTwo", stepNum: 2 },
     { title: "근무 조건", value: "stepThree", stepNum: 3 },
   ];
-  console.log(currentStep.value);
+
   return (
     <DropdownMenu className="pc:hidden">
       <DropdownMenuTrigger
