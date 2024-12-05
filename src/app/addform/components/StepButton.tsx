@@ -1,3 +1,5 @@
+"use client";
+
 import { cls } from "@/utils/dynamicTailwinds";
 import { useEffect } from "react";
 import WritingTag from "./WritingTag";
