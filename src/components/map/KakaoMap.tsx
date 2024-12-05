@@ -1,55 +1,61 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Script from "next/script";
-import useKakaoLoader from "./useKakaoLoader";
-import { Map } from "react-kakao-maps-sdk";
+import { useEffect, useRef } from "react";
 
-const KaKaoMap = ({ location }: { location: string }) => {
-  const [isScriptLoaded, setIsScriptLoaded] = useState(false);
-  const [coordinates, setCoordinates] = useState({
-    // 지도의 초기 위치
-    center: { lat: 33.450701, lng: 126.570667 },
-    // 지도 위치 변경시 panto를 이용할지에 대해서 정의
-    isPanto: false,
-  });
+const KakaoMap = ({ location }: { location: string }) => {
+  const mapRef = useRef<HTMLDivElement>(null);
 
-  useKakaoLoader();
+  useEffect(() => {
+    if (window.kakao && window.kakao.maps) {
+      // Kakao Maps SDK가 로드된 후 지도 생성
+      window.kakao.maps.load(() => {
+        if (mapRef.current) {
+          const mapOption = {
+            center: new window.kakao.maps.LatLng(37.5665, 126.978), // 기본 좌표 (서울)
+            level: 3, // 지도 확대 레벨
+          };
 
-  // useEffect(() => {
-  //   if (isScriptLoaded && window.kakao && window.kakao.maps) {
-  //     const geocoder = new window.kakao.maps.services.Geocoder();
-  //     geocoder.addressSearch(location, (result: any, status: any) => {
-  //       if (status === window.kakao.maps.services.Status.OK) {
-  //         const { y, x } = result[0];
-  //         setCoordinates({ lat: parseFloat(y), lng: parseFloat(x) });
-  //       } else {
-  //         console.error("Geocoding 실패:", status);
-  //       }
-  //     });
-  //   }
-  // }, [isScriptLoaded, location]);
+          // 지도 생성
+          const map = new window.kakao.maps.Map(mapRef.current, mapOption);
+
+          // Geocoder를 사용하여 주소 -> 좌표 변환
+          const geocoder = new window.kakao.maps.services.Geocoder();
+          geocoder.addressSearch(location, (result: any, status: any) => {
+            if (status === window.kakao.maps.services.Status.OK) {
+              const coords = new window.kakao.maps.LatLng(
+                result[0].y,
+                result[0].x
+              );
+
+              // 지도 중심 이동
+              map.setCenter(coords);
+
+              // 마커 생성
+              const marker = new window.kakao.maps.Marker({
+                position: coords,
+                map: map, // 생성된 지도 객체에 마커 추가
+              });
+
+              console.log(`주소(${location})의 좌표:`, coords);
+            } else {
+              console.error("주소를 찾을 수 없습니다:", location);
+            }
+          });
+        } else {
+          console.error("mapRef가 유효하지 않습니다.");
+        }
+      });
+    } else {
+      console.error("Kakao Maps SDK가 로드되지 않았습니다.");
+    }
+  }, [location]);
 
   return (
-    <>
-      {coordinates ? (
-        <Map
-          id="map"
-          center={coordinates.center}
-          style={{
-            width: "100%",
-            height: "210px",
-            border: "1px solid #e9e9e9",
-            borderRadius: "8px",
-          }}
-        >
-          {/* 여기서 Kakao Maps 렌더링 가능 */}
-        </Map>
-      ) : (
-        <div>지도를 로드 중입니다...</div>
-      )}
-    </>
+    <div
+      ref={mapRef}
+      className="h-full w-full rounded-lg border border-line-200"
+    />
   );
 };
 
-export default KaKaoMap;
+export default KakaoMap;
