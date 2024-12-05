@@ -4,10 +4,6 @@ import SearchInput from "@/components/input/SearchInput";
 import PublicDropdown from "@/components/dropdown/PublicDropdown";
 import ApplicationDropdown from "@/components/dropdown/ApplicationDropdown";
 import OrderByDropdown from "@/components/dropdown/OrderByDropdown";
-import { useAtomValue } from "jotai";
-import { publicStatusAtom } from "@/atoms/dropdownAtomStore";
-import { applicationStatusAtom } from "@/atoms/dropdownAtomStore";
-import { orderByAtom } from "@/atoms/dropdownAtomStore";
 import { useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -19,9 +15,9 @@ const SearchContainer = ({ userType }: SearchContainerProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const keyword = searchParams.get("keyword") || "";
-  const publicStatus = useAtomValue(publicStatusAtom);
-  const applicationStatus = useAtomValue(applicationStatusAtom);
-  const orderby = useAtomValue(orderByAtom);
+  const publicStatus = searchParams.get("isPublic") || "";
+  const applicationStatus = searchParams.get("isRecruiting") || "";
+  const orderby = searchParams.get("orderBy") || "";
 
   useEffect(() => {
     const params = new URLSearchParams();
@@ -29,7 +25,7 @@ const SearchContainer = ({ userType }: SearchContainerProps) => {
     if (keyword) params.set("keyword", keyword);
     params.set("isPublic", String(publicStatus));
     params.set("isRecruiting", String(applicationStatus));
-    params.set("orderBy", orderby.value);
+    params.set("orderBy", orderby);
 
     router.push(`/albalist/${userType}?${params.toString()}`);
   }, [router, publicStatus, applicationStatus, orderby]);

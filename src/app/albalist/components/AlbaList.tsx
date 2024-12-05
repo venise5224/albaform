@@ -2,10 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { useAtomValue } from "jotai";
-import { publicStatusAtom } from "@/atoms/dropdownAtomStore";
-import { applicationStatusAtom } from "@/atoms/dropdownAtomStore";
-import { orderByAtom } from "@/atoms/dropdownAtomStore";
 import AlbarPreview from "@/components/card/AlbarPreview";
 import { AlbarformData } from "@/types/alba";
 import { getAlbaList } from "../api/getAlbaList";
@@ -26,9 +22,9 @@ interface AlbaListProps {
 const AlbaList = ({ list, initialCursor, userType, role }: AlbaListProps) => {
   const searchParams = useSearchParams();
   const keyword = searchParams.get("keyword") || "";
-  const publicStatus = useAtomValue(publicStatusAtom);
-  const applicationStatus = useAtomValue(applicationStatusAtom);
-  const orderby = useAtomValue(orderByAtom);
+  const publicStatus = searchParams.get("isPublic") || "";
+  const applicationStatus = searchParams.get("isRecruiting") || "";
+  const orderby = searchParams.get("orderBy") || "";
   const [albaList, setAlbaList] = useState(list);
   const [nextCursor, setNextCursor] = useState(initialCursor);
 
@@ -36,16 +32,16 @@ const AlbaList = ({ list, initialCursor, userType, role }: AlbaListProps) => {
     const fetchAlbaList = async () => {
       try {
         const response = await getAlbaList({
-          orderBy: orderby.value,
+          orderBy: orderby,
           limit: 6,
           keyword,
-          isRecruiting: applicationStatus,
+          isRecruiting: Boolean(applicationStatus),
         });
 
         const filteredData =
-          publicStatus !== undefined
+          publicStatus !== undefined || null
             ? response.data.filter(
-                (item: AlbarformData) => item.isPublic === publicStatus
+                (item: AlbarformData) => item.isPublic === Boolean(publicStatus)
               )
             : response.data;
 
