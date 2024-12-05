@@ -22,7 +22,6 @@ body {
   color: var(--foreground);
   background: var(--background);
   font-family: Pretendard, Arial, Helvetica, sans-serif;
-  padding-bottom: 80px;
 }
 
 /* Bounce In 애니메이션 */
