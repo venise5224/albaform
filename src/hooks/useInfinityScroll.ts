@@ -16,7 +16,7 @@ const useInfinityScroll = ({ fetchMoreData }: UseInfiniteScrollProps) => {
           fetchMoreData();
         }
       },
-      { threshold: 0.5 }
+      { threshold: 0.1 }
     );
 
     const target = observerRef.current;

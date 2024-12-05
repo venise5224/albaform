@@ -2,70 +2,24 @@
 
 import PostCard from "@/components/card/PostCard";
 import { PostCardProps } from "@/types/post";
-import { useCallback, useEffect, useState } from "react";
-import { getArticles } from "../api/getArticles";
-import { useAtomValue } from "jotai";
-import { albatalkFilterAtom } from "@/atoms/dropdownAtomStore";
-import { useSearchParams } from "next/navigation";
 import useInfinityScroll from "@/hooks/useInfinityScroll";
-
-interface AlbatalkResponse {
-  data: PostCardProps[];
-  nextCursor: number | null;
-}
+import useFetchAlbatalkData from "../hooks/useFetchAlbatalkData";
 
 const AlbatalkList = ({
-  posts: initialList,
-  nextCursor: initialNextCursor,
+  posts: initialPosts,
+  nextCursor: initialCursor,
 }: {
   posts: PostCardProps[];
   nextCursor: number | null;
 }) => {
-  const [posts, setPosts] = useState(initialList);
-  const [cursor, setCursor] = useState(initialNextCursor);
-  const [isLoading, setIsLoading] = useState(false);
-  const filter = useAtomValue(albatalkFilterAtom);
-  const searchParams = useSearchParams();
-  const keyword = searchParams.get("keyword") || "";
-
-  const fetchData = async ({ isReset = false }: { isReset: boolean }) => {
-    if (isLoading) return;
-
-    setIsLoading(true);
-    try {
-      const response: AlbatalkResponse = await getArticles({
-        limit: 6,
-        cursor: isReset ? 0 : cursor,
-        keyword,
-        orderBy: filter.value,
-      });
-
-      setPosts((prevList) =>
-        isReset
-          ? response.data
-          : [
-              ...prevList,
-              ...response.data.filter(
-                (newPost) => !prevList.some((post) => post.id === newPost.id)
-              ),
-            ]
-      );
-      setCursor(response.nextCursor);
-    } catch (error) {
-      console.error("데이터를 불러오는데 실패했습니다.", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  // 검색, 드랍다운 기능 사용 시 요청
-  useEffect(() => {
-    fetchData({ isReset: true });
-    /* eslint-disable-next-line react-hooks/exhaustive-deps */
-  }, [filter.value, keyword]);
+  const { posts, cursor, fetchArticles } = useFetchAlbatalkData({
+    initialPosts,
+    initialCursor,
+  });
 
   // 무한스크롤 요청
   const fetchMoreData = () => {
-    fetchData({ isReset: false });
+    fetchArticles({ isReset: false });
   };
 
   // 무한 스크롤 훅 사용
