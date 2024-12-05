@@ -15,6 +15,7 @@ const StepSidebar = ({ temporaryDataByStep }: StepSidebarProps) => {
     { step: "stepThree", data: temporaryDataByStep.stepThree },
   ];
 
+  // 임시 저장 기능 (작성한만큼 로컬스토리지에 저장됩니다.)
   const handleTemporarySave = () => {
     temporaryDataArr.forEach((item) => {
       if (item.data && Object.keys(item.data).length > 0) {
