@@ -1,11 +1,13 @@
 import useViewPort from "@/hooks/useViewport";
 import { cls } from "@/utils/dynamicTailwinds";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import WritingTag from "./WritingTag";
+import { addFormStepAtom } from "@/atoms/addFormAtom";
+import { useAtom } from "jotai";
 
 const StepButton = () => {
   const viewport = useViewPort();
-  const [currentStep, setCurrentStep] = useState("stepOne");
+  const [currentStep, setCurrentStep] = useAtom(addFormStepAtom);
   const stepArr = [
     { title: "모집 내용", step: 1, value: "stepOne" },
     { title: "모집 조건", step: 2, value: "stepTwo" },
