@@ -1,9 +1,7 @@
 "use client";
 
-import { addFormStepAtom } from "@/atoms/addFormAtom";
 import StepButton from "./StepButton";
 import { AddFormStepProps } from "@/types/addform";
-import { useAtomValue } from "jotai";
 
 interface StepSidebarProps {
   temporaryDataByStep: AddFormStepProps;
@@ -11,8 +9,6 @@ interface StepSidebarProps {
 
 // 추후 form 작업을 하며 zod 타입, react-hook-form 타입이 추가될 예정입니다.
 const StepSidebar = ({ temporaryDataByStep }: StepSidebarProps) => {
-  const currentStep = useAtomValue(addFormStepAtom);
-
   const temporaryDataArr = [
     { step: "stepOne", data: temporaryDataByStep.stepOne },
     { step: "stepTwo", data: temporaryDataByStep.stepTwo },
@@ -20,10 +16,11 @@ const StepSidebar = ({ temporaryDataByStep }: StepSidebarProps) => {
   ];
 
   const handleTemporarySave = () => {
-    const stepData = temporaryDataArr.find((item) => item.step === currentStep);
-    if (stepData) {
-      localStorage.setItem(currentStep, JSON.stringify(stepData.data));
-    }
+    temporaryDataArr.forEach((item) => {
+      if (item.data && Object.keys(item.data).length > 0) {
+        localStorage.setItem(item.step, JSON.stringify(item.data));
+      }
+    });
   };
 
   const onSubmit = () => {
