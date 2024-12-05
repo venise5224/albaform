@@ -2,6 +2,7 @@ import { AddFormStepProps } from "@/types/addform";
 import StepSidebar from "./components/StepSidebar";
 import Title from "./components/Title";
 import AlbaformCreateDropdown from "@/components/dropdown/AlbaformCreateDropdown";
+import StepContainer from "./components/StepContainer";
 
 const mockTemporaryDataByStep: AddFormStepProps = {
   stepOne: {
@@ -33,13 +34,16 @@ const mockTemporaryDataByStep: AddFormStepProps = {
   },
 };
 
-const AddFormPage = async () => {
+const AddFormPage = () => {
   return (
     <div className="m-auto flex w-[375px] flex-col space-y-3 pc:m-0 pc:w-full pc:flex-row pc:space-y-0">
       <StepSidebar temporaryDataByStep={mockTemporaryDataByStep} />
-      <Title />
-      <div className="m-auto w-[327px]">
-        <AlbaformCreateDropdown />
+      <div className="flex flex-col">
+        <Title />
+        <div className="m-auto w-[327px] pc:hidden">
+          <AlbaformCreateDropdown />
+        </div>
+        <StepContainer />
       </div>
     </div>
   );
