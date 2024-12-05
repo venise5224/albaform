@@ -4,60 +4,108 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import AlbarPreview from "@/components/card/AlbarPreview";
 import { AlbarformData } from "@/types/alba";
-import { getAlbaList } from "../api/getAlbaList";
+import { getAlbaList } from "../getAlbaList";
 import Empty from "./EmptyState";
 import BlurWrapper from "./BlurWrapper";
-import SearchContainer from "./SearchContainer";
 import Link from "next/link";
 import FloatingButton from "@/components/button/FloatingButton";
 import plusIcon from "@/../public/icon/plus-md.svg";
-
+import SearchInput from "@/components/input/SearchInput";
+import PublicDropdown from "@/components/dropdown/PublicDropdown";
+import ApplicationDropdown from "@/components/dropdown/ApplicationDropdown";
+import OrderByDropdown from "@/components/dropdown/OrderByDropdown";
+import useInfinityScroll from "@/hooks/useInfinityScroll";
 interface AlbaListProps {
   list: AlbarformData[];
-  initialCursor: number | null;
-  userType: string;
+  nextCursor: number | null;
   role: string;
 }
 
-const AlbaList = ({ list, initialCursor, userType, role }: AlbaListProps) => {
+const AlbaList = ({ list, nextCursor, role }: AlbaListProps) => {
   const searchParams = useSearchParams();
+  const orderBy = searchParams.get("orderBy") || "mostRecent";
   const keyword = searchParams.get("keyword") || "";
-  const publicStatus = searchParams.get("isPublic") || "";
-  const applicationStatus = searchParams.get("isRecruiting") || "";
-  const orderby = searchParams.get("orderBy") || "";
+  const publicStatus =
+    searchParams.get("isPublic") === "true"
+      ? true
+      : searchParams.get("isPublic") === "false"
+        ? false
+        : undefined;
+  const applicationStatus =
+    searchParams.get("isRecruiting") === "true"
+      ? true
+      : searchParams.get("isRecruiting") === "false"
+        ? false
+        : undefined;
+
   const [albaList, setAlbaList] = useState(list);
-  const [nextCursor, setNextCursor] = useState(initialCursor);
+  const [cursor, setCursor] = useState(nextCursor);
+
+  // 데이터 요청 함수
+  const fetchAlbaList = async ({ isReset = false }: { isReset: boolean }) => {
+    try {
+      const response = await getAlbaList({
+        orderBy: orderBy || "mostRecent",
+        limit: 6,
+        cursor: isReset ? 0 : cursor,
+        keyword,
+        isRecruiting: applicationStatus,
+      });
+
+      const filteredData =
+        publicStatus !== undefined
+          ? response.data.filter(
+              (item: AlbarformData) => item.isPublic === publicStatus
+            )
+          : response.data;
+
+      setAlbaList((prevList) =>
+        isReset
+          ? filteredData
+          : [
+              ...prevList,
+              ...filteredData.filter(
+                (newList: AlbarformData) =>
+                  !prevList.some((card) => card.id === newList.id)
+              ),
+            ]
+      );
+
+      setCursor(response.nextCursor);
+    } catch (error) {
+      console.error("알바폼 목록을 가져오는데 실패했습니다.", error);
+      setAlbaList([]);
+    }
+  };
+
+  // 무한 스크롤 데이터 요청
+  const fetchMoreData = () => {
+    fetchAlbaList({ isReset: false });
+  };
+
+  // 무한 스크롤 Ref
+  const observerRef = useInfinityScroll({
+    fetchMoreData,
+  });
 
   useEffect(() => {
-    const fetchAlbaList = async () => {
-      try {
-        const response = await getAlbaList({
-          orderBy: orderby,
-          limit: 6,
-          keyword,
-          isRecruiting: Boolean(applicationStatus),
-        });
-
-        const filteredData =
-          publicStatus !== undefined || null
-            ? response.data.filter(
-                (item: AlbarformData) => item.isPublic === Boolean(publicStatus)
-              )
-            : response.data;
-
-        setAlbaList(filteredData || []);
-        setNextCursor(response.nextCursor);
-      } catch (error) {
-        setAlbaList([]);
-      }
-    };
-
-    fetchAlbaList();
-  }, [publicStatus, applicationStatus, orderby, keyword]);
+    fetchAlbaList({ isReset: true });
+  }, [publicStatus, applicationStatus, orderBy, keyword]);
 
   return (
     <main className="min-h-screen bg-background-100">
-      <SearchContainer userType={userType} />
+      <div className="mx-auto border-b border-line-100">
+        <div className="m-auto px-6 pb-[10px] pt-[14px] pc:max-w-[1480px] pc:px-0 pc:pb-[20px] pc:pt-6 tablet:px-[72px]">
+          <SearchInput placeholder="어떤 알바를 찾고 계세요?" />
+          <div className="mt-[14px] flex items-center justify-between pc:mt-6">
+            <div className="flex gap-x-[10px] pc:gap-x-4">
+              <PublicDropdown />
+              <ApplicationDropdown />
+            </div>
+            <OrderByDropdown />
+          </div>
+        </div>
+      </div>
       {role === "OWNER" && (
         <FloatingButton
           icon={plusIcon}
@@ -90,6 +138,7 @@ const AlbaList = ({ list, initialCursor, userType, role }: AlbaListProps) => {
           <Empty role={role} />
         )}
       </section>
+      {cursor && <div ref={observerRef} style={{ height: "10px" }} />}
     </main>
   );
 };

@@ -38,7 +38,7 @@ const AlbarPreview = ({ info }: AlbarPreviewProps) => {
           {formattedStartDate} ~ {formattedEndDate}
         </div>
         <button className="relative h-[24px] w-[24px] pc:h-[36px] pc:w-[36px]">
-          <Image src="icon/kebab-md.svg" fill alt="메뉴 버튼" />
+          <Image src="/icon/kebab-md.svg" fill alt="메뉴 버튼" />
         </button>
       </time>
       <div className="mt-[16px] h-[52px] pc:mt-[24px] pc:h-[64px]">

@@ -1,6 +1,7 @@
 interface SearchParamsData {
   orderBy?: string;
   limit: number;
+  cursor?: number | null;
   keyword?: string;
   isRecruiting?: boolean | undefined;
 }
@@ -8,13 +9,15 @@ interface SearchParamsData {
 export const getAlbaList = async ({
   orderBy,
   limit,
+  cursor,
   keyword,
   isRecruiting,
 }: SearchParamsData) => {
   const url = new URL(`${process.env.NEXT_PUBLIC_API_URL}/forms`);
 
   url.searchParams.append("orderBy", orderBy || "mostRecent");
-  url.searchParams.append("limit", limit.toString());
+  url.searchParams.append("limit", String(limit));
+  url.searchParams.append("cursor", String(cursor));
   url.searchParams.append("keyword", keyword || "");
   isRecruiting !== undefined &&
     url.searchParams.append("isRecruiting", String(isRecruiting));
