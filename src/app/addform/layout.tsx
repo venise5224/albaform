@@ -5,7 +5,7 @@ export const metadata: Metadata = {
 };
 
 const AddFormLayout = ({ children }: { children: React.ReactNode }) => {
-  return <div className="ml-[148px] mt-10">{children}</div>;
+  return <div className="pc:ml-[148px] pc:mt-10">{children}</div>;
 };
 
 export default AddFormLayout;
