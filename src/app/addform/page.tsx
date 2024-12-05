@@ -38,7 +38,9 @@ const AddFormPage = async () => {
     <div className="m-auto flex w-[375px] flex-col space-y-3 pc:m-0 pc:w-full pc:flex-row pc:space-y-0">
       <StepSidebar temporaryDataByStep={mockTemporaryDataByStep} />
       <Title />
-      <AlbaformCreateDropdown />
+      <div className="m-auto w-[327px]">
+        <AlbaformCreateDropdown />
+      </div>
     </div>
   );
 };

@@ -62,7 +62,7 @@ const AlbaformCreateDropdown = () => {
         id="albaformCreate"
         checkedValue={currentStep.value}
       >
-        <div className="group m-auto flex w-[327px] items-center justify-between rounded-2xl bg-orange-300 px-6 py-3">
+        <div className="group flex w-[327px] items-center justify-between rounded-2xl bg-orange-300 px-6 py-3">
           <div className="flex items-center space-x-3">
             <span className="flex size-5 items-center justify-center rounded-full bg-white text-md font-bold text-orange-300">
               {stepNum}
