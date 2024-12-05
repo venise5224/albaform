@@ -39,7 +39,7 @@ const WeekPicker = () => {
           </button>
         ))}
       </div>
-      <CheckBoxButton name="요일 협의 가능" value="요일 협의 가능" />
+      <CheckBoxButton name="요일 협의 가능" />
     </section>
   );
 };
