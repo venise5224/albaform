@@ -1,4 +1,5 @@
 import CopyButton from "../button/CopyButton";
+import KakaoMap from "../map/KakaoMap";
 
 const StoreLocation = ({ location }: { location: string }) => {
   return (
@@ -10,9 +11,9 @@ const StoreLocation = ({ location }: { location: string }) => {
         <span className="w-[240px] pc:w-[640px] pc:text-2xl">{location}</span>
         <CopyButton text={location} />
       </div>
-      <figure className="mt-2 pc:mt-12">
-        {/* kakao web api 연결해야됨. */}
-      </figure>
+      <div className="mt-2 pc:mt-12">
+        <KakaoMap location={location} />
+      </div>
     </section>
   );
 };
