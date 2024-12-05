@@ -3,6 +3,7 @@ import StepSidebar from "./components/StepSidebar";
 import Title from "./components/Title";
 import AlbaformCreateDropdown from "@/components/dropdown/AlbaformCreateDropdown";
 import StepContainer from "./components/StepContainer";
+import { Suspense } from "react";
 
 const mockTemporaryDataByStep: AddFormStepProps = {
   stepOne: {
@@ -43,7 +44,15 @@ const AddFormPage = () => {
         <div className="m-auto w-[327px] pc:hidden">
           <AlbaformCreateDropdown />
         </div>
-        <StepContainer />
+        <Suspense
+          fallback={
+            <div className="text-center text-md text-black-500 pc:text-xl">
+              잠시만 기다려주세요...
+            </div>
+          }
+        >
+          <StepContainer />
+        </Suspense>
       </div>
     </div>
   );

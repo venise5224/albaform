@@ -8,6 +8,7 @@ import StepThreeContents from "./StepThreeContents";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { useSearchParams } from "next/navigation";
+import { Fragment } from "react";
 
 const StepContainer = () => {
   const searchParams = useSearchParams();
@@ -54,15 +55,11 @@ const StepContainer = () => {
   return (
     <form className="p-6">
       {compoentsByStepArr.map((component) => (
-        <>
+        <Fragment key={component.step}>
           {step === component.step && (
-            <component.component
-              key={component.step}
-              register={register}
-              errors={errors}
-            />
+            <component.component register={register} errors={errors} />
           )}
-        </>
+        </Fragment>
       ))}
     </form>
   );
