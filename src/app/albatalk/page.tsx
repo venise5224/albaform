@@ -13,7 +13,7 @@ const AlbaTalkPage = async ({
   const { orderBy = "mostRecent", keyword = "" } = await searchParams;
 
   const response = await getArticles({
-    limit: 9,
+    limit: 6,
     cursor: 0,
     orderBy,
     keyword,
@@ -22,7 +22,7 @@ const AlbaTalkPage = async ({
   const posts: PostCardProps[] = response.data;
 
   return (
-    <Suspense fallback={<div>로딩 중...</div>}>
+    <Suspense>
       <AlbatalkList posts={posts} nextCursor={nextCursor} />
     </Suspense>
   );

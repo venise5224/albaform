@@ -4,6 +4,8 @@ import PostCard from "@/components/card/PostCard";
 import { PostCardProps } from "@/types/post";
 import useInfinityScroll from "@/hooks/useInfinityScroll";
 import useFetchAlbatalkData from "../hooks/useFetchAlbatalkData";
+import Empty from "./Empty";
+import PostCardListSkeleton from "./PostCardSkeleton";
 
 const AlbatalkList = ({
   posts: initialPosts,
@@ -12,7 +14,7 @@ const AlbatalkList = ({
   posts: PostCardProps[];
   nextCursor: number | null;
 }) => {
-  const { posts, cursor, fetchArticles } = useFetchAlbatalkData({
+  const { posts, cursor, isLoading, fetchArticles } = useFetchAlbatalkData({
     initialPosts,
     initialCursor,
   });
@@ -36,11 +38,13 @@ const AlbatalkList = ({
           ))}
         </div>
       ) : (
-        <div>게시글이 없습니다</div> //빈페이지 필요
+        <Empty />
       )}
 
       {/* 무한 스크롤 트리거 */}
       {cursor && <div ref={observerRef} style={{ height: "1px" }} />}
+
+      {isLoading && <PostCardListSkeleton count={3} />}
     </div>
   );
 };
