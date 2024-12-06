@@ -3,6 +3,8 @@ import { formatDate } from "@/utils/formatDate";
 import { getDday } from "@/utils/getDday";
 import isPast from "@/utils/isPast";
 import Image from "next/image";
+import AlbaPreviewDropdown from "../dropdown/AlbaPreviewDropdown";
+import kebabIcon from "@/../public/icon/kebab-md.svg";
 
 interface AlbarPreviewProps {
   info: AlbarformData;
@@ -16,6 +18,10 @@ const AlbarPreview = ({ info }: AlbarPreviewProps) => {
     info.recruitmentStartDate,
     info.recruitmentEndDate
   );
+
+  const goToApply = () => {};
+
+  const handleScrap = () => {};
 
   return (
     <div className="h-[390px] w-[327px] pc:h-[536px] pc:w-[477px]">
@@ -37,9 +43,15 @@ const AlbarPreview = ({ info }: AlbarPreviewProps) => {
         <div className="flex-grow text-black-100">
           {formattedStartDate} ~ {formattedEndDate}
         </div>
-        <button className="relative h-[24px] w-[24px] pc:h-[36px] pc:w-[36px]">
-          <Image src="/icon/kebab-md.svg" fill alt="메뉴 버튼" />
-        </button>
+        <AlbaPreviewDropdown onApply={goToApply} onScrap={handleScrap}>
+          <Image
+            src={kebabIcon}
+            width={24}
+            height={24}
+            alt="kebab icon"
+            className="pc:size-9"
+          />
+        </AlbaPreviewDropdown>
       </time>
       <div className="mt-[16px] h-[52px] pc:mt-[24px] pc:h-[64px]">
         <h2 className="w-[80%] text-2lg font-semibold pc:text-xl">

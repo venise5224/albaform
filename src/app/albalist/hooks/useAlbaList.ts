@@ -16,8 +16,6 @@ interface UseAlbaListResult {
   albaList: AlbarformData[];
   cursor: number | null;
   fetchAlbaList: (isReset: boolean) => Promise<void>;
-  setAlbaList: React.Dispatch<React.SetStateAction<AlbarformData[]>>;
-  setCursor: React.Dispatch<React.SetStateAction<number | null>>;
 }
 
 const useAlbaList = ({
@@ -68,7 +66,7 @@ const useAlbaList = ({
     }
   };
 
-  return { albaList, cursor, fetchAlbaList, setAlbaList, setCursor };
+  return { albaList, cursor, fetchAlbaList };
 };
 
 export default useAlbaList;
