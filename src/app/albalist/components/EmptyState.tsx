@@ -2,7 +2,7 @@ import Image from "next/image";
 import emptyIcon from "@/../public/icon/empty-md.svg";
 import emptyIconLarge from "@/../public/icon/empty-lg.svg";
 
-const Empty = ({ role }: { role: string }) => {
+const EmptyState = ({ role }: { role: string }) => {
   return (
     <div className="mx-auto mt-32 flex flex-col items-center gap-y-6 pc:mt-[178px] pc:gap-y-8 tablet:mt-[205px]">
       <Image
@@ -36,4 +36,4 @@ const Empty = ({ role }: { role: string }) => {
   );
 };
 
-export default Empty;
+export default EmptyState;

@@ -1,5 +1,6 @@
 "use client";
 
+import { addFormStepAtom } from "@/atoms/addFormAtom";
 import { dropdownTriggerAtom } from "@/atoms/dropdownAtomStore";
 import {
   DropdownMenu,
@@ -7,46 +8,28 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/dropdown/DropdownMenu";
-import useViewPort from "@/hooks/useViewport";
-import { useAtomValue } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import Image from "next/image";
-import { useEffect, useState } from "react";
-
-interface AlbaformCreateStep {
-  title: string;
-  value: string;
-}
+import { useEffect } from "react";
 
 // 알바폼 생성 컴포넌트 URL에서 albaformStep 값을 받아서 단계별 form을 표출하는데 사용하세요.
 const AlbaformCreateDropdown = () => {
-  const viewPort = useViewPort();
-  const [stepNum, setStepNum] = useState(1);
-  const [currentStep, setCurrentStep] = useState<AlbaformCreateStep>({
-    title: "모집 내용",
-    value: "stepOne",
-  });
+  const [currentStep, setCurrentStep] = useAtom(addFormStepAtom);
   const isOpen = useAtomValue(dropdownTriggerAtom("albaformCreate"));
 
   const updateURL = (value: string) => {
     const params = new URLSearchParams(window.location.search);
-    params.set("albaformStep", value);
+    params.set("step", value);
 
     window.history.pushState({}, "", `?${params}`);
   };
 
   useEffect(() => {
-    if (viewPort === "mobile" || viewPort === "tablet") {
-      updateURL(currentStep.value);
-    } else {
-      const params = new URLSearchParams(window.location.search);
-      params.delete("albaformStep");
-      window.history.pushState({}, "", `?${params}`);
-    }
-  }, [currentStep.value, viewPort]);
+    updateURL(currentStep.value);
+  }, [currentStep]);
 
   const handleClick = (value: string, stepNum: number, title: string) => {
-    setCurrentStep({ title, value });
-    setStepNum(stepNum);
+    setCurrentStep({ title, value, stepNum });
   };
 
   const itemArr = [
@@ -65,7 +48,7 @@ const AlbaformCreateDropdown = () => {
         <div className="group flex w-[327px] items-center justify-between rounded-2xl bg-orange-300 px-6 py-3">
           <div className="flex items-center space-x-3">
             <span className="flex size-5 items-center justify-center rounded-full bg-white text-md font-bold text-orange-300">
-              {stepNum}
+              {currentStep.stepNum}
             </span>
             <h2 className="text-md font-bold text-white">
               {currentStep.title}
