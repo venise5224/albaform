@@ -28,8 +28,6 @@ const AlbatalkList = ({
   const [cursor, setCursor] = useState(initialCursor);
   const [isLoading, setIsLoading] = useState(false);
 
-  console.log(`리스트 로직 이전:${orderBy}  ${keyword}`);
-
   const fetchMoreData = async () => {
     if (isLoading) return;
 
@@ -55,8 +53,6 @@ const AlbatalkList = ({
       setIsLoading(false);
     }
   };
-
-  console.log(`리스트 로직 이후:${orderBy}  ${keyword}`);
 
   const observerRef = useInfinityScroll({
     fetchMoreData,

@@ -18,9 +18,6 @@ const AlbatalkRander = async ({
   const nextCursor: number | null = response.nextCursor;
   const posts: PostCardProps[] = response.data;
 
-  console.log(`랜더링 :${orderBy}  ${keyword}`);
-  console.log(`랜더링 :${posts}`);
-
   return (
     <AlbatalkList
       posts={posts}

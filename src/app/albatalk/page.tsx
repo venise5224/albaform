@@ -11,8 +11,6 @@ const AlbaTalkPage = async ({
 }) => {
   const { orderBy = "mostRecent", keyword = "" } = await searchParams;
 
-  console.log(`페이지 쿼리스트링 값 :${orderBy} ${keyword}`);
-
   return (
     <Suspense
       key={`${orderBy}-${keyword}`}
