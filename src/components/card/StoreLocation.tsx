@@ -11,7 +11,7 @@ const StoreLocation = ({ location }: { location: string }) => {
         <span className="w-[240px] pc:w-[640px] pc:text-2xl">{location}</span>
         <CopyButton text={location} />
       </div>
-      <div className="px-6 pc:px-0 mt-2 h-[210px] w-full pc:mt-12 pc:h-[380px]">
+      <div className="mt-2 h-[210px] w-full px-6 pc:mt-12 pc:h-[380px] pc:px-0">
         <KakaoMap location={location} />
       </div>
     </section>
