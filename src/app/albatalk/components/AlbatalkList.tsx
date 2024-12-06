@@ -3,9 +3,15 @@
 import PostCard from "@/components/card/PostCard";
 import { PostCardProps } from "@/types/post";
 import useInfinityScroll from "@/hooks/useInfinityScroll";
-import useFetchAlbatalkData from "../hooks/useFetchAlbatalkData";
 import Empty from "./Empty";
 import PostCardListSkeleton from "./PostCardSkeleton";
+import { useState } from "react";
+import { getArticles } from "../getArticles";
+
+interface AlbatalkResponse {
+  data: PostCardProps[];
+  nextCursor: number | null;
+}
 
 const AlbatalkList = ({
   posts: initialPosts,
@@ -18,22 +24,40 @@ const AlbatalkList = ({
   orderBy: string;
   keyword: string;
 }) => {
-  console.log(`리스트 로직 :${orderBy}  ${keyword}`);
-  console.log(`리스트 :${initialPosts}`);
+  const [posts, setPosts] = useState(initialPosts);
+  const [cursor, setCursor] = useState(initialCursor);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const { posts, cursor, isLoading, fetchArticles } = useFetchAlbatalkData({
-    initialPosts,
-    initialCursor,
-    orderBy,
-    keyword,
-  });
+  console.log(`리스트 로직 이전:${orderBy}  ${keyword}`);
 
-  // 무한스크롤 요청
-  const fetchMoreData = () => {
-    fetchArticles();
+  const fetchMoreData = async () => {
+    if (isLoading) return;
+
+    setIsLoading(true);
+    try {
+      const response: AlbatalkResponse = await getArticles({
+        limit: 6,
+        cursor,
+        keyword,
+        orderBy,
+      });
+
+      setPosts((prevList) => [
+        ...prevList,
+        ...response.data.filter(
+          (newPost) => !prevList.some((post) => post.id === newPost.id)
+        ),
+      ]);
+      setCursor(response.nextCursor);
+    } catch (error) {
+      console.error("데이터를 불러오는데 실패했습니다.", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  // 무한 스크롤 훅 사용
+  console.log(`리스트 로직 이후:${orderBy}  ${keyword}`);
+
   const observerRef = useInfinityScroll({
     fetchMoreData,
   });
@@ -50,7 +74,6 @@ const AlbatalkList = ({
         <Empty />
       )}
 
-      {/* 무한 스크롤 트리거 */}
       {cursor && <div ref={observerRef} style={{ height: "1px" }} />}
 
       {isLoading && <PostCardListSkeleton count={3} />}

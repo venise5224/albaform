@@ -14,7 +14,10 @@ const AlbaTalkPage = async ({
   console.log(`페이지 쿼리스트링 값 :${orderBy} ${keyword}`);
 
   return (
-    <Suspense fallback={<PostCardListSkeleton count={9} />}>
+    <Suspense
+      key={`${orderBy}-${keyword}`}
+      fallback={<PostCardListSkeleton count={9} />}
+    >
       <AlbatalkRander orderBy={orderBy} keyword={keyword} />
     </Suspense>
   );
