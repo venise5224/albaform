@@ -1,9 +1,8 @@
 "use server";
 
-import { PostCardProps } from "@/types/post";
-import { getArticles } from "./getArticles";
-import AlbatalkList from "./components/AlbatalkList";
 import { Suspense } from "react";
+import PostCardListSkeleton from "./components/PostCardSkeleton";
+import AlbatalkRander from "./components/AlbatalkRander";
 
 const AlbaTalkPage = async ({
   searchParams,
@@ -12,18 +11,11 @@ const AlbaTalkPage = async ({
 }) => {
   const { orderBy = "mostRecent", keyword = "" } = await searchParams;
 
-  const response = await getArticles({
-    limit: 6,
-    cursor: 0,
-    orderBy,
-    keyword,
-  });
-  const nextCursor: number | null = response.nextCursor;
-  const posts: PostCardProps[] = response.data;
+  console.log(`페이지 쿼리스트링 값 :${orderBy} ${keyword}`);
 
   return (
-    <Suspense>
-      <AlbatalkList posts={posts} nextCursor={nextCursor} />
+    <Suspense fallback={<PostCardListSkeleton count={9} />}>
+      <AlbatalkRander orderBy={orderBy} keyword={keyword} />
     </Suspense>
   );
 };

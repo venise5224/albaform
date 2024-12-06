@@ -10,18 +10,27 @@ import PostCardListSkeleton from "./PostCardSkeleton";
 const AlbatalkList = ({
   posts: initialPosts,
   nextCursor: initialCursor,
+  orderBy,
+  keyword,
 }: {
   posts: PostCardProps[];
   nextCursor: number | null;
+  orderBy: string;
+  keyword: string;
 }) => {
+  console.log(`리스트 로직 :${orderBy}  ${keyword}`);
+  console.log(`리스트 :${initialPosts}`);
+
   const { posts, cursor, isLoading, fetchArticles } = useFetchAlbatalkData({
     initialPosts,
     initialCursor,
+    orderBy,
+    keyword,
   });
 
   // 무한스크롤 요청
   const fetchMoreData = () => {
-    fetchArticles({ isReset: false });
+    fetchArticles();
   };
 
   // 무한 스크롤 훅 사용
