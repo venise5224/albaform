@@ -1,9 +1,9 @@
 "use server";
 
 import { Suspense } from "react";
-import { getAlbaList } from "../getAlbaList";
-import AlbaList from "../components/AlbaList";
-import LoadingSkeleton from "../components/LoadingSkeleton";
+import { getAlbaList } from "./getAlbaList";
+import AlbaList from "./components/AlbaList";
+import LoadingSkeleton from "./components/LoadingSkeleton";
 import { cookies } from "next/headers";
 
 interface AlbaListPageProps {

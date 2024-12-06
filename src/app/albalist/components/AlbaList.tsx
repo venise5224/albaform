@@ -1,11 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import AlbarPreview from "@/components/card/AlbarPreview";
 import { AlbarformData } from "@/types/alba";
-import { getAlbaList } from "../getAlbaList";
-import Empty from "./EmptyState";
+import EmptyState from "./EmptyState";
 import BlurWrapper from "./BlurWrapper";
 import Link from "next/link";
 import FloatingButton from "@/components/button/FloatingButton";
@@ -15,6 +14,8 @@ import PublicDropdown from "@/components/dropdown/PublicDropdown";
 import ApplicationDropdown from "@/components/dropdown/ApplicationDropdown";
 import OrderByDropdown from "@/components/dropdown/OrderByDropdown";
 import useInfinityScroll from "@/hooks/useInfinityScroll";
+import useAlbaList from "../hooks/useAlbaList";
+
 interface AlbaListProps {
   list: AlbarformData[];
   nextCursor: number | null;
@@ -25,72 +26,40 @@ const AlbaList = ({ list, nextCursor, role }: AlbaListProps) => {
   const searchParams = useSearchParams();
   const orderBy = searchParams.get("orderBy") || "mostRecent";
   const keyword = searchParams.get("keyword") || "";
-  const publicStatus =
+  const isPublic =
     searchParams.get("isPublic") === "true"
       ? true
       : searchParams.get("isPublic") === "false"
         ? false
         : undefined;
-  const applicationStatus =
+  const isRecruiting =
     searchParams.get("isRecruiting") === "true"
       ? true
       : searchParams.get("isRecruiting") === "false"
         ? false
         : undefined;
 
-  const [albaList, setAlbaList] = useState(list);
-  const [cursor, setCursor] = useState(nextCursor);
-
-  // 데이터 요청 함수
-  const fetchAlbaList = async ({ isReset = false }: { isReset: boolean }) => {
-    try {
-      const response = await getAlbaList({
-        orderBy: orderBy || "mostRecent",
-        limit: 6,
-        cursor: isReset ? 0 : cursor,
-        keyword,
-        isRecruiting: applicationStatus,
-      });
-
-      const filteredData =
-        publicStatus !== undefined
-          ? response.data.filter(
-              (item: AlbarformData) => item.isPublic === publicStatus
-            )
-          : response.data;
-
-      setAlbaList((prevList) =>
-        isReset
-          ? filteredData
-          : [
-              ...prevList,
-              ...filteredData.filter(
-                (newList: AlbarformData) =>
-                  !prevList.some((card) => card.id === newList.id)
-              ),
-            ]
-      );
-
-      setCursor(response.nextCursor);
-    } catch (error) {
-      console.error("알바폼 목록을 가져오는데 실패했습니다.", error);
-      setAlbaList([]);
-    }
-  };
+  const { albaList, cursor, fetchAlbaList } = useAlbaList({
+    orderBy,
+    keyword,
+    isPublic,
+    isRecruiting,
+    initialList: list,
+    initialCursor: nextCursor,
+  });
 
   // 무한 스크롤 데이터 요청
   const fetchMoreData = () => {
-    fetchAlbaList({ isReset: false });
+    if (!cursor) return;
+    fetchAlbaList(false);
   };
 
   // 무한 스크롤 Ref
-  const observerRef = useInfinityScroll({
-    fetchMoreData,
-  });
+  const observerRef = useInfinityScroll({ fetchMoreData });
 
   useEffect(() => {
-    fetchAlbaList({ isReset: true });
-  }, [publicStatus, applicationStatus, orderBy, keyword]);
+    fetchAlbaList(true);
+  }, [isPublic, isRecruiting, orderBy, keyword]);
 
   return (
     <main className="min-h-screen bg-background-100">
@@ -135,7 +104,7 @@ const AlbaList = ({ list, nextCursor, role }: AlbaListProps) => {
             ))}
           </ul>
         ) : (
-          <Empty role={role} />
+          <EmptyState role={role} />
         )}
       </section>
       {cursor && <div ref={observerRef} style={{ height: "10px" }} />}
