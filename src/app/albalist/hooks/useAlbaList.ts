@@ -68,7 +68,7 @@ const useAlbaList = ({
     }
   };
 
-  return { albaList, cursor, fetchAlbaList, setAlbaList, setCursor };
+  return { albaList, cursor, fetchAlbaList };
 };
 
 export default useAlbaList;
