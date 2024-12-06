@@ -1,9 +1,7 @@
 "use client";
 
-import {
-  albaformCreateStepAtom,
-  dropdownTriggerAtom,
-} from "@/atoms/dropdownAtomStore";
+import { addFormStepAtom } from "@/atoms/addFormAtom";
+import { dropdownTriggerAtom } from "@/atoms/dropdownAtomStore";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,18 +10,26 @@ import {
 } from "@/components/dropdown/DropdownMenu";
 import { useAtom, useAtomValue } from "jotai";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect } from "react";
 
-// 알바폼 생성 컴포넌트에서 currentStep 값을 받아서 단계별 form을 표출하는데 사용하세요.
-// currentStep.value 형식으로 받으셔야 합니다.
+// 알바폼 생성 컴포넌트 URL에서 albaformStep 값을 받아서 단계별 form을 표출하는데 사용하세요.
 const AlbaformCreateDropdown = () => {
-  const [stepNum, setStepNum] = useState(1);
-  const [currentStep, setCurrentStep] = useAtom(albaformCreateStepAtom);
+  const [currentStep, setCurrentStep] = useAtom(addFormStepAtom);
   const isOpen = useAtomValue(dropdownTriggerAtom("albaformCreate"));
 
+  const updateURL = (value: string) => {
+    const params = new URLSearchParams(window.location.search);
+    params.set("step", value);
+
+    window.history.pushState({}, "", `?${params}`);
+  };
+
+  useEffect(() => {
+    updateURL(currentStep.value);
+  }, [currentStep]);
+
   const handleClick = (value: string, stepNum: number, title: string) => {
-    setCurrentStep({ title, value });
-    setStepNum(stepNum);
+    setCurrentStep({ title, value, stepNum });
   };
 
   const itemArr = [
@@ -42,7 +48,7 @@ const AlbaformCreateDropdown = () => {
         <div className="group flex w-[327px] items-center justify-between rounded-2xl bg-orange-300 px-6 py-3">
           <div className="flex items-center space-x-3">
             <span className="flex size-5 items-center justify-center rounded-full bg-white text-md font-bold text-orange-300">
-              {stepNum}
+              {currentStep.stepNum}
             </span>
             <h2 className="text-md font-bold text-white">
               {currentStep.title}
