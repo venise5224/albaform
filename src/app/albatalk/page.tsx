@@ -1,7 +1,7 @@
 "use server";
 
 import { PostCardProps } from "@/types/post";
-import { getArticles } from "./api/getArticles";
+import { getArticles } from "./getArticles";
 import AlbatalkList from "./components/AlbatalkList";
 import { Suspense } from "react";
 
@@ -13,7 +13,7 @@ const AlbaTalkPage = async ({
   const { orderBy = "mostRecent", keyword = "" } = await searchParams;
 
   const response = await getArticles({
-    limit: 6,
+    limit: 9,
     cursor: 0,
     orderBy,
     keyword,

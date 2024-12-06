@@ -9,7 +9,7 @@ const CopyButton = ({ text }: { text: string }) => {
     navigator.clipboard
       .writeText(text)
       .then(() => addToast("복사에 성공했습니다.", "info"))
-      .catch(() => addToast("복사에 실패했습니다.", "error"));
+      .catch(() => addToast("복사에 실패했습니다.", "warning"));
   };
 
   return (
