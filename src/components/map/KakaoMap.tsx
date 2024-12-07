@@ -7,17 +7,9 @@ const KakaoMap = ({ location }: { location: string }) => {
 
   useEffect(() => {
     if (window.kakao && window.kakao.maps) {
-      // Kakao Maps SDK가 로드된 후 지도 생성
+      // Kakao Maps SDK가 로드된 후 동작
       window.kakao.maps.load(() => {
         if (mapRef.current) {
-          const mapOption = {
-            center: new window.kakao.maps.LatLng(37.5665, 126.978), // 기본 좌표 (서울)
-            level: 3, // 지도 확대 레벨
-          };
-
-          // 지도 생성
-          const map = new window.kakao.maps.Map(mapRef.current, mapOption);
-
           // Geocoder를 사용하여 주소 -> 좌표 변환
           const geocoder = new window.kakao.maps.services.Geocoder();
           geocoder.addressSearch(location, (result: any, status: any) => {
@@ -27,13 +19,19 @@ const KakaoMap = ({ location }: { location: string }) => {
                 result[0].x
               );
 
-              // 지도 중심 이동
-              map.setCenter(coords);
+              // 지도 옵션을 변환된 좌표로 설정
+              const mapOption = {
+                center: coords,
+                level: 3, // 지도 확대 레벨
+              };
+
+              // 지도 생성
+              const map = new window.kakao.maps.Map(mapRef.current, mapOption);
 
               // 마커 생성
-              const marker = new window.kakao.maps.Marker({
+              new window.kakao.maps.Marker({
                 position: coords,
-                map: map, // 생성된 지도 객체에 마커 추가
+                map: map,
               });
 
               console.log(`주소(${location})의 좌표:`, coords);
