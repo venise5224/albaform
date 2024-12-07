@@ -68,7 +68,7 @@ const AlbaList = ({ list, nextCursor, role, params }: AlbaListProps) => {
         setIsLoading(false);
       }
     },
-    [nextCursor]
+    [orderBy, cursor, keyword, isRecruiting, isPublic]
   );
 
   // 무한 스크롤 데이터 요청
