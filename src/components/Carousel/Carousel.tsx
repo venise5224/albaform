@@ -9,11 +9,11 @@ const Carousel = ({ imageUrls }: { imageUrls: string[] }) => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setIsRenderingIndex((prevIndex) => (prevIndex + 1) % 3); // 다음 div로 이동, 3번째 이후는 첫번째로
+      setIsRenderingIndex((prevIndex) => (prevIndex + 1) % imageUrls.length); // 다음 div로 이동, 3번째 이후는 첫번째로
     }, 3000);
 
     return () => clearInterval(interval); // 컴포넌트 언마운트 시 인터벌 제거
-  }, []);
+  }, [imageUrls.length]);
 
   return (
     <section className="relative h-[260px] w-screen pc:h-[562px]">
@@ -23,16 +23,16 @@ const Carousel = ({ imageUrls }: { imageUrls: string[] }) => {
           key={index}
           className={cls(
             "absolute left-0 top-0 h-full w-full transition-opacity duration-1000",
-            isRenderingIndex === index ? "z-10 opacity-100" : "z-0 opacity-0"
+            isRenderingIndex === index ? "opacity-100" : "opacity-0"
           )}
         >
           <Image src={imageUrl} fill alt="캐러샐 이미지" />
         </figure>
       ))}
       {/* 인디케이터 */}
-      <div className="absolute bottom-[15px] left-0 right-0 z-10 flex justify-center">
+      <div className="absolute bottom-[15px] left-0 right-0 flex justify-center">
         <div className="flex space-x-2">
-          {imageUrls.map((image, index) => (
+          {imageUrls.map((_, index) => (
             <div
               key={index}
               className={cls(
