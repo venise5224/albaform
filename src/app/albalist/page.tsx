@@ -31,11 +31,11 @@ const AlbaListPage = async ({ searchParams }: AlbaListPageProps) => {
 
   return (
     <div className="flex justify-center">
-      <Suspense fallback={<CardListSkeleton count={6} />}>
-        <AlbaListFetcher
-          key={`${params.orderBy}-${params.keyword}-${params.isRecruiting}-${params.isPublic}`}
-          params={params}
-        />
+      <Suspense
+        key={`${params.orderBy}-${params.keyword}-${params.isRecruiting}-${params.isPublic}`}
+        fallback={<CardListSkeleton count={6} />}
+      >
+        <AlbaListFetcher params={params} />
       </Suspense>
     </div>
   );
