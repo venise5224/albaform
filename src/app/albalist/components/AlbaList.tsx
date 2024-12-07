@@ -62,7 +62,7 @@ const AlbaList = ({ list, nextCursor, role, params }: AlbaListProps) => {
     } finally {
       setIsLoading(false);
     }
-  }, [orderBy, cursor, keyword, isRecruiting, isPublic]);
+  }, [orderBy, cursor, nextCursor, keyword, isRecruiting, isPublic]);
 
   // 무한 스크롤 Ref
   const observerRef = useInfinityScroll({ fetchMoreData });
