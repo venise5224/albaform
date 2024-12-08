@@ -4,6 +4,7 @@ import Header from "../components/header/Header";
 import Sidebar from "@/components/header/Sidebar";
 import ModalManager from "@/components/modal/modalManager/ModalManager";
 import ToastContainer from "@/components/toast/ToastContainer";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: {
@@ -37,6 +38,11 @@ export default function RootLayout({
         <ModalManager />
         <ToastContainer />
         {children}
+        <Script
+          type="text/javascript"
+          strategy="beforeInteractive"
+          src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_KEY}&autoload=false&libraries=services`}
+        />
       </body>
     </html>
   );
