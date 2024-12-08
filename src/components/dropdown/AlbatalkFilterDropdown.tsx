@@ -7,6 +7,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/dropdown/DropdownMenu";
 import { usePrevPage } from "@/hooks/usePrevPage";
+import { useSearchParamsCustom } from "@/hooks/useSearchParamsCustom";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
@@ -22,23 +23,21 @@ const AlbatalkFilterDropdown = () => {
     title: "최신 순",
     value: "mostRecent",
   });
+  const { updateURL } = useSearchParamsCustom({
+    key: "albatalkOrderBy",
+    value: albatalkFilter.value,
+  });
+
   usePrevPage();
-
-  const updateURL = (value: string) => {
-    const params = new URLSearchParams(window.location.search);
-    params.set("albatalkOrderBy", value);
-
-    window.history.pushState({}, "", `?${params}`);
-  };
 
   const handleClick = (value: string, title: string) => {
     setAlbatalkFilter({ value, title });
-    updateURL(value);
+    updateURL({ key: "albatalkOrderBy", value });
   };
 
   useEffect(() => {
-    updateURL(albatalkFilter.value);
-  }, [albatalkFilter.value]);
+    updateURL({ key: "albatalkOrderBy", value: albatalkFilter.value });
+  }, [albatalkFilter.value, updateURL]);
 
   const valueArr = [
     { title: "최신 순", value: "mostRecent" },
