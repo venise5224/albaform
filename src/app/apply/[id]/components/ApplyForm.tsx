@@ -9,7 +9,6 @@ import { z } from "zod";
 import { applySchema } from "@/schema/apply/applySchema";
 import ErrorText from "@/components/errorText/ErrorText";
 import SolidButton from "@/components/button/SolidButton";
-import { useModal } from "@/hooks/useModal";
 import { cls } from "@/utils/dynamicTailwinds";
 
 const ApplyForm = ({ id }: { id: string }) => {
@@ -30,8 +29,6 @@ const ApplyForm = ({ id }: { id: string }) => {
       password: "",
     },
   });
-
-  const { openModal } = useModal();
 
   const inputArr = [
     {
@@ -166,11 +163,7 @@ const ApplyForm = ({ id }: { id: string }) => {
       ))}
 
       <div className="mt-[42px] flex flex-col gap-[10px] pc:mt-[48px] pc:flex-row pc:gap-[8px]">
-        <SolidButton
-          style="outOrange300"
-          type="button"
-          onClick={() => openModal("PatchAlbaformModal")}
-        >
+        <SolidButton style="outOrange300" type="button">
           임시 저장
         </SolidButton>
 
