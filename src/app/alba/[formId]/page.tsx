@@ -20,12 +20,6 @@ const AlbarformDetailPage = async ({ params }: AlbarformDetailPageProps) => {
   const { formId } = params;
   let data: AlbaformDetailData;
 
-  const mockImages = [
-    "https://cdn.pixabay.com/photo/2024/03/03/20/44/cat-8611246_1280.jpg",
-    "https://cdn.pixabay.com/photo/2024/11/22/13/53/pinecone-9216518_1280.jpg",
-    "https://cdn.pixabay.com/photo/2024/11/20/09/14/christmas-9210799_1280.jpg",
-  ];
-
   try {
     data = await fetchData(formId);
   } catch (error) {
@@ -41,7 +35,7 @@ const AlbarformDetailPage = async ({ params }: AlbarformDetailPageProps) => {
 
   return (
     <>
-      <Carousel imageUrls={mockImages} />
+      {data.imageUrls && <Carousel imageUrls={data.imageUrls} />}
       <div className="mt-8 grid gap-[32px] pc:mt-[80px] pc:grid-cols-[770px_640px] pc:grid-rows-[432px_336px_152px_562px] pc:justify-items-center pc:gap-0 pc:gap-x-[150px] pc:gap-y-[40px] pc:grid-areas-layout tablet:w-[327px] tablet:grid-cols-1 tablet:grid-rows-[270px_116px_156px_396px_302px_340px_158px] mobile:w-[327px] mobile:grid-cols-1 mobile:grid-rows-[270px_116px_156px_396px_302px_340px_158px]">
         <section className="pc:grid-in-box1">
           <Title info={data} />
