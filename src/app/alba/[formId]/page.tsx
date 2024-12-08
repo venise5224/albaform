@@ -8,22 +8,17 @@ import SimpleRequirements from "./components/SimpleRequirements";
 import EmployerInfo from "./components/EmployerInfo";
 import DetailRequirements from "./components/DetailRequirements";
 import NoticeApplicant from "./components/NoticeApplicant";
+import { PageProps } from "../../../../.next/types/app/page";
 import { AlbaformDetailData } from "@/types/alba";
 
-interface AlbarformDetailPageProps {
-  params: {
-    formId: string;
-  };
-}
-
-const AlbarformDetailPage = async ({ params }: AlbarformDetailPageProps) => {
-  const { formId } = params;
+const AlbarformDetailPage = async ({ params }: PageProps) => {
+  const { formId } = await params;
   let data: AlbaformDetailData;
 
   try {
     data = await fetchData(formId);
   } catch (error) {
-    console.error(error); // toast로 error 메시지 띄우는 걸로 바꿔야 함.
+    console.error(error);
 
     return (
       <div>
