@@ -25,7 +25,7 @@ export const applySchema = z.object({
     .trim(),
   password: z
     .string()
-    .min(4, { message: "비밀번호 4자 이상 입력해주세요." })
+    .min(8, { message: "비밀번호 8자 이상 입력해주세요." })
     .max(12, { message: "비밀번호는 12자 이내여야합니다." })
     .trim(),
 });
