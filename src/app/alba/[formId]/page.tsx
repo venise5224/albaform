@@ -11,9 +11,12 @@ import NoticeApplicant from "./components/NoticeApplicant";
 import ScrapAndShareButton from "./components/ScrapAndShareButton";
 import { AlbaformDetailData } from "@/types/alba";
 import { PageProps } from "../../../../.next/types/app/layout";
+import { cookies } from "next/headers";
 
 const AlbarformDetailPage = async ({ params }: PageProps) => {
   const { formId } = await params;
+  const cookie = await cookies();
+  const role = cookie.get("role")?.value || "defaultRole";
   let data: AlbaformDetailData;
 
   try {
@@ -28,8 +31,6 @@ const AlbarformDetailPage = async ({ params }: PageProps) => {
       </div>
     );
   }
-
-  console.log(data.isScrapped);
 
   return (
     <>
@@ -63,7 +64,9 @@ const AlbarformDetailPage = async ({ params }: PageProps) => {
         </section>
       </div>
       <NoticeApplicant count={data.applyCount} />
-      <ScrapAndShareButton formId={formId} isScrapped={data.isScrapped} />
+      {role === "APPLICANT" && (
+        <ScrapAndShareButton formId={formId} isScrapped={data.isScrapped} />
+      )}
     </>
   );
 };
