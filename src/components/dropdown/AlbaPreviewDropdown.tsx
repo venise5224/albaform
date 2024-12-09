@@ -13,10 +13,11 @@ import Image from "next/image";
 const AlbaPreviewDropdown = ({ formId }: { formId: number }) => {
   const router = useRouter();
 
-  const goToApply = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    router.push(`/apply/${formId}`);
-  };
+  // const goToApply = (e: React.MouseEvent<HTMLButtonElement>) => {
+  //   e.preventDefault();
+  //   router.push(`/apply/${formId}`);
+  // };
+  const goToApply = () => {};
   const handleScrap = () => {};
 
   const itemArr = [

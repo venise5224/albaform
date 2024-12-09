@@ -58,8 +58,7 @@ const DropdownMenuTrigger = ({
     return () => document.removeEventListener("click", handleClickOutside);
   }, [setDropdownTrigger]);
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+  const handleClick = () => {
     setDropdownTrigger(!dropdownTrigger);
   };
 
@@ -128,7 +127,7 @@ const DropdownMenuItem = ({
   className,
 }: {
   children: React.ReactNode;
-  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  onClick: () => void;
   className?: string;
 }) => {
   return (
