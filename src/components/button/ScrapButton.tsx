@@ -19,7 +19,9 @@ const ScrapButton = ({
   // 스크랩이 안되어 있으면 클릭시 스크롭 등록 요청을 보내고, 되어있으면 취소 요청을 보내는 로직
   const toggleScrap = async () => {
     if (isFilled) {
-      const res = await instance(
+      setIsFilled(false);
+      addToast("스크랩이 해제되었습니다.", "success");
+      await instance(
         `${process.env.NEXT_PUBLIC_API_URL}/forms/${formId}/scrap`,
         {
           method: "DELETE",
@@ -28,12 +30,10 @@ const ScrapButton = ({
           },
         }
       );
-      if (res.status === 201) {
-        addToast("스크랩이 해제되었습니다.", "success");
-      }
-      setIsFilled(false);
     } else {
-      const res = await instance(
+      setIsFilled(true);
+      addToast("스크랩이 완료되었습니다.", "success");
+      await instance(
         `${process.env.NEXT_PUBLIC_API_URL}/forms/${formId}/scrap`,
         {
           method: "POST",
@@ -42,10 +42,6 @@ const ScrapButton = ({
           },
         }
       );
-      if (res.status === 201) {
-        addToast("해당 알바폼을 스크랩하였습니다..", "success");
-      }
-      setIsFilled(true);
     }
   };
 
