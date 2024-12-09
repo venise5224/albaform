@@ -1,5 +1,5 @@
-import SolidButton from "@/components/button/SolidButton";
 import ApplyForm from "./components/ApplyForm";
+import CancelButton from "@/components/button/CancelButton";
 
 const ApplyPage = async ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = await params;
@@ -11,7 +11,7 @@ const ApplyPage = async ({ params }: { params: Promise<{ id: string }> }) => {
       </h2>
       <ApplyForm id={id} />
       <div className="absolute right-0 top-[-4px] h-10 w-[80px] pc:top-[-6px] pc:h-[56px] pc:w-[122px]">
-        <SolidButton style="gray100">작성 취소</SolidButton>
+        <CancelButton>작성 취소</CancelButton>
       </div>
     </div>
   );
