@@ -88,7 +88,7 @@ const ApplyForm = ({ id }: { id: string }) => {
   ];
 
   const onSubmit = () => {
-    // 기능 구현 필요
+    //기능 구현 필요
   };
 
   return (
