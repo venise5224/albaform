@@ -10,6 +10,7 @@ import DetailRequirements from "./components/DetailRequirements";
 import NoticeApplicant from "./components/NoticeApplicant";
 import { PageProps } from "../../../../.next/types/app/page";
 import { AlbaformDetailData } from "@/types/alba";
+import NoticeIsClosed from "./components/NoticeIsClosed";
 
 const AlbarformDetailPage = async ({ params }: PageProps) => {
   const { formId } = await params;
@@ -60,6 +61,7 @@ const AlbarformDetailPage = async ({ params }: PageProps) => {
         </section>
       </div>
       <NoticeApplicant count={data.applyCount} />
+      <NoticeIsClosed closedDate={data.recruitmentEndDate} />
     </>
   );
 };
