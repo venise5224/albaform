@@ -4,7 +4,6 @@ import { getDday } from "@/utils/getDday";
 import isPast from "@/utils/isPast";
 import Image from "next/image";
 import AlbaPreviewDropdown from "../dropdown/AlbaPreviewDropdown";
-import kebabIcon from "@/../public/icon/kebab-md.svg";
 
 interface AlbarPreviewProps {
   info: AlbarformData;
@@ -19,18 +18,16 @@ const AlbarPreview = ({ info }: AlbarPreviewProps) => {
     info.recruitmentEndDate
   );
 
-  const goToApply = () => {};
-
-  const handleScrap = () => {};
+  const imageStyle = info.imageUrls[0] ? "object-cover" : "p-10 object-contain";
 
   return (
     <div className="h-[390px] w-[327px] pc:h-[536px] pc:w-[477px]">
       <figure className="relative h-[208px] w-full overflow-hidden rounded-[12px] pc:h-[304px]">
         <Image
-          src={info.imageUrls[0]}
+          src={info.imageUrls[0] || "/logo/albaform-with-logo.svg"}
           fill
-          objectFit="cover"
           alt="알바 미리보기 이미지"
+          className={imageStyle}
         />
       </figure>
       <time className="mt-[24px] flex h-[28px] w-full items-center justify-between gap-[8px] text-md pc:h-[38px] pc:text-lg">
@@ -43,15 +40,7 @@ const AlbarPreview = ({ info }: AlbarPreviewProps) => {
         <div className="flex-grow text-black-100">
           {formattedStartDate} ~ {formattedEndDate}
         </div>
-        <AlbaPreviewDropdown onApply={goToApply} onScrap={handleScrap}>
-          <Image
-            src={kebabIcon}
-            width={24}
-            height={24}
-            alt="kebab icon"
-            className="pc:size-9"
-          />
-        </AlbaPreviewDropdown>
+        <AlbaPreviewDropdown formId={info.id} />
       </time>
       <div className="mt-[16px] h-[52px] pc:mt-[24px] pc:h-[64px]">
         <h2 className="w-[80%] text-2lg font-semibold pc:text-xl">

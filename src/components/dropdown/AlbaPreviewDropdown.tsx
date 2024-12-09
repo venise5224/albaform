@@ -6,25 +6,27 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/dropdown/DropdownMenu";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 // 트리거 요소를 넣으시고, 지원하기 및 스크랩 함수도 전달해서 사용해주세요.
-const AlbaPreviewDropdown = ({
-  children,
-  onApply,
-  onScrap,
-}: {
-  children: React.ReactNode;
-  onApply: () => void;
-  onScrap: () => void;
-}) => {
+const AlbaPreviewDropdown = ({ formId }: { formId: number }) => {
+  const router = useRouter();
+
+  const goToApply = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    router.push(`/apply/${formId}`);
+  };
+  const handleScrap = () => {};
+
   const itemArr = [
     {
       text: "지원하기",
-      onClick: onApply,
+      onClick: goToApply,
     },
     {
       text: "스크랩",
-      onClick: onScrap,
+      onClick: handleScrap,
     },
   ];
 
@@ -32,14 +34,20 @@ const AlbaPreviewDropdown = ({
     <DropdownMenu className="bg-transparent">
       <DropdownMenuTrigger
         asChild
-        id="editDelete"
+        id={`applyScrap${formId}`}
         checkedValue={undefined}
         className="rounded-lg"
       >
-        {children}
+        <Image
+          src={"/icon/kebab-md.svg"}
+          width={24}
+          height={24}
+          alt="kebab icon"
+          className="pc:size-9"
+        />
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        id="editDelete"
+        id={`applyScrap${formId}`}
         className="translate-x-[-50px] items-center bg-white p-1 pc:w-[132px] pc:translate-x-[-100px]"
       >
         {itemArr.map((item) => (
