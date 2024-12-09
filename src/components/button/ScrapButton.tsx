@@ -12,6 +12,7 @@ const ScrapButton = ({
   formId: number;
 }) => {
   // 스크랩이 안되어 있으면 클릭시 스크롭 등록 요청을 보내고, 되어있으면 취소 요청을 보내는 로직
+
   const toggleScrap = async () => {
     if (isScrapped) {
       try {

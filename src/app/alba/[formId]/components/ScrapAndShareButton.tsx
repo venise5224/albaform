@@ -9,7 +9,7 @@ const ScrapAndShareButton = ({
   isScrapped: boolean;
 }) => {
   return (
-    <div className="flex h-[124px] w-[54px] flex-col justify-between pc:h-[152px] pc:w-[64px]">
+    <div className="fixed bottom-20 right-10 z-10 flex h-[124px] w-[54px] flex-col justify-between pc:h-[152px] pc:w-[64px]">
       <ScrapButton isScrapped={isScrapped} formId={formId} />
       <ShareButton />
     </div>
