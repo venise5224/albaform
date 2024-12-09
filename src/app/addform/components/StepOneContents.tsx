@@ -38,7 +38,9 @@ const StepOneContents = ({
   const viewPort = useViewPort();
   const [currentImageList, setCurrentImageList] = useAtom(currentImageListAtom);
   const setTemporaryDataByStep = useSetAtom(temporaryDataByStepAtom);
-  const [dateRange, setDateRange] = useState<[string, string]>(["", ""]);
+  const [temporaryDateRange, setTemporaryDateRange] = useState<
+    [string, string]
+  >(["", ""]);
 
   // 서버전달 시 필요한 날짜 포맷 변환
   const handleDateRangeFormat = (dateString: string) => {
@@ -49,28 +51,28 @@ const StepOneContents = ({
 
   // 모집 기간 날짜 포맷 변환 후 서버전달 데이터에 저장
   useEffect(() => {
-    if (dateRange[0] && dateRange[1]) {
-      const startDate = handleDateRangeFormat(dateRange[0]);
-      const endDate = handleDateRangeFormat(dateRange[1]);
+    if (temporaryDateRange[0] && temporaryDateRange[1]) {
+      const startDate = handleDateRangeFormat(temporaryDateRange[0]);
+      const endDate = handleDateRangeFormat(temporaryDateRange[1]);
       setValue("recruitmentStartDate", startDate);
       setValue("recruitmentEndDate", endDate);
     }
-  }, [dateRange, setValue]);
+  }, [temporaryDateRange, setValue]);
 
   // 임시 데이터 atom 업데이트
   useEffect(() => {
     const temporaryStepOneData = {
       title: getValues("title"),
       description: getValues("description"),
-      recruitmentStartDate: dateRange[0],
-      recruitmentEndDate: dateRange[1],
+      recruitmentStartDate: temporaryDateRange[0],
+      recruitmentEndDate: temporaryDateRange[1],
       imageUrls: currentImageList, // 임시저장을 위해 서버 업로드 전 이미지를 저장
     };
 
     setTemporaryDataByStep({
       stepOne: temporaryStepOneData,
     });
-  }, [dateRange, getValues, setTemporaryDataByStep, currentImageList]);
+  }, [temporaryDateRange, getValues, setTemporaryDataByStep, currentImageList]);
 
   // 임시 데이터 있으면 로컬스토리지에서 불러오기
   useEffect(() => {
@@ -82,7 +84,7 @@ const StepOneContents = ({
       setValue("recruitmentStartDate", parsedData.recruitmentStartDate);
       setValue("recruitmentEndDate", parsedData.recruitmentEndDate);
       setCurrentImageList(parsedData.imageUrls);
-      setDateRange([
+      setTemporaryDateRange([
         parsedData.recruitmentStartDate,
         parsedData.recruitmentEndDate,
       ]);
@@ -144,8 +146,8 @@ const StepOneContents = ({
           <span className="text-orange-300"> *</span>
         </label>
         <DatePickerCalendar
-          setDateRange={setDateRange}
-          initialDate={dateRange}
+          setDateRange={setTemporaryDateRange}
+          initialDate={temporaryDateRange}
         />
         <ErrorText
           error={errors.recruitmentStartDate || errors.recruitmentEndDate}
