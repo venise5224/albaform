@@ -6,7 +6,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/dropdown/DropdownMenu";
-import { usePrevPage } from "@/hooks/usePrevPage";
 import { useSearchParamsCustom } from "@/hooks/useSearchParamsCustom";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -27,7 +26,6 @@ const OrderByDropdown = () => {
     key: "orderBy",
     value: orderBy.value,
   });
-  usePrevPage();
 
   const handleClick = (value: string, title: string) => {
     setOrderBy({ value, title });

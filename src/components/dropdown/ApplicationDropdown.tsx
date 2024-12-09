@@ -6,7 +6,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/dropdown/DropdownMenu";
-import { usePrevPage } from "@/hooks/usePrevPage";
 import { useSearchParamsCustom } from "@/hooks/useSearchParamsCustom";
 import { useState } from "react";
 
@@ -19,7 +18,6 @@ const ApplicationDropdown = () => {
     key: "isRecruiting",
     value: isRecruiting?.toString() || undefined,
   });
-  usePrevPage();
 
   const handleClick = (status: boolean | undefined) => {
     setIsRecruiting(status);

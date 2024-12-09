@@ -6,14 +6,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/dropdown/DropdownMenu";
-import { usePrevPage } from "@/hooks/usePrevPage";
 import { useSearchParamsCustom } from "@/hooks/useSearchParamsCustom";
 import { useState } from "react";
 
 // status 값을 URL에서 추출하여 서버로 전달하세요.
 const RecruitDropdown = () => {
-  usePrevPage();
-
   const [recruitStatus, setRecruitStatus] = useState<string | undefined>(
     undefined
   );

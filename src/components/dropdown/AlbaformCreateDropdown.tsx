@@ -8,7 +8,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/dropdown/DropdownMenu";
-import { usePrevPage } from "@/hooks/usePrevPage";
 import { useSearchParamsCustom } from "@/hooks/useSearchParamsCustom";
 import { useAtom, useAtomValue } from "jotai";
 import Image from "next/image";
@@ -22,7 +21,6 @@ const AlbaformCreateDropdown = () => {
     key: "step",
     value: currentStep.value,
   });
-  usePrevPage();
 
   const handleClick = (value: string, stepNum: number, title: string) => {
     setCurrentStep({ title, value, stepNum });

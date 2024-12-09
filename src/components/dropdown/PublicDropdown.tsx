@@ -6,7 +6,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/dropdown/DropdownMenu";
-import { usePrevPage } from "@/hooks/usePrevPage";
 import { useSearchParamsCustom } from "@/hooks/useSearchParamsCustom";
 import { useState } from "react";
 
@@ -17,7 +16,6 @@ const PublicDropdown = () => {
     key: "isPublic",
     value: isPublic?.toString() || undefined,
   });
-  usePrevPage();
 
   const handleClick = (status: boolean | undefined) => {
     setIsPublic(status);

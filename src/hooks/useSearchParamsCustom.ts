@@ -24,7 +24,7 @@ export const useSearchParamsCustom = ({
       } else {
         currentParams.delete(params.key);
       }
-      router.push(`${pathname}?${currentParams.toString()}`);
+      router.replace(`${pathname}?${currentParams.toString()}`);
     },
     [currentParams, router, pathname]
   );

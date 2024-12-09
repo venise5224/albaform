@@ -6,7 +6,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/dropdown/DropdownMenu";
-import { usePrevPage } from "@/hooks/usePrevPage";
 import { useSearchParamsCustom } from "@/hooks/useSearchParamsCustom";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -27,8 +26,6 @@ const AlbatalkFilterDropdown = () => {
     key: "albatalkOrderBy",
     value: albatalkFilter.value,
   });
-
-  usePrevPage();
 
   const handleClick = (value: string, title: string) => {
     setAlbatalkFilter({ value, title });
