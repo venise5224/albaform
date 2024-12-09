@@ -8,9 +8,12 @@ import SimpleRequirements from "./components/SimpleRequirements";
 import EmployerInfo from "./components/EmployerInfo";
 import DetailRequirements from "./components/DetailRequirements";
 import NoticeApplicant from "./components/NoticeApplicant";
-import { PageProps } from "../../../../.next/types/app/page";
-import { AlbaformDetailData } from "@/types/alba";
 import NoticeIsClosed from "./components/NoticeIsClosed";
+import { AlbaformDetailData } from "@/types/alba";
+
+type PageProps = {
+  params: Promise<{ formId: string }>;
+};
 
 const AlbarformDetailPage = async ({ params }: PageProps) => {
   const { formId } = await params;
