@@ -6,6 +6,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/dropdown/DropdownMenu";
+import { useSearchParamsCustom } from "@/hooks/useSearchParamsCustom";
 import { useState } from "react";
 
 // isRecruiting 값을 URL에서 추출하여 서버로 전달하세요.
@@ -13,18 +14,14 @@ const ApplicationDropdown = () => {
   const [isRecruiting, setIsRecruiting] = useState<boolean | undefined>(
     undefined
   );
+  const { updateURL } = useSearchParamsCustom({
+    key: "isRecruiting",
+    value: isRecruiting?.toString() || undefined,
+  });
 
   const handleClick = (status: boolean | undefined) => {
     setIsRecruiting(status);
-    const params = new URLSearchParams(window.location.search);
-
-    if (status === undefined) {
-      params.delete("isRecruiting");
-    } else {
-      params.set("isRecruiting", status?.toString() || "");
-    }
-
-    window.history.pushState({}, "", `?${params}`);
+    updateURL({ key: "isRecruiting", value: status?.toString() || undefined });
   };
 
   const valueArr = [
