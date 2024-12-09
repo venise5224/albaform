@@ -7,15 +7,17 @@ import {
   DropdownMenuTrigger,
 } from "@/components/dropdown/DropdownMenu";
 
-// 트리거 요소를 넣으시고, 수정 및 삭제 함수도 전달해서 사용해주세요.
+// 트리거 요소를 넣으시고, id와 수정 및 삭제 함수도 전달해서 사용해주세요.
 const EditDeleteDropdown = ({
   children,
   onEdit,
   onDelete,
+  id,
 }: {
   children: React.ReactNode;
   onEdit: () => void;
   onDelete: () => void;
+  id?: string;
 }) => {
   const itemArr = [
     {
@@ -32,14 +34,14 @@ const EditDeleteDropdown = ({
     <DropdownMenu className="bg-transparent">
       <DropdownMenuTrigger
         asChild
-        id="editDelete"
+        id={`editDelete-${id}`}
         checkedValue={undefined}
         className="rounded-lg"
       >
         {children}
       </DropdownMenuTrigger>
       <DropdownMenuContent
-        id="editDelete"
+        id={`editDelete-${id}`}
         className="translate-x-[-50px] items-center bg-white p-1 pc:w-[132px] pc:translate-x-[-100px]"
       >
         {itemArr.map((item) => (
