@@ -29,13 +29,14 @@ const AlbaList = ({ list, nextCursor, role, params }: AlbaListProps) => {
   const isPublic = params?.isPublic ?? undefined;
   const isRecruiting = params?.isRecruiting ?? undefined;
 
-  const fetchAlbaList = async (isReset: boolean) => {
+  const fetchMoreData = useCallback(async () => {
+    if (!nextCursor) return;
     setIsLoading(true);
     try {
       const response = await getAlbaList({
         orderBy,
         limit: 6,
-        cursor: isReset ? 0 : cursor,
+        cursor,
         keyword,
         isRecruiting,
       });
@@ -47,32 +48,21 @@ const AlbaList = ({ list, nextCursor, role, params }: AlbaListProps) => {
             )
           : response.data;
 
-      setAlbaList((prevList) =>
-        isReset
-          ? filteredData
-          : [
-              ...prevList,
-              ...filteredData.filter(
-                (newList: AlbarformData) =>
-                  !prevList.some((card) => card.id === newList.id)
-              ),
-            ]
-      );
+      setAlbaList((prevList) => [
+        ...prevList,
+        ...filteredData.filter(
+          (newList: AlbarformData) =>
+            !prevList.some((card) => card.id === newList.id)
+        ),
+      ]);
 
       setCursor(response.nextCursor);
     } catch (error) {
       console.error("알바폼 목록을 가져오는데 실패했습니다.", error);
-      setAlbaList([]);
     } finally {
       setIsLoading(false);
     }
-  };
-
-  // 무한 스크롤 데이터 요청
-  const fetchMoreData = useCallback(() => {
-    if (!nextCursor) return;
-    fetchAlbaList(false);
-  }, [nextCursor, fetchAlbaList]);
+  }, [orderBy, cursor, nextCursor, keyword, isRecruiting, isPublic]);
 
   // 무한 스크롤 Ref
   const observerRef = useInfinityScroll({ fetchMoreData });

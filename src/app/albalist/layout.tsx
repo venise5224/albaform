@@ -1,10 +1,12 @@
-import { ReactNode } from "react";
+import { ReactNode, Suspense } from "react";
 import SearchContainer from "./components/SearchContainer";
 
 const AlbaListLayout = ({ children }: { children: ReactNode }) => {
   return (
     <div>
-      <SearchContainer />
+      <Suspense>
+        <SearchContainer />
+      </Suspense>
       {children}
     </div>
   );
