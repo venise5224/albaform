@@ -6,7 +6,7 @@ type PickableListProps<T extends string> = {
     ? (value: { time: string; updated: boolean }) => void
     : (value: string) => void;
   setIsOpen: (isOpen: boolean) => void;
-  setStepTwoData: React.Dispatch<
+  setStepTwoData?: React.Dispatch<
     React.SetStateAction<{
       numberOfPositions: number;
       gender: string;
@@ -54,10 +54,12 @@ const PickableList = <
     } else {
       (setValue as (value: string) => void)(el);
     }
-    setStepTwoData((prev) => ({
-      ...prev,
-      [matchLabelToStepTwoData(label)]: el,
-    }));
+    if (setStepTwoData) {
+      setStepTwoData((prev) => ({
+        ...prev,
+        [matchLabelToStepTwoData(label)]: el,
+      }));
+    }
     setIsOpen(false);
   };
 
