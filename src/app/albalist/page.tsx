@@ -8,21 +8,34 @@ interface AlbaListPageProps {
   searchParams: Promise<{
     keyword?: string;
     orderBy?: string;
-    isRecruiting?: boolean;
-    isPublic?: boolean;
+    isRecruiting?: string;
+    isPublic?: string;
   }>;
 }
 
 const AlbaListPage = async ({ searchParams }: AlbaListPageProps) => {
-  const params = await searchParams;
+  const { keyword, orderBy, isRecruiting, isPublic } = await searchParams;
+
+  const params = {
+    keyword,
+    orderBy,
+    isRecruiting:
+      isRecruiting === "true"
+        ? true
+        : isRecruiting === "false"
+          ? false
+          : undefined,
+    isPublic:
+      isPublic === "true" ? true : isPublic === "false" ? false : undefined,
+  };
 
   return (
     <div className="flex justify-center">
-      <Suspense fallback={<CardListSkeleton count={6} />}>
-        <AlbaListFetcher
-          key={`${params.orderBy}-${params.keyword}-${params.isRecruiting}-${params.isPublic}`}
-          params={params}
-        />
+      <Suspense
+        key={`${params.orderBy}-${params.keyword}-${params.isRecruiting}-${params.isPublic}`}
+        fallback={<CardListSkeleton count={6} />}
+      >
+        <AlbaListFetcher params={params} />
       </Suspense>
     </div>
   );

@@ -30,12 +30,11 @@ export default {
         "black-300": "#373737",
         "black-400": "#1f1f1f",
         "black-500": "#040404",
-        "orange-50": "#EEF9F6",
+        "orange-50": "#FFF7EB",
         "orange-100": "#FCC369",
         "orange-200": "#FBAF37",
         "orange-300": "#F89A05",
         "orange-400": "#E18C05",
-        "orange-500": "#FFF7EB",
         "blue-100": "#535779",
         "blue-200": "#3E415B",
         "blue-300": "#2A2C3D",
@@ -58,7 +57,21 @@ export default {
         sm: ["13px", "22px"],
         xs: ["12px", "18px"],
       },
+      gridTemplateAreas: {
+        layout: ["box1 box4", "box2 box5", "box3 box6", ". box7"],
+      },
+      gridArea: {
+        box1: "box1",
+        box2: "box2",
+        box3: "box3",
+        box4: "box4",
+        box5: "box5",
+        box6: "box6",
+        box7: "box7",
+      },
     },
   },
-  plugins: [],
+  plugins: [
+    require("@savvywombat/tailwindcss-grid-areas"), // grid-area를 사용하기 위한 플러그인
+  ],
 } satisfies Config;

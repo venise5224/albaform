@@ -1,10 +1,17 @@
-import { ReactNode } from "react";
+import { ReactNode, Suspense } from "react";
 import SearchContainer from "./components/SearchContainer";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "알바 목록",
+};
 
 const AlbaListLayout = ({ children }: { children: ReactNode }) => {
   return (
     <div>
-      <SearchContainer />
+      <Suspense>
+        <SearchContainer />
+      </Suspense>
       {children}
     </div>
   );

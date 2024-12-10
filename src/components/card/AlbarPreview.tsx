@@ -40,7 +40,7 @@ const AlbarPreview = ({ info }: AlbarPreviewProps) => {
         <div className="flex-grow text-black-100">
           {formattedStartDate} ~ {formattedEndDate}
         </div>
-        <AlbaPreviewDropdown formId={info.id} />
+        <AlbaPreviewDropdown id={info.id} />
       </time>
       <div className="mt-[16px] h-[52px] pc:mt-[24px] pc:h-[64px]">
         <h2 className="w-[80%] text-2lg font-semibold pc:text-xl">

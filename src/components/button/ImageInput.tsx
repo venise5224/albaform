@@ -6,6 +6,7 @@ import uploadIcon from "@/../public/icon/upload-md.svg";
 import uploadLargeIcon from "@/../public/icon/upload-lg.svg";
 import xCircleIcon from "@/../public/icon/Xcircle-md.svg";
 import xCircleLargeIcon from "@/../public/icon/Xcircle-lg.svg";
+import ErrorText from "../errorText/ErrorText";
 
 interface ImageInputProps {
   size: "small" | "medium" | "large";
@@ -14,8 +15,10 @@ interface ImageInputProps {
 
 const ImageInput = ({ size = "small", onImageChange }: ImageInputProps) => {
   const [selectedImages, setSelectedImages] = useState<string[]>([]);
+  const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const MAX_FILE_SIZE_MB = 5;
+  const MAX_IMAGES = 3;
 
   // 크기별 클래스
   const sizeClasses = {
@@ -28,15 +31,29 @@ const ImageInput = ({ size = "small", onImageChange }: ImageInputProps) => {
     if (e.target.files) {
       const files = Array.from(e.target.files);
       const newImages: string[] = [];
+      let isError = false;
+
+      // 최대 이미지 개수 체크
+      if (selectedImages.length + files.length > MAX_IMAGES) {
+        setError(`최대 ${MAX_IMAGES}개까지만 선택할 수 있습니다.`);
+        return;
+      }
 
       for (const file of files) {
         // 파일 크기 제한 확인
         if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
+          isError = true;
           continue;
         }
 
         const imageUrl = URL.createObjectURL(file);
         newImages.push(imageUrl);
+      }
+
+      if (isError) {
+        setError(`파일 크기는 ${MAX_FILE_SIZE_MB}MB 이하로 선택해주세요.`);
+      } else {
+        setError(null); // 에러 메시지 초기화
       }
 
       const updatedImages = [...selectedImages, ...newImages];
@@ -61,7 +78,7 @@ const ImageInput = ({ size = "small", onImageChange }: ImageInputProps) => {
   };
 
   return (
-    <div className="flex flex-wrap gap-4">
+    <div className="relative flex flex-wrap gap-4">
       {/* Input */}
       <label
         className={`flex cursor-pointer items-center justify-center rounded-lg bg-background-200 p-7 ${sizeClasses[size]}`}
@@ -87,6 +104,11 @@ const ImageInput = ({ size = "small", onImageChange }: ImageInputProps) => {
           )}
         </span>
       </label>
+      {error && (
+        <ErrorText className="left-0" error={error}>
+          {error}
+        </ErrorText>
+      )}
 
       {/* 선택된 이미지 */}
       {selectedImages.map((image, index) => (
@@ -99,6 +121,7 @@ const ImageInput = ({ size = "small", onImageChange }: ImageInputProps) => {
           />
           {/* 취소 버튼 */}
           <button
+            type="button"
             onClick={() => handleRemoveImage(index)}
             className="absolute right-0 top-0 -translate-y-1/2 translate-x-1/2 cursor-pointer border-0 bg-transparent p-0"
           >

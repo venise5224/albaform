@@ -22,7 +22,8 @@ const AlbaListFetcher = async ({ params }: AlbaListFetcherProps) => {
     limit: 6,
     cursor: 0,
     keyword: params.keyword,
-    isRecruiting: params.isRecruiting || undefined,
+    isRecruiting:
+      params.isRecruiting === undefined ? undefined : params.isRecruiting,
   });
 
   const albaList = response.data || [];
