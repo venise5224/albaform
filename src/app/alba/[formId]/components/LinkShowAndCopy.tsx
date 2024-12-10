@@ -1,8 +1,8 @@
 "use client";
 
-import CopyButton from "./CopyButton";
+import CopyButton from "../../../../components/button/CopyButton";
 
-const CopyLinkButton = ({ url }: { url: string }) => {
+const LinkShowAndCopy = ({ url }: { url: string }) => {
   return (
     <div className="flex h-[50px] w-[470px] items-center justify-between rounded-lg border border-line-200 p-4">
       <span className="">{url}</span>
@@ -11,4 +11,4 @@ const CopyLinkButton = ({ url }: { url: string }) => {
   );
 };
 
-export default CopyLinkButton;
+export default LinkShowAndCopy;

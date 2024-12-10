@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import CopyLinkButton from "@/components/button/CopyLinkButton";
+import LinkShowAndCopy from "@/app/alba/[formId]/components/LinkShowAndCopy";
 import ModalContainer from "../modalContainer/ModalContainer";
 import shareToKakao from "@/utils/shareToKakao";
 import shareToFacebook from "@/utils/shareToFacebook";
@@ -18,7 +18,7 @@ const ShareSNSModal = () => {
   ];
 
   useEffect(() => {
-    if (!window.Kakao.isInitialized()) {
+    if (window.Kakao && !window.Kakao.isInitialized()) {
       window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_MAP_KEY as string);
     }
   }, []);
@@ -58,7 +58,7 @@ const ShareSNSModal = () => {
             </div>
           ))}
         </div>
-        <CopyLinkButton url={href} />
+        <LinkShowAndCopy url={href} />
       </div>
     </ModalContainer>
   );
