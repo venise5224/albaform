@@ -17,10 +17,6 @@ type PageProps = {
   params: Promise<{ formId: string }>;
 };
 
-type PageProps = {
-  params: Promise<{ formId: string }>;
-};
-
 const AlbarformDetailPage = async ({ params }: PageProps) => {
   const { formId } = await params;
   const cookie = await cookies();
