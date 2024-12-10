@@ -6,11 +6,7 @@ interface ApplyButtonProps {
   isValid: boolean;
 }
 
-const ApplyButton: React.FC<ApplyButtonProps> = ({
-  onSave,
-  isSubmitting,
-  isValid,
-}) => {
+const ApplyButton = ({ onSave, isSubmitting, isValid }: ApplyButtonProps) => {
   return (
     <div className="mt-[62px] flex flex-col gap-[10px] pc:mt-[88px] pc:flex-row pc:gap-[8px]">
       <SolidButton
