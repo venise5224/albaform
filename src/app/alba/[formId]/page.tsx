@@ -8,6 +8,7 @@ import SimpleRequirements from "./components/SimpleRequirements";
 import EmployerInfo from "./components/EmployerInfo";
 import DetailRequirements from "./components/DetailRequirements";
 import NoticeApplicant from "./components/NoticeApplicant";
+import NoticeIsClosed from "./components/NoticeIsClosed";
 import ScrapAndShareButton from "./components/ScrapAndShareButton";
 import { AlbaformDetailData } from "@/types/alba";
 import { cookies } from "next/headers";
@@ -67,6 +68,7 @@ const AlbarformDetailPage = async ({ params }: PageProps) => {
         </section>
       </div>
       <NoticeApplicant count={data.applyCount} />
+      <NoticeIsClosed closedDate={data.recruitmentEndDate} />
       {role === "APPLICANT" && (
         <ScrapAndShareButton
           formId={Number(formId)}
