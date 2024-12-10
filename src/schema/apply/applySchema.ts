@@ -15,6 +15,7 @@ export const applySchema = z.object({
   resumeName: z.string().regex(/\.(pdf|word)$/, {
     message: "허용되는 파일 형식은 pdf, word 입니다.",
   }),
+  resumeId: z.string(),
   introduction: z
     .string()
     .min(1, { message: "자기 소개를 입력해주세요." })

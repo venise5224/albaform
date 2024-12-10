@@ -6,7 +6,11 @@ interface ApplyButtonProps {
   isValid: boolean;
 }
 
-const ApplyButton = ({ onSave, isSubmitting, isValid }: ApplyButtonProps) => {
+const ApplyFormButton = ({
+  onSave,
+  isSubmitting,
+  isValid,
+}: ApplyButtonProps) => {
   return (
     <div className="mt-[62px] flex flex-col gap-[10px] pc:mt-[88px] pc:flex-row pc:gap-[8px]">
       <SolidButton
@@ -29,4 +33,4 @@ const ApplyButton = ({ onSave, isSubmitting, isValid }: ApplyButtonProps) => {
   );
 };
 
-export default ApplyButton;
+export default ApplyFormButton;
