@@ -62,7 +62,7 @@ const AddTalkForm = () => {
             register={register}
             error={errors.title}
             placeholder="제목을 입력해주세요."
-            className="rounded-lg border-none bg-background-200 p-[14px] placeholder:text-md pc:p-4 pc:placeholder:text-xl tablet:placeholder:text-lg"
+            className="rounded-lg border-none bg-background-200 p-[14px] placeholder:text-md pc:max-w-full pc:p-4 pc:placeholder:text-xl tablet:placeholder:text-lg"
           />
           <ErrorText error={errors.title}>{errors.title?.message}</ErrorText>
         </div>
