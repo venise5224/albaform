@@ -6,18 +6,18 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/dropdown/DropdownMenu";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
 
-const AlbaPreviewDropdown = ({ id }: { id?: string }) => {
-  const router = useRouter();
-
-  const goToApply = () => {
-    router.push(`/apply/${id}`);
-  };
-
-  const onScrap = () => {};
-
+const AlbaPreviewDropdown = ({
+  children,
+  goToApply,
+  onScrap,
+  id,
+}: {
+  children: React.ReactNode;
+  goToApply: () => void;
+  onScrap: () => void;
+  id?: number;
+}) => {
   const itemArr = [
     {
       text: "지원하기",
@@ -37,13 +37,7 @@ const AlbaPreviewDropdown = ({ id }: { id?: string }) => {
         checkedValue={undefined}
         className="rounded-lg"
       >
-        <Image
-          src={"/icon/kebab-md.svg"}
-          width={24}
-          height={24}
-          alt="kebab icon"
-          className="pc:size-9"
-        />
+        {children}
       </DropdownMenuTrigger>
       <DropdownMenuContent
         id={`albaPreview-${id}`}

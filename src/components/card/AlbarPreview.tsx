@@ -4,21 +4,47 @@ import { getDday } from "@/utils/getDday";
 import isPast from "@/utils/isPast";
 import Image from "next/image";
 import AlbaPreviewDropdown from "../dropdown/AlbaPreviewDropdown";
+import { useRouter } from "next/navigation";
+import instance from "@/lib/instance";
+import { useToast } from "@/hooks/useToast";
 
 interface AlbarPreviewProps {
   info: AlbarformData;
 }
 
 const AlbarPreview = ({ info }: AlbarPreviewProps) => {
+  const router = useRouter();
   const isRecruiting = isPast(info.recruitmentEndDate);
   const dday = getDday(info.recruitmentEndDate);
+  const imageStyle = info.imageUrls[0] ? "object-cover" : "p-10 object-contain";
+  const { addToast } = useToast();
 
   const [formattedStartDate, formattedEndDate] = formatDate(
     info.recruitmentStartDate,
     info.recruitmentEndDate
   );
 
-  const imageStyle = info.imageUrls[0] ? "object-cover" : "p-10 object-contain";
+  const goToApply = () => {
+    router.push(`/apply/${info.id}`);
+  };
+
+  const onScrap = async () => {
+    const result = await instance(
+      `${process.env.NEXT_PUBLIC_API_URL}/forms/${info.id}/scrap`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    if (result.error) {
+      addToast(`${result.error}`, "warning");
+    } else {
+      addToast("스크랩이 완료되었습니다.", "success");
+    }
+  };
 
   return (
     <div className="h-[390px] w-[327px] pc:h-[536px] pc:w-[477px]">
@@ -40,7 +66,19 @@ const AlbarPreview = ({ info }: AlbarPreviewProps) => {
         <div className="flex-grow text-black-100">
           {formattedStartDate} ~ {formattedEndDate}
         </div>
-        <AlbaPreviewDropdown id={info.id} />
+        <AlbaPreviewDropdown
+          id={info.id}
+          goToApply={goToApply}
+          onScrap={onScrap}
+        >
+          <Image
+            src={"/icon/kebab-md.svg"}
+            width={24}
+            height={24}
+            alt="kebab icon"
+            className="pc:size-9"
+          />
+        </AlbaPreviewDropdown>
       </time>
       <div className="mt-[16px] h-[52px] pc:mt-[24px] pc:h-[64px]">
         <h2 className="w-[80%] text-2lg font-semibold pc:text-xl">
