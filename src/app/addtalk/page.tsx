@@ -1,11 +1,7 @@
 import AddTalkForm from "./components/AddTalkForm";
 
 const AddTalkPage = () => {
-  return (
-    <div>
-      <AddTalkForm />
-    </div>
-  );
+  return <AddTalkForm />;
 };
 
 export default AddTalkPage;
