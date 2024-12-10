@@ -8,8 +8,6 @@ const NoticeIsClosed = ({ closedDate }: { closedDate: string }) => {
   const { openModal } = useModal();
 
   useEffect(() => {
-    console.log(isPast(closedDate));
-
     if (isPast(closedDate)) openModal("ClosedAlbaformModal");
   }, [openModal, closedDate]);
 
