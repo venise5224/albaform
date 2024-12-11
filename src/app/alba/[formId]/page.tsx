@@ -12,6 +12,7 @@ import NoticeIsClosed from "./components/NoticeIsClosed";
 import ScrapAndShareButton from "./components/ScrapAndShareButton";
 import { AlbaformDetailData } from "@/types/alba";
 import { cookies } from "next/headers";
+import OwnerActionButtons from "./components/OwnerActionButtons";
 
 type PageProps = {
   params: Promise<{ formId: string }>;
@@ -79,12 +80,7 @@ const AlbarformDetailPage = async ({ params }: PageProps) => {
           <StoreLocation location={data.location} />
         </section>
         <section className="flex w-full flex-col gap-[10px] pc:grid-in-box6">
-          <SolidButton icon="/icon/write-fill-md.svg" style="orange300">
-            지원하기
-          </SolidButton>
-          <SolidButton icon="/icon/document-md.svg" style="outOrange300">
-            내 지원 내역 보기
-          </SolidButton>
+          {role === "OWNER" && <OwnerActionButtons formId={formId} />}
         </section>
       </div>
       <NoticeApplicant count={data.applyCount} />
