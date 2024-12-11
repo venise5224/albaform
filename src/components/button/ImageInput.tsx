@@ -9,16 +9,21 @@ import xCircleLargeIcon from "@/../public/icon/Xcircle-lg.svg";
 import ErrorText from "../errorText/ErrorText";
 
 interface ImageInputProps {
-  size: "small" | "medium" | "large";
-  onImageChange: (images: string[]) => void;
+  size?: "small" | "medium" | "large";
+  limit?: number;
+  onImageChange: (files: File[]) => void;
 }
 
-const ImageInput = ({ size = "small", onImageChange }: ImageInputProps) => {
-  const [selectedImages, setSelectedImages] = useState<string[]>([]);
+const ImageInput = ({
+  size = "small",
+  limit = 1,
+  onImageChange,
+}: ImageInputProps) => {
+  const [selectedImages, setSelectedImages] = useState<string[]>([]); // 미리보기 이미지 URL
+  const [newFiles, setNewFiles] = useState<File[]>([]); // 실제 업로드할 파일
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const MAX_FILE_SIZE_MB = 5;
-  const MAX_IMAGES = 3;
 
   // 크기별 클래스
   const sizeClasses = {
@@ -32,13 +37,15 @@ const ImageInput = ({ size = "small", onImageChange }: ImageInputProps) => {
       const files = Array.from(e.target.files);
       const newImages: string[] = [];
       let isError = false;
-
+      console.log("selectedImages= " + selectedImages);
+      console.log("newFiles= " + newFiles);
       // 최대 이미지 개수 체크
-      if (selectedImages.length + files.length > MAX_IMAGES) {
-        setError(`최대 ${MAX_IMAGES}개까지만 선택할 수 있습니다.`);
+      if (selectedImages.length + files.length > limit) {
+        setError(`최대 ${limit}개까지만 선택할 수 있습니다.`);
         return;
       }
 
+      const updatedFiles: File[] = [...newFiles];
       for (const file of files) {
         // 파일 크기 제한 확인
         if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
@@ -48,17 +55,21 @@ const ImageInput = ({ size = "small", onImageChange }: ImageInputProps) => {
 
         const imageUrl = URL.createObjectURL(file);
         newImages.push(imageUrl);
+
+        updatedFiles.push(file);
       }
 
       if (isError) {
         setError(`파일 크기는 ${MAX_FILE_SIZE_MB}MB 이하로 선택해주세요.`);
       } else {
-        setError(null); // 에러 메시지 초기화
+        setError(null);
       }
 
       const updatedImages = [...selectedImages, ...newImages];
       setSelectedImages(updatedImages);
-      onImageChange(updatedImages); // 부모 컴포넌트로 이미지 URL 배열 전달
+      setNewFiles(updatedFiles);
+
+      onImageChange(updatedFiles); // 부모 컴포넌트로 파일 배열 전달
 
       // 파일 input 초기화
       if (fileInputRef.current) {
@@ -73,8 +84,12 @@ const ImageInput = ({ size = "small", onImageChange }: ImageInputProps) => {
     URL.revokeObjectURL(imageToRemove);
 
     const updatedImages = selectedImages.filter((_, i) => i !== index);
-    setSelectedImages(updatedImages);
-    onImageChange(updatedImages); // 부모 컴포넌트로 업데이트된 이미지 배열 전달
+    const updatedFiles = newFiles.filter((_, i) => i !== index);
+
+    setSelectedImages(updatedImages); // 미리보기 URL 업데이트
+    setNewFiles(updatedFiles); // 실제 파일 배열 업데이트
+
+    onImageChange(updatedFiles); // 부모 컴포넌트로 업데이트된 파일 배열 전달
   };
 
   return (
