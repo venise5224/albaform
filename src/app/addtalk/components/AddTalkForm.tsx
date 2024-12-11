@@ -64,7 +64,7 @@ const AddTalkForm = () => {
 
       if (response.status === 201) {
         addToast("글이 등록되었습니다.", "success");
-        router.push("/albatalk");
+        router.push(`/boards/${response.data.id}`);
       } else {
         addToast("글 등록에 실패했습니다.", "warning");
         console.error("글 등록 실패: ", response.error);
