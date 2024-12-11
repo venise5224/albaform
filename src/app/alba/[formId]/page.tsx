@@ -1,4 +1,3 @@
-import SolidButton from "@/components/button/SolidButton";
 import Carousel from "@/components/Carousel/Carousel";
 import fetchData from "./fetchData";
 import Content from "./components/Content";
@@ -10,6 +9,7 @@ import DetailRequirements from "./components/DetailRequirements";
 import NoticeApplicant from "./components/NoticeApplicant";
 import NoticeIsClosed from "./components/NoticeIsClosed";
 import ScrapAndShareButton from "./components/ScrapAndShareButton";
+import ApllicantActionButtons from "./components/ApllicantActionButtons";
 import { AlbaformDetailData } from "@/types/alba";
 import { cookies } from "next/headers";
 
@@ -79,12 +79,7 @@ const AlbarformDetailPage = async ({ params }: PageProps) => {
           <StoreLocation location={data.location} />
         </section>
         <section className="flex w-full flex-col gap-[10px] pc:grid-in-box6">
-          <SolidButton icon="/icon/write-fill-md.svg" style="orange300">
-            지원하기
-          </SolidButton>
-          <SolidButton icon="/icon/document-md.svg" style="outOrange300">
-            내 지원 내역 보기
-          </SolidButton>
+          {role === "APPLICANT" && <ApllicantActionButtons formId={formId} />}
         </section>
       </div>
       <NoticeApplicant count={data.applyCount} />
