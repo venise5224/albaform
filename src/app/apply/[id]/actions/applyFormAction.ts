@@ -1,6 +1,7 @@
 "use server";
 
 import instance from "@/lib/instance";
+import { applySchema } from "@/schema/apply/applySchema";
 
 export const applyFormActions = async (formData: FormData, formId: string) => {
   const data = {
@@ -13,6 +14,15 @@ export const applyFormActions = async (formData: FormData, formId: string) => {
     password: formData.get("password")?.toString() || "",
   };
 
+  const parsedData = applySchema.safeParse(data);
+
+  if (!parsedData.success) {
+    return {
+      status: false,
+      message: parsedData.error.flatten(),
+    };
+  }
+
   const response = await instance(
     `${process.env.NEXT_PUBLIC_API_URL}/forms/${formId}/applications`,
     {
@@ -24,9 +34,15 @@ export const applyFormActions = async (formData: FormData, formId: string) => {
     }
   );
 
-  if (response.status < 200 || response.status >= 300) {
-    throw new Error(response.error || "지원서 제출 중 문제가 발생했습니다.");
+  if (response.status !== 200) {
+    return {
+      status: response.status,
+      message: response.error,
+    };
   }
 
-  return response;
+  return {
+    status: response.status,
+    data: response.data,
+  };
 };

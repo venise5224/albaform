@@ -2,17 +2,18 @@
 
 import ApplyFormButton from "./ApplyFormButton";
 import ApplyFormInputList from "./ApplyFormInputList";
-import { ApplyFormInputArr } from "./ApplyFormInputArr";
 import { applySchema } from "@/schema/apply/applySchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
 import { useToast } from "@/hooks/useToast";
 import { applyFormActions } from "../actions/applyFormAction";
 import { uploadResumeAction } from "../actions/uploadResumeAction";
+import { useRouter } from "next/navigation";
 
 const ApplyForm = ({ id }: { id: string }) => {
+  const { addToast } = useToast();
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -32,11 +33,6 @@ const ApplyForm = ({ id }: { id: string }) => {
       password: "",
     },
   });
-  const [visible, setVisible] = useState(false);
-  const { addToast } = useToast();
-
-  //인풋 요소
-  const inputArr = ApplyFormInputArr({ register, errors, visible });
 
   //폼 제출 기능
   const onSubmit = async (data: z.infer<typeof applySchema>) => {
@@ -46,17 +42,16 @@ const ApplyForm = ({ id }: { id: string }) => {
     });
 
     try {
-      await applyFormActions(formData, id);
+      const response = await applyFormActions(formData, id);
 
-      addToast("지원서를 성공적으로 제출하였습니다", "success");
+      if (response.status !== 200) {
+        return addToast(response.message as string, "warning");
+      }
+
+      addToast("지원서 제출에 성공하였습니다", "success");
     } catch (error) {
-      const errorMessage =
-        error instanceof Error
-          ? error.message
-          : "지원서 제출 중 알 수 없는 오류가 발생했습니다.";
-
       console.error("지원서 제출 오류:", error);
-      addToast(errorMessage, "warning");
+      addToast("서버 오류로 인해 지원서 제출에 실패하였습니다", "warning");
     }
   };
 
@@ -66,15 +61,24 @@ const ApplyForm = ({ id }: { id: string }) => {
     if (!file) return;
 
     try {
-      const result = await uploadResumeAction(file);
+      const response = await uploadResumeAction(file);
 
-      setValue("resumeName", result.resumeName);
-      setValue("resumeId", result.resumeId.toString());
+      if (response.status !== 201) {
+        addToast(response.message as string, "warning");
+        return;
+      }
+
+      setValue("resumeName", response.data.resumeName);
+      setValue("resumeId", response.data.resumeId.toString());
 
       addToast("이력서 업로드에 성공하였습니다", "success");
+      router.push(`/alba/${id}`);
     } catch (error) {
       console.error("이력서 업로드 오류:", error);
-      addToast("이력서 업로드 중 오류가 발생했습니다.", "warning");
+      addToast(
+        "서버 오류로 인해 이력서 업로드 중 오류가 발생했습니다.",
+        "warning"
+      );
     }
   };
 
@@ -89,12 +93,10 @@ const ApplyForm = ({ id }: { id: string }) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="mt-[23px] pc:mt-[36px]">
       <ApplyFormInputList
-        inputArr={inputArr}
         register={register}
         errors={errors}
         watch={watch}
         setValue={setValue}
-        setVisible={setVisible}
         handleUploadResume={handleUploadResume}
       />
 
