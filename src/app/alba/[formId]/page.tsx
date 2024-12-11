@@ -79,7 +79,12 @@ const AlbarformDetailPage = async ({ params }: PageProps) => {
           <StoreLocation location={data.location} />
         </section>
         <section className="flex w-full flex-col gap-[10px] pc:grid-in-box6">
-          {role === "APPLICANT" && <ApllicantActionButtons formId={formId} />}
+          {role === "APPLICANT" && (
+            <ApllicantActionButtons
+              formId={formId}
+              recruitmentEndDate={data.recruitmentEndDate}
+            />
+          )}
         </section>
       </div>
       <NoticeApplicant count={data.applyCount} />
