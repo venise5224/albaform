@@ -5,14 +5,33 @@ import ModalContainer from "../modalContainer/ModalContainer";
 import SolidButton from "@/components/button/SolidButton";
 import useViewPort from "@/hooks/useViewport";
 import { useModal } from "@/hooks/useModal";
+import { useParams } from "next/navigation";
+import instance from "@/lib/instance";
+import { useToast } from "@/hooks/useToast";
 
 const DeleteAlbaformModal = () => {
   const { closeModal } = useModal();
+  const { addToast } = useToast();
   const viewPort = useViewPort();
+  const { id } = useParams();
 
-  const handleDeleteAlbaform = () => {
-    // 알바폼 삭제 api 요청
-    // 요청 후 토스트 생성
+  const handleDeleteAlbaform = async () => {
+    if (!id) return;
+
+    const response = await instance(
+      `${process.env.NEXT_PUBLIC_API_URL}/forms/${id}`
+    );
+
+    if (response.status !== 204) {
+      return {
+        status: response.status,
+        message: response.error,
+      };
+    }
+
+    return {
+      status: response.status,
+    };
   };
 
   return (
@@ -38,7 +57,7 @@ const DeleteAlbaformModal = () => {
               handleDeleteAlbaform;
             }}
           >
-            시작하기
+            삭제하기
           </SolidButton>
         </div>
         <p
