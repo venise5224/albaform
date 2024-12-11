@@ -37,8 +37,7 @@ const ImageInput = ({
       const files = Array.from(e.target.files);
       const newImages: string[] = [];
       let isError = false;
-      console.log("selectedImages= " + selectedImages);
-      console.log("newFiles= " + newFiles);
+
       // 최대 이미지 개수 체크
       if (selectedImages.length + files.length > limit) {
         setError(`최대 ${limit}개까지만 선택할 수 있습니다.`);
