@@ -1,3 +1,5 @@
+"use server";
+
 export async function uploadResumeAction(file: File) {
   const formData = new FormData();
   formData.append("file", file);
