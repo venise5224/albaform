@@ -19,7 +19,7 @@ const ShareSNSModal = () => {
 
   useEffect(() => {
     if (window.Kakao && !window.Kakao.isInitialized()) {
-      window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_MAP_KEY as string);
+      window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_APP_KEY as string);
     }
   }, []);
 
