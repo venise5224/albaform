@@ -8,12 +8,33 @@ import SimpleRequirements from "./components/SimpleRequirements";
 import EmployerInfo from "./components/EmployerInfo";
 import DetailRequirements from "./components/DetailRequirements";
 import NoticeApplicant from "./components/NoticeApplicant";
+import NoticeIsClosed from "./components/NoticeIsClosed";
 import ScrapAndShareButton from "./components/ScrapAndShareButton";
 import { AlbaformDetailData } from "@/types/alba";
 import { cookies } from "next/headers";
 
 type PageProps = {
   params: Promise<{ formId: string }>;
+};
+
+export const generateMetadata = async ({ params }: PageProps) => {
+  const { formId } = await params;
+
+  const data: AlbaformDetailData = await fetchData(formId);
+
+  return {
+    openGraph: {
+      title: data.title,
+      description: data.description,
+      images: [
+        {
+          url: data.imageUrls[0],
+          width: 400,
+          height: 400,
+        },
+      ],
+    },
+  };
 };
 
 const AlbarformDetailPage = async ({ params }: PageProps) => {
@@ -67,6 +88,7 @@ const AlbarformDetailPage = async ({ params }: PageProps) => {
         </section>
       </div>
       <NoticeApplicant count={data.applyCount} />
+      <NoticeIsClosed closedDate={data.recruitmentEndDate} />
       {role === "APPLICANT" && (
         <ScrapAndShareButton
           formId={Number(formId)}
