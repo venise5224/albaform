@@ -47,9 +47,10 @@ const StepTwoContents = () => {
 
   // 임시 데이터 atom 업데이트
   useEffect(() => {
-    setTemporaryDataByStep({
+    setTemporaryDataByStep((prev) => ({
+      ...prev,
       stepTwo: stepTwoData,
-    });
+    }));
   }, [stepTwoData, setTemporaryDataByStep]);
 
   // 임시 데이터 있으면 로컬스토리지에서 불러오기

@@ -10,31 +10,42 @@ import WorkDate from "./stepThree/WorkDate";
 import HourlyWage from "./stepThree/HourlyWage";
 import IsPublicCheck from "./stepThree/IsPublicCheck";
 import { useEffect, useMemo, useState } from "react";
+import { AddFormStepProps } from "@/types/addform";
 
 const StepThreeContents = () => {
   const { watch, setValue } = useFormContext<z.infer<typeof addFormSchema>>();
   const setTemporaryDataByStep = useSetAtom(temporaryDataByStepAtom);
   const [loading, setLoading] = useState(true);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const fields = [
+    "location",
+    "workStartDate",
+    "workEndDate",
+    "workStartTime",
+    "workEndTime",
+    "workDays",
+    "hourlyWage",
+    "isPublic",
+    "isNegotiableWorkDays",
+  ] as const;
+
   const stepThreeData = useMemo(() => {
-    return {
-      location: watch("location"),
-      workStartDate: watch("workStartDate"),
-      workEndDate: watch("workEndDate"),
-      workStartTime: watch("workStartTime"),
-      workEndTime: watch("workEndTime"),
-      workDays: watch("workDays"),
-      hourlyWage: Number(watch("hourlyWage")),
-      isPublic: watch("isPublic"),
-      isNegotiableWorkDays: watch("isNegotiableWorkDays"),
-    };
-  }, [watch]);
+    return fields.reduce(
+      (acc, field) => ({
+        ...acc,
+        [field]: field === "hourlyWage" ? Number(watch(field)) : watch(field),
+      }),
+      {} as NonNullable<AddFormStepProps["stepThree"]>
+    );
+  }, [watch, fields]);
 
   // 임시 데이터 atom 업데이트
   useEffect(() => {
-    setTemporaryDataByStep({
+    setTemporaryDataByStep((prev) => ({
+      ...prev,
       stepThree: stepThreeData,
-    });
+    }));
   }, [stepThreeData, setTemporaryDataByStep]);
 
   // 임시 데이터 로컬스토리지에서 불러오기
@@ -42,17 +53,12 @@ const StepThreeContents = () => {
     const localStorageData = localStorage.getItem("stepThree");
     if (localStorageData) {
       const data = JSON.parse(localStorageData);
-      setValue("location", data.location);
-      setValue("workStartDate", data.workStartDate);
-      setValue("workEndDate", data.workEndDate);
-      setValue("workStartTime", data.workStartTime);
-      setValue("workEndTime", data.workEndTime);
-      setValue("workDays", data.workDays);
-      setValue("hourlyWage", data.hourlyWage);
-      setValue("isPublic", data.isPublic);
-      setValue("isNegotiableWorkDays", data.isNegotiableWorkDays);
+      fields.forEach((field) => {
+        setValue(field, data[field]);
+      });
     }
     setLoading(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setValue]);
 
   if (loading) {
