@@ -10,6 +10,7 @@ import NoticeApplicant from "./components/NoticeApplicant";
 import NoticeIsClosed from "./components/NoticeIsClosed";
 import ScrapAndShareButton from "./components/ScrapAndShareButton";
 import ApllicantActionButtons from "./components/ApllicantActionButtons";
+import OwnerActionButtons from "./components/OwnerActionButtons";
 import { AlbaformDetailData } from "@/types/alba";
 import { cookies } from "next/headers";
 
@@ -79,22 +80,16 @@ const AlbarformDetailPage = async ({ params }: PageProps) => {
           <StoreLocation location={data.location} />
         </section>
         <section className="flex w-full flex-col gap-[10px] pc:grid-in-box6">
-          {role === "APPLICANT" && (
+         {role === "APPLICANT" ? (
             <ApllicantActionButtons
               formId={formId}
               recruitmentEndDate={data.recruitmentEndDate}
             />
-          )}
+          ) : <OwnerActionButtons formId={formId} /> }
         </section>
       </div>
       <NoticeApplicant count={data.applyCount} />
       <NoticeIsClosed closedDate={data.recruitmentEndDate} />
-      {role === "APPLICANT" && (
-        <ScrapAndShareButton
-          formId={Number(formId)}
-          isScrapped={data.isScrapped}
-        />
-      )}
     </>
   );
 };
