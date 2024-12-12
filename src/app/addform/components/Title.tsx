@@ -14,7 +14,7 @@ const Title = () => {
   };
 
   return (
-    <div className="flex w-full items-center justify-between p-6 pc:m-0">
+    <div className="flex w-full items-center justify-between p-6 pc:m-0 pc:pt-0">
       <h2 className="text-xl font-semibold text-black-500 pc:text-3xl">
         알바폼 만들기
       </h2>
