@@ -14,7 +14,11 @@ const RecruitmentDate = () => {
   } = useFormContext<z.infer<typeof addFormSchema>>();
   const [temporaryDateRange, setTemporaryDateRange] = useState<
     [string, string]
-  >([watch("workStartDate"), watch("workEndDate")] || ["", ""]);
+  >(() => {
+    const workStartDate = watch("workStartDate");
+    const workEndDate = watch("workEndDate");
+    return [workStartDate || "", workEndDate || ""];
+  });
 
   useEffect(() => {
     setValue("workStartDate", temporaryDateRange[0]);
