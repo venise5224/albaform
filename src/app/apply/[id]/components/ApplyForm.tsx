@@ -10,8 +10,10 @@ import { applySchema } from "@/schema/apply/applySchema";
 import ErrorText from "@/components/errorText/ErrorText";
 import SolidButton from "@/components/button/SolidButton";
 import { cls } from "@/utils/dynamicTailwinds";
+import { useModal } from "@/hooks/useModal";
 
 const ApplyForm = ({ id }: { id: string }) => {
+  const { openModal } = useModal();
   const [visible, setVisible] = useState(false);
   const {
     register,
@@ -163,7 +165,11 @@ const ApplyForm = ({ id }: { id: string }) => {
       ))}
 
       <div className="mt-[42px] flex flex-col gap-[10px] pc:mt-[48px] pc:flex-row pc:gap-[8px]">
-        <SolidButton style="outOrange300" type="button">
+        <SolidButton
+          style="outOrange300"
+          type="button"
+          onClick={() => openModal("DeleteAlbaformModal")}
+        >
           임시 저장
         </SolidButton>
 

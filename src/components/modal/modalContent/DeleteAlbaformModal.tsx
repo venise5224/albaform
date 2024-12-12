@@ -3,35 +3,35 @@
 import Image from "next/image";
 import ModalContainer from "../modalContainer/ModalContainer";
 import SolidButton from "@/components/button/SolidButton";
-import useViewPort from "@/hooks/useViewport";
 import { useModal } from "@/hooks/useModal";
-import { useParams } from "next/navigation";
-import instance from "@/lib/instance";
+import { useParams, useRouter } from "next/navigation";
 import { useToast } from "@/hooks/useToast";
+import { deleteAlbaformAction } from "../modalActions/deleteAlbaformAction";
 
 const DeleteAlbaformModal = () => {
   const { closeModal } = useModal();
   const { addToast } = useToast();
-  const viewPort = useViewPort();
-  const { id } = useParams();
+  const router = useRouter();
+  const params = useParams();
+  const id = params.id as string;
 
   const handleDeleteAlbaform = async () => {
     if (!id) return;
+    try {
+      const response = await deleteAlbaformAction(id);
 
-    const response = await instance(
-      `${process.env.NEXT_PUBLIC_API_URL}/forms/${id}`
-    );
+      if (response.status !== 204) {
+        return addToast(response.message as string, "warning");
+      }
 
-    if (response.status !== 204) {
-      return {
-        status: response.status,
-        message: response.error,
-      };
+      addToast("알바폼을 성공적으로 삭제했습니다.", "success");
+      router.push("/albalist");
+      return false;
+    } catch (error) {
+      console.error("알바폼 삭제 오류", error);
+      addToast("서버 오류로 인해 알바폼 삭제에 실패했습니다.", "warning");
+      return true;
     }
-
-    return {
-      status: response.status,
-    };
   };
 
   return (
@@ -49,12 +49,11 @@ const DeleteAlbaformModal = () => {
         <p className="modal-sub-title">삭제 후 정보를 복구할 수 없어요.</p>
         <div className="mt-6 h-[56px] w-[327px] pc:h-[72px] pc:w-[360px]">
           <SolidButton
-            size={viewPort === "pc" ? "large" : "small"}
             style="orange300"
             type="button"
-            onClick={() => {
-              closeModal();
-              handleDeleteAlbaform;
+            onClick={async () => {
+              const result = await handleDeleteAlbaform();
+              if (result) closeModal();
             }}
           >
             삭제하기
