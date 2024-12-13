@@ -12,6 +12,7 @@ import ChangeMyInfoModal from "../modalContent/ChangeMyInfoModal";
 import ChangeCEOInfoModal from "../modalContent/ChangeCEOInfoModal";
 import ShareSNSModal from "../modalContent/ShareSNSModal";
 import SelectLocationModal from "../modalContent/SelectLocationModal";
+import ApplicantListModal from "../modalContent/ApplicantListModal";
 
 const ModalManager = () => {
   const modalType = useAtomValue(modalAtom);
@@ -39,6 +40,8 @@ const ModalManager = () => {
       return <ShareSNSModal />;
     case "SelectLocationModal":
       return <SelectLocationModal />;
+    case "ApplicantListModal":
+      return <ApplicantListModal />;
     default:
       return null;
   }

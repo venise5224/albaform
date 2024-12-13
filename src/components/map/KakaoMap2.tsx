@@ -37,8 +37,6 @@ const KakaoMap = ({
                 parseFloat(result[0].x)
               );
 
-              console.log(coords);
-
               // 지도 이동
               kakaoMap.setCenter(coords);
 
@@ -79,8 +77,6 @@ const KakaoMap = ({
               geocoder.coord2Address(lng, lat, (result: any, status: any) => {
                 if (status === window.kakao.maps.services.Status.OK) {
                   const address = result[0]?.address?.address_name || "";
-
-                  console.log(address);
 
                   // 마커 위치 이동
                   if (markerRef.current) {

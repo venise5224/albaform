@@ -12,7 +12,8 @@ import { useToast } from "@/hooks/useToast";
 const SelectLocationModal = () => {
   const { addToast } = useToast();
   const { closeModal } = useModal();
-  const [location, setLocation] = useState<string>("");
+  const [location, setLocation] = useState("");
+  const [tempAddress, setTempAddress] = useState("");
   const [address, setAddress] = useAtom(addressAtom);
 
   const handleSearch = (search: string) => {
@@ -20,10 +21,11 @@ const SelectLocationModal = () => {
   };
 
   const handleLocationFound = (newAddress: string) => {
-    setAddress(newAddress);
+    setTempAddress(newAddress);
   };
 
   const handleSubmit = () => {
+    setAddress(tempAddress);
     addToast("근무지가 입력되었습니다", "success");
     closeModal();
   };
@@ -49,15 +51,13 @@ const SelectLocationModal = () => {
                 clickEnabled
               />
               {/* <KakaoMap location={location} /> */}
-              <p>{address}</p>
+              <p>{tempAddress}</p>
             </div>
             <div className="flex gap-3">
               <SolidButton
                 style="gray100"
                 type="button"
-                onClick={() => {
-                  closeModal();
-                }}
+                onClick={() => closeModal()}
               >
                 취소
               </SolidButton>

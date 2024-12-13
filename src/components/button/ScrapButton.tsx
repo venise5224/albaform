@@ -11,7 +11,7 @@ const ScrapButton = ({
   formId,
 }: {
   isScrapped: boolean;
-  formId: number;
+  formId: string;
 }) => {
   const [isFilled, setIsFilled] = useState(isScrapped); // 단순히 client ui를 바꾸기 위한 용도(오렌지색 -> 회색, 회색 -> 오렌지색)
   const { addToast } = useToast();
