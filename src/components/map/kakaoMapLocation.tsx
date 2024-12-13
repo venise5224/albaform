@@ -48,6 +48,7 @@ const KakaoMapLocation = ({ location, onLocationFound }: KakaoMapProps) => {
     } else {
       console.error("Kakao Maps SDK가 로드되지 않았습니다.");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // 검색 위치 업데이트
