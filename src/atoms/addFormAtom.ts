@@ -13,6 +13,6 @@ export const addFormStepAtom = atom<AlbaformCreateStep>({
   stepNum: 1,
 });
 
-export const currentImageListAtom = atom<string[]>([]);
+export const currentImageListAtom = atom<File[]>([]);
 
 export const temporaryDataByStepAtom = atom<AddFormStepProps>({});

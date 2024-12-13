@@ -1,4 +1,4 @@
-import { FieldErrors, UseFormSetValue, UseFormWatch } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import { addFormSchema } from "@/schema/addForm/addFormSchema";
 import { z } from "zod";
 import { useEffect, useState } from "react";
@@ -7,13 +7,12 @@ import { temporaryDataByStepAtom } from "@/atoms/addFormAtom";
 import { useSetAtom } from "jotai";
 import ErrorText from "@/components/errorText/ErrorText";
 
-interface StepTwoContentsProps {
-  errors: FieldErrors<z.infer<typeof addFormSchema>>;
-  watch: UseFormWatch<z.infer<typeof addFormSchema>>;
-  setValue: UseFormSetValue<z.infer<typeof addFormSchema>>;
-}
-
-const StepTwoContents = ({ errors, watch, setValue }: StepTwoContentsProps) => {
+const StepTwoContents = () => {
+  const {
+    watch,
+    setValue,
+    formState: { errors },
+  } = useFormContext<z.infer<typeof addFormSchema>>();
   const setTemporaryDataByStep = useSetAtom(temporaryDataByStepAtom);
   const [stepTwoData, setStepTwoData] = useState({
     numberOfPositions: 0,
@@ -48,9 +47,10 @@ const StepTwoContents = ({ errors, watch, setValue }: StepTwoContentsProps) => {
 
   // 임시 데이터 atom 업데이트
   useEffect(() => {
-    setTemporaryDataByStep({
+    setTemporaryDataByStep((prev) => ({
+      ...prev,
       stepTwo: stepTwoData,
-    });
+    }));
   }, [stepTwoData, setTemporaryDataByStep]);
 
   // 임시 데이터 있으면 로컬스토리지에서 불러오기

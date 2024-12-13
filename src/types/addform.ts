@@ -4,7 +4,7 @@ export interface AddFormStepProps {
     description: string;
     recruitmentStartDate: string;
     recruitmentEndDate: string;
-    imageUrls: string[];
+    imageUrls: File[];
   };
   stepTwo?: {
     numberOfPositions: number;

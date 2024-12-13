@@ -9,45 +9,26 @@ import { addFormSchema } from "@/schema/addForm/addFormSchema";
 import { cls } from "@/utils/dynamicTailwinds";
 import { useAtom, useSetAtom } from "jotai";
 import { useEffect, useState } from "react";
-import {
-  UseFormRegister,
-  FieldErrors,
-  UseFormWatch,
-  UseFormSetValue,
-  UseFormGetValues,
-} from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import { z } from "zod";
 import ImageInput from "@/components/button/ImageInput";
 import useViewPort from "@/hooks/useViewport";
+import { handleDateRangeFormat } from "@/utils/formatAddFormDate";
 
-interface StepOneContentsProps {
-  register: UseFormRegister<z.infer<typeof addFormSchema>>;
-  errors: FieldErrors<z.infer<typeof addFormSchema>>;
-  watch: UseFormWatch<z.infer<typeof addFormSchema>>;
-  setValue: UseFormSetValue<z.infer<typeof addFormSchema>>;
-  getValues: UseFormGetValues<z.infer<typeof addFormSchema>>;
-}
-
-const StepOneContents = ({
-  register,
-  errors,
-  watch,
-  setValue,
-  getValues,
-}: StepOneContentsProps) => {
+const StepOneContents = () => {
   const viewPort = useViewPort();
+  const {
+    register,
+    formState: { errors },
+    watch,
+    setValue,
+    getValues,
+  } = useFormContext<z.infer<typeof addFormSchema>>();
   const [currentImageList, setCurrentImageList] = useAtom(currentImageListAtom);
   const setTemporaryDataByStep = useSetAtom(temporaryDataByStepAtom);
   const [temporaryDateRange, setTemporaryDateRange] = useState<
     [string, string]
   >(["", ""]);
-
-  // 서버전달 시 필요한 날짜 포맷 변환
-  const handleDateRangeFormat = (dateString: string) => {
-    const formattedDate =
-      dateString.replace(/\.\s*/g, "-").slice(0, -1) + "T00:00:00";
-    return formattedDate;
-  };
 
   // 모집 기간 날짜 포맷 변환 후 서버전달 데이터에 저장
   useEffect(() => {
