@@ -5,7 +5,7 @@ const ScrapAndShareButton = ({
   isScrapped,
   formId,
 }: {
-  formId: number;
+  formId: string;
   isScrapped: boolean;
 }) => {
   return (
