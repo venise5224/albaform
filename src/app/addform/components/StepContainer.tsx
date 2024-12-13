@@ -6,7 +6,7 @@ import StepOneContents from "./StepOneContents";
 import StepTwoContents from "./StepTwoContents";
 import StepThreeContents from "./StepThreeContents";
 import { z } from "zod";
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { useSearchParams } from "next/navigation";
 import { Fragment } from "react";
 import { currentImageListAtom } from "@/atoms/addFormAtom";
@@ -18,13 +18,7 @@ const StepContainer = () => {
   const currentImageList = useAtomValue(currentImageListAtom);
 
   const {
-    register,
-    handleSubmit,
-    reset,
-    watch,
-    setValue,
-    getValues,
-    formState: { errors, isValid, isSubmitting },
+    formState: { isValid, isSubmitting },
   } = useForm<z.infer<typeof addFormSchema>>({
     resolver: zodResolver(addFormSchema),
     mode: "onChange",
@@ -46,7 +40,33 @@ const StepContainer = () => {
       workEndTime: "",
       workDays: [],
       isNegotiableWorkDays: false,
-      hourlyWage: 0,
+      hourlyWage: "",
+      isPublic: false,
+    },
+  });
+
+  const methods = useForm<z.infer<typeof addFormSchema>>({
+    resolver: zodResolver(addFormSchema),
+    mode: "onChange",
+    defaultValues: {
+      title: "",
+      description: "",
+      recruitmentStartDate: "",
+      recruitmentEndDate: "",
+      imageUrls: [],
+      numberOfPositions: 0,
+      gender: "",
+      education: "",
+      age: "",
+      preferred: "",
+      location: "",
+      workStartDate: "",
+      workEndDate: "",
+      workStartTime: "",
+      workEndTime: "",
+      workDays: [],
+      isNegotiableWorkDays: false,
+      hourlyWage: "",
       isPublic: false,
     },
   });
@@ -58,21 +78,15 @@ const StepContainer = () => {
   ];
 
   return (
-    <form className="p-6">
-      {componentsByStepArr.map((component) => (
-        <Fragment key={component.step}>
-          {step === component.step && (
-            <component.component
-              register={register}
-              errors={errors}
-              watch={watch}
-              setValue={setValue}
-              getValues={getValues}
-            />
-          )}
-        </Fragment>
-      ))}
-    </form>
+    <FormProvider {...methods}>
+      <form className="p-6">
+        {componentsByStepArr.map((component) => (
+          <Fragment key={component.step}>
+            {step === component.step && <component.component />}
+          </Fragment>
+        ))}
+      </form>
+    </FormProvider>
   );
 };
 
