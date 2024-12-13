@@ -14,7 +14,7 @@ import { useModal } from "@/hooks/useModal";
 import useViewPort from "@/hooks/useViewport";
 
 const GetMyApplicationModal = () => {
-  const { closeModal } = useModal();
+  const { openModal, closeModal } = useModal();
   const viewPort = useViewPort();
   const [visible, setVisible] = useState(false);
   const {
@@ -32,7 +32,7 @@ const GetMyApplicationModal = () => {
   });
 
   const onSubmit = async (data: z.infer<typeof getMyApplicationSchema>) => {
-    // 기능 구현 필요
+    openModal("MyApplicationModal");
   };
 
   return (
@@ -43,7 +43,7 @@ const GetMyApplicationModal = () => {
         </h2>
         <div className="mt-6 text-md font-medium text-gray-400 pc:mt-8 pc:text-lg">
           <p>
-            지원일시{" "}
+            지원일시
             <span className="ml-2 text-md font-medium text-black-200 pc:ml-6 pc:text-lg">
               {"2024년 05월 29일 10:15"}
             </span>
