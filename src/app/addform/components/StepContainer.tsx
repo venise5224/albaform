@@ -64,12 +64,9 @@ const StepContainer = () => {
     } else {
       setAddFormSubmitDisabled(false);
     }
-  }, [
-    methods.formState.isValid,
-    methods.formState.isSubmitting,
-    setAddFormSubmitDisabled,
-  ]);
+  }, [methods.formState.isValid, setAddFormSubmitDisabled]);
 
+  // 등록 중 여부
   useEffect(() => {
     if (methods.formState.isSubmitting) {
       setAddFormIsSubmitting(true);
@@ -126,13 +123,11 @@ const StepContainer = () => {
         return;
       }
 
-      const currentWorkStart = data.workStartDate;
-      const currentWorkEnd = data.workEndDate;
       methods.setValue(
         "workStartDate",
-        handleDateRangeFormat(currentWorkStart)
+        handleDateRangeFormat(data.workStartDate)
       );
-      methods.setValue("workEndDate", handleDateRangeFormat(currentWorkEnd));
+      methods.setValue("workEndDate", handleDateRangeFormat(data.workEndDate));
       methods.setValue("imageUrls", imgResponse.data);
 
       const updatedData = methods.getValues();
@@ -151,6 +146,9 @@ const StepContainer = () => {
 
       if (response.status === false) {
         addToast("입력하신 내용을 확인해주세요.", "warning");
+        return;
+      } else if (response.status !== 201) {
+        addToast(response.message as string, "warning");
         return;
       }
 

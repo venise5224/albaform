@@ -11,12 +11,12 @@ const HourlyWage = () => {
     watch,
     formState: { errors },
   } = useFormContext<z.infer<typeof addFormSchema>>();
-  const [hourlyWage, setHourlyWage] = useState<string>(
-    watch("hourlyWage")?.toString() || ""
+  const [hourlyWage, setHourlyWage] = useState<number>(
+    watch("hourlyWage") || 0
   );
 
   const handleHourlyWageChange = (hourlyWage: string) => {
-    setHourlyWage(hourlyWage);
+    setHourlyWage(Number(hourlyWage));
     setValue("hourlyWage", Number(hourlyWage));
   };
 
@@ -24,7 +24,7 @@ const HourlyWage = () => {
     <div className="relative flex flex-col space-y-4">
       <HourlyWageInput
         setHourlyWage={handleHourlyWageChange}
-        initialHourlyWage={hourlyWage}
+        initialHourlyWage={hourlyWage.toString()}
       />
       <ErrorText error={errors.hourlyWage}>
         {errors.hourlyWage?.message}

@@ -43,8 +43,15 @@ const StepTwoContents = () => {
   // 추출한 필수값을 폼에 적용
   useEffect(() => {
     if (stepTwoData) {
+      const formattedData = {
+        ...stepTwoData,
+        numberOfPositions:
+          String(stepTwoData.numberOfPositions) === "인원미정"
+            ? 0
+            : Number(stepTwoData.numberOfPositions),
+      };
       fields.forEach((field) => {
-        setValue(field, stepTwoData[field]);
+        setValue(field, formattedData[field]);
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -63,6 +70,7 @@ const StepTwoContents = () => {
     const localStorageData = localStorage.getItem("stepTwo");
     if (localStorageData) {
       const parsedData = JSON.parse(localStorageData);
+
       fields.forEach((field) => {
         setValue(field, parsedData[field]);
       });

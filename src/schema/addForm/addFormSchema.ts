@@ -23,7 +23,7 @@ export const addFormSchema = z.object({
   imageUrls: z.array(z.string()).optional(),
   numberOfPositions: z
     .number()
-    .min(1, { message: "모집 인원을 입력해주세요." }),
+    .min(0, { message: "모집 인원을 선택해주세요." }),
   gender: z.string().min(1, { message: "성별을 선택해주세요." }),
   education: z.string().min(1, { message: "학력을 선택해주세요." }),
   age: z.string().min(1, { message: "연령대를 선택해주세요." }),

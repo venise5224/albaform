@@ -70,7 +70,7 @@ const PickableList = <
           key={el}
           value={el}
           className="hover:text-orange-100"
-          onClick={() => handleClick(el)}
+          onClick={() => handleClick(String(el))}
         >
           {el}
         </li>
