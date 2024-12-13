@@ -9,7 +9,6 @@ import ErrorText from "@/components/errorText/ErrorText";
 
 const StepTwoContents = () => {
   const {
-    watch,
     setValue,
     formState: { errors },
   } = useFormContext<z.infer<typeof addFormSchema>>();
@@ -21,6 +20,13 @@ const StepTwoContents = () => {
     age: "",
     preferred: "",
   });
+  const fields = [
+    "numberOfPositions",
+    "gender",
+    "education",
+    "age",
+    "preferred",
+  ] as const;
 
   const inputArr = [
     {
@@ -37,12 +43,11 @@ const StepTwoContents = () => {
   // 추출한 필수값을 폼에 적용
   useEffect(() => {
     if (stepTwoData) {
-      setValue("numberOfPositions", stepTwoData.numberOfPositions);
-      setValue("gender", stepTwoData.gender);
-      setValue("education", stepTwoData.education);
-      setValue("age", stepTwoData.age);
-      setValue("preferred", stepTwoData.preferred);
+      fields.forEach((field) => {
+        setValue(field, stepTwoData[field]);
+      });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stepTwoData, setValue]);
 
   // 임시 데이터 atom 업데이트
@@ -58,13 +63,12 @@ const StepTwoContents = () => {
     const localStorageData = localStorage.getItem("stepTwo");
     if (localStorageData) {
       const parsedData = JSON.parse(localStorageData);
-      setValue("numberOfPositions", parsedData.numberOfPositions);
-      setValue("gender", parsedData.gender);
-      setValue("education", parsedData.education);
-      setValue("age", parsedData.age);
-      setValue("preferred", parsedData.preferred);
+      fields.forEach((field) => {
+        setValue(field, parsedData[field]);
+      });
       setStepTwoData(parsedData);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setValue, setStepTwoData]);
 
   return (

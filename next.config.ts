@@ -22,6 +22,12 @@ const nextConfig: NextConfig = {
         port: "", // 포트 (생략 가능)
         pathname: "/**", // 허용할 경로 (와일드카드 사용 가능)
       },
+      {
+        protocol: "https", // 프로토콜 (http 또는 https)
+        hostname: "sprint-fe-project.s3.ap-northeast-2.amazonaws.com",
+        port: "", // 포트 (생략 가능)
+        pathname: "/**", // 허용할 경로 (와일드카드 사용 가능)
+      },
     ],
   },
 };

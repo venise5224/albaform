@@ -4,26 +4,29 @@ import instance from "@/lib/instance";
 import { addFormSchema } from "@/schema/addForm/addFormSchema";
 
 export const addFormSubmit = async (formData: FormData) => {
+  const imageUrlsString = formData.get("imageUrls")?.toString() ?? "[]";
+  const workDaysString = formData.get("workDays")?.toString() ?? "[]";
+
   const data = {
-    title: formData.get("title"),
-    description: formData.get("description"),
-    recruitmentStartDate: formData.get("recruitmentStartDate"),
-    recruitmentEndDate: formData.get("recruitmentEndDate"),
-    imageUrls: formData.get("imageUrls"),
-    numberOfPositions: formData.get("numberOfPositions"),
-    gender: formData.get("gender"),
-    education: formData.get("education"),
-    age: formData.get("age"),
-    preferred: formData.get("preferred"),
-    location: formData.get("location"),
-    workStartDate: formData.get("workStartDate"),
-    workEndDate: formData.get("workEndDate"),
-    workStartTime: formData.get("workStartTime"),
-    workEndTime: formData.get("workEndTime"),
-    workDays: formData.get("workDays"),
-    isNegotiableWorkDays: formData.get("isNegotiableWorkDays"),
-    hourlyWage: formData.get("hourlyWage"),
-    isPublic: formData.get("isPublic"),
+    title: formData.get("title")?.toString(),
+    description: formData.get("description")?.toString(),
+    recruitmentStartDate: formData.get("recruitmentStartDate")?.toString(),
+    recruitmentEndDate: formData.get("recruitmentEndDate")?.toString(),
+    imageUrls: JSON.parse(imageUrlsString),
+    numberOfPositions: Number(formData.get("numberOfPositions")),
+    gender: formData.get("gender")?.toString(),
+    education: formData.get("education")?.toString(),
+    age: formData.get("age")?.toString(),
+    preferred: formData.get("preferred")?.toString(),
+    location: formData.get("location")?.toString(),
+    workStartDate: formData.get("workStartDate")?.toString(),
+    workEndDate: formData.get("workEndDate")?.toString(),
+    workStartTime: formData.get("workStartTime")?.toString(),
+    workEndTime: formData.get("workEndTime")?.toString(),
+    workDays: JSON.parse(workDaysString),
+    isNegotiableWorkDays: Boolean(formData.get("isNegotiableWorkDays")),
+    hourlyWage: Number(formData.get("hourlyWage")),
+    isPublic: Boolean(formData.get("isPublic")),
   };
 
   const checkData = addFormSchema.safeParse(data);
