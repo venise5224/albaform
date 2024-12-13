@@ -26,7 +26,6 @@ export const addFormImgUpload = async (imgFormData: FormData) => {
       };
 
       if (response.status !== 201) {
-        console.log("이미지 업로드 실패", response.status);
         return {
           status: response.status,
           message:
