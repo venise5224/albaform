@@ -9,9 +9,10 @@ import { useState } from "react";
 const Location = () => {
   const {
     setValue,
+    watch,
     formState: { errors },
   } = useFormContext<z.infer<typeof addFormSchema>>();
-  const [location, setLocation] = useState<string>("");
+  const [location, setLocation] = useState<string>(watch("location") || "");
   // Location은 위치 설정 후에는 LocationPicker로 보내서 initialLocation으로 설정해야 함.
 
   const handleLocationChange = (location: string) => {
@@ -21,7 +22,7 @@ const Location = () => {
 
   return (
     <div className="relative flex flex-col space-y-4">
-      <LocationPicker />
+      <LocationPicker initialLocation={location} />
       <ErrorText error={errors.location}>{errors.location?.message}</ErrorText>
     </div>
   );

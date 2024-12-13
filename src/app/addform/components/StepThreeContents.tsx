@@ -16,6 +16,7 @@ const StepThreeContents = () => {
   const { watch, setValue } = useFormContext<z.infer<typeof addFormSchema>>();
   const setTemporaryDataByStep = useSetAtom(temporaryDataByStepAtom);
   const [loading, setLoading] = useState(true);
+  const mockLocation = "광주광역시 남구 봉선로 168";
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const fields = [
@@ -56,6 +57,7 @@ const StepThreeContents = () => {
       fields.forEach((field) => {
         setValue(field, data[field]);
       });
+      setValue("location", mockLocation);
     }
     setLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps

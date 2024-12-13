@@ -16,3 +16,5 @@ export const addFormStepAtom = atom<AlbaformCreateStep>({
 export const currentImageListAtom = atom<File[]>([]);
 
 export const temporaryDataByStepAtom = atom<AddFormStepProps>({});
+
+export const addFormLoadingAtom = atom<boolean>(false);
