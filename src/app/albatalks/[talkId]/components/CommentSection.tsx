@@ -9,7 +9,7 @@ import EmptyComment from "./EmptyComments";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { albaTalkCommentSchema } from "@/schema/albaTalkComment/albaTalkSchema";
+import { albaTalkCommentSchema } from "@/schema/albaTalkComment/albaTalkCommentSchema";
 import ErrorText from "@/components/errorText/ErrorText";
 import { cls } from "@/utils/dynamicTailwinds";
 
