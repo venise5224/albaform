@@ -11,6 +11,13 @@ const OwnerActionButtons = ({ formId }: { formId: string }) => {
   return (
     <>
       <SolidButton
+        icon="/icon/document-md.svg"
+        style="orange300"
+        onClick={() => openModal("ApplicantListModal")}
+      >
+        지원 현황 조회
+      </SolidButton>
+      <SolidButton
         icon="/icon/write-lg.svg"
         style="orange300"
         onClick={() => router.push(`/addform/${formId}`)}
