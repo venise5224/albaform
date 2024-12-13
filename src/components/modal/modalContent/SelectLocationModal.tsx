@@ -3,18 +3,17 @@ import ModalContainer from "../modalContainer/ModalContainer";
 import { useModal } from "@/hooks/useModal";
 import { useState } from "react";
 import SearchLocation from "@/components/input/SearchLocation";
-import KakaoMap2 from "@/components/map/KakaoMap2";
-import KakaoMap from "@/components/map/KakaoMap";
-import { useAtom } from "jotai";
+import { useSetAtom } from "jotai";
 import { addressAtom } from "@/atoms/addressAtom";
 import { useToast } from "@/hooks/useToast";
+import KakaoMap3 from "@/components/map/kakaoMapLocation";
 
 const SelectLocationModal = () => {
   const { addToast } = useToast();
   const { closeModal } = useModal();
-  const [location, setLocation] = useState("");
+  const [location, setLocation] = useState("서울시");
   const [tempAddress, setTempAddress] = useState("");
-  const [address, setAddress] = useAtom(addressAtom);
+  const setAddress = useSetAtom(addressAtom);
 
   const handleSearch = (search: string) => {
     setLocation(search);
@@ -45,12 +44,10 @@ const SelectLocationModal = () => {
         <form className="flex w-full flex-col">
           <div className="mt-6 flex flex-col gap-6">
             <div className="h-[280px] w-full pc:h-[380px] pc:px-0">
-              <KakaoMap2
+              <KakaoMap3
                 location={location}
                 onLocationFound={handleLocationFound}
-                clickEnabled
               />
-              {/* <KakaoMap location={location} /> */}
               <p>{tempAddress}</p>
             </div>
             <div className="flex gap-3">
