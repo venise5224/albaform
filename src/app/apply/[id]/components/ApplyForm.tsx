@@ -110,8 +110,3 @@ const ApplyForm = ({ id }: { id: string }) => {
 };
 
 export default ApplyForm;
-
-const labelStyle =
-  "text-md font-regular text-black-400 w-fit cursor-pointer mt-[33px] pc:mt-[52px] pc:text-xl";
-const inputStyle =
-  "mt-4 rounded-[8px] bg-background-200 p-[14px] pr-10 placeholder:text-lg placeholder:font-regular border border-background-200 focus:border-orange-300 pc:mt-4";

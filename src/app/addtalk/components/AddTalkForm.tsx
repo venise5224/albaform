@@ -11,6 +11,10 @@ import { z } from "zod";
 import { cls } from "@/utils/dynamicTailwinds";
 import ErrorText from "@/components/errorText/ErrorText";
 import { useRouter } from "next/navigation";
+import { useToast } from "@/hooks/useToast";
+import { useState } from "react";
+import uploadImage from "../actions/uploadImage";
+import addTalk from "../actions/addTalk";
 
 const AddTalkForm = () => {
   const {
@@ -22,21 +26,54 @@ const AddTalkForm = () => {
     mode: "onChange",
     defaultValues: {
       title: "",
-      description: "",
+      content: "",
     },
   });
+  const [images, setImages] = useState<File[]>([]);
+  const { addToast } = useToast();
   const viewPort = useViewPort();
   const router = useRouter();
-
-  const onImageChange = () => {};
 
   const onCancel = () => {
     router.push("/albatalk");
   };
-  const onSubmit = () => {};
 
-  // size prop 설정
-  const imageInputSize = viewPort === "pc" ? "large" : "medium";
+  const onSubmit = async (formData: z.infer<typeof addTalkSchema>) => {
+    try {
+      let imageUrl = "";
+
+      if (images.length > 0) {
+        const imageUrlResponse = await uploadImage(images[0]);
+
+        if (imageUrlResponse.status === 201) {
+          imageUrl = imageUrlResponse.data;
+        } else {
+          addToast("이미지 등록 중 문제가 발생했습니다.", "warning");
+          console.error("이미지 등록 실패: ", imageUrlResponse.error);
+          return;
+        }
+      }
+
+      const data = {
+        title: formData.title,
+        content: formData.content,
+        imageUrl,
+      };
+
+      const response = await addTalk(data);
+
+      if (response.status === 201) {
+        addToast("글이 등록되었습니다.", "success");
+        router.push(`/boards/${response.data.id}`);
+      } else {
+        addToast("글 등록에 실패했습니다.", "warning");
+        console.error("글 등록 실패: ", response.error);
+      }
+    } catch (error) {
+      addToast("요청에 실패했습니다.", "warning");
+      console.error("요청 실패: ", error);
+    }
+  };
 
   return (
     <form
@@ -68,28 +105,32 @@ const AddTalkForm = () => {
         </div>
         <div className="relative flex flex-col gap-y-4">
           <label
-            htmlFor="description"
+            htmlFor="content"
             className="w-[fit-content] cursor-pointer text-2lg pc:text-xl"
           >
             내용
             <span className="ml-1 text-red">*</span>
           </label>
           <textarea
-            id="description"
-            {...register("description")}
+            id="content"
+            {...register("content")}
             className={cls(
               "h-[180px] resize-none appearance-none rounded-lg border-none bg-background-200 p-[14px] text-start placeholder:text-md focus:outline-none pc:w-full pc:p-4 pc:placeholder:text-xl tablet:h-[200px] tablet:placeholder:text-lg",
-              errors.description ? "border-red" : ""
+              errors.content ? "border-red" : ""
             )}
             placeholder="내용을 입력해주세요."
           />
-          <ErrorText error={errors.description}>
-            {errors.description?.message}
+          <ErrorText error={errors.content}>
+            {errors.content?.message}
           </ErrorText>
         </div>
         <div className="flex flex-col gap-y-4">
           <label className="w-[fit-content] text-2lg pc:text-xl">이미지</label>
-          <ImageInput size={imageInputSize} onImageChange={onImageChange} />
+          <ImageInput
+            size={viewPort === "pc" ? "large" : "medium"}
+            onImageChange={setImages}
+            limit={1}
+          />
         </div>
       </div>
       <div className="mb-[18px] mt-[34px] flex flex-col gap-y-1 pc:absolute pc:right-0 pc:top-0 pc:h-[58px] pc:w-[372px] pc:flex-row pc:gap-x-3 tablet:absolute tablet:right-0 tablet:top-0 tablet:mb-0 tablet:mt-4 tablet:h-[46px] tablet:w-[217px] tablet:flex-row tablet:gap-x-2">

@@ -3,7 +3,6 @@
 import { temporaryDataByStepAtom } from "@/atoms/addFormAtom";
 import SolidButton from "@/components/button/SolidButton";
 import { useAtomValue } from "jotai";
-import { useCallback, useMemo } from "react";
 
 // 추후 form 작업을 하며 zod 타입, react-hook-form 타입이 추가될 예정입니다.
 const MainButton = () => {
