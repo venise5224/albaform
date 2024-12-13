@@ -25,6 +25,7 @@ const DeleteAlbaformModal = () => {
       }
 
       addToast("알바폼을 성공적으로 삭제했습니다.", "success");
+      closeModal();
       router.push("/albalist");
       return false;
     } catch (error) {
@@ -51,10 +52,7 @@ const DeleteAlbaformModal = () => {
           <SolidButton
             style="orange300"
             type="button"
-            onClick={async () => {
-              const result = await handleDeleteAlbaform();
-              if (result) closeModal();
-            }}
+            onClick={handleDeleteAlbaform}
           >
             삭제하기
           </SolidButton>
