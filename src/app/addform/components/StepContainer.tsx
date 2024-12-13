@@ -161,6 +161,7 @@ const StepContainer = () => {
         localStorage.removeItem(step);
       });
 
+      methods.reset();
       router.push(`/alba/${id}`);
     } catch (error) {
       console.error("알바폼 등록 중 오류 발생", error);

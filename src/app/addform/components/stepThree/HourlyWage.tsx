@@ -12,12 +12,12 @@ const HourlyWage = () => {
     formState: { errors },
   } = useFormContext<z.infer<typeof addFormSchema>>();
   const [hourlyWage, setHourlyWage] = useState<string>(
-    watch("hourlyWage") || ""
+    watch("hourlyWage")?.toString() || ""
   );
 
   const handleHourlyWageChange = (hourlyWage: string) => {
     setHourlyWage(hourlyWage);
-    setValue("hourlyWage", hourlyWage);
+    setValue("hourlyWage", Number(hourlyWage));
   };
 
   return (
