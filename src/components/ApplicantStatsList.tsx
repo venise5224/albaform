@@ -33,12 +33,14 @@ const ApplicantStatsList = () => {
   useEffect(() => {
     const fetchApplicantList = async () => {
       setIsLoading(true);
-      const res = await instance(
-        `${process.env.NEXT_PUBLIC_API_URL}/forms/${formId}/applications?limit=10&orderExperience=${orderExperience}&orderByStatus=${orderByStatus}`
-      );
-      if (res.status === 200) {
+      try {
+        const res = await instance(
+          `${process.env.NEXT_PUBLIC_API_URL}/forms/${formId}/applications?limit=10&orderExperience=${orderExperience}&orderByStatus=${orderByStatus}`
+        );
         setList(res.data.data);
         setIsLoading(false);
+      } catch (error) {
+        console.error("지원자 현황 조회에 실패했습니다", error);
       }
     };
     fetchApplicantList();
