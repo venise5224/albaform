@@ -3,8 +3,16 @@
 import { useState } from "react";
 import { cls } from "../../utils/dynamicTailwinds";
 
-const HourlyWageInput = () => {
-  const [inputValue, setInputValue] = useState("");
+interface HourlyWageInputProps {
+  setHourlyWage: (value: string) => void;
+  initialHourlyWage: string;
+}
+
+const HourlyWageInput = ({
+  setHourlyWage,
+  initialHourlyWage,
+}: HourlyWageInputProps) => {
+  const [inputValue, setInputValue] = useState(initialHourlyWage || "");
   const [wage, setWage] = useState("9860");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -15,12 +23,13 @@ const HourlyWageInput = () => {
     // 500만 이하 값만 허용
     if (numericValue <= 5000000) {
       setInputValue(value);
+      setHourlyWage(value);
     }
   };
 
   return (
     <section className="flex h-[92px] w-[327px] flex-col gap-4 text-md pc:h-[112px] pc:w-[640px] pc:text-xl">
-      <h3 className="font-semibold text-black-400">
+      <h3 className="font-medium text-black-400 pc:text-xl">
         시급 <span className="text-orange-300">*</span>
       </h3>
       <div

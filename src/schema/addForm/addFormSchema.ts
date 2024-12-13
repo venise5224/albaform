@@ -39,6 +39,6 @@ export const addFormSchema = z.object({
   workEndTime: z.string().min(1, { message: "근무 종료시간을 선택해주세요." }),
   workDays: z.array(z.string()).min(1, { message: "근무요일을 선택해주세요." }),
   isNegotiableWorkDays: z.boolean(),
-  hourlyWage: z.number().min(1, { message: "시급을 입력해주세요." }),
+  hourlyWage: z.string().min(1, { message: "시급을 입력해주세요." }),
   isPublic: z.boolean(),
 });
