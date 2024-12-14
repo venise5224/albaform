@@ -3,7 +3,6 @@
 import { cookies } from "next/headers";
 import { deleteCookie } from "./cookie";
 
-// 유틸리티 함수이며 서버액션이 아닙니다. 서버액션을 구현한 서버컴포넌트에서 불러와서 사용해주세요.
 // 요청 시 사용하여 토큰 확인 및 갱신, 재요청까지 처리할 수 있는 함수입니다.
 // 토큰이 필요한 요청을 할 때 fetch 대신 instance를 사용합니다.
 const instance = async (url: string, options: RequestInit = {}) => {

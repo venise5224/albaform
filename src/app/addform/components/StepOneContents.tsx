@@ -1,7 +1,7 @@
 import {
   currentImageListAtom,
   temporaryDataByStepAtom,
-} from "@/atoms/addFormAtom";
+} from "@/atoms/addFormAtomStore";
 import ErrorText from "@/components/errorText/ErrorText";
 import FormInput from "@/components/input/FormInput";
 import DatePickerCalendar from "@/components/picker/DatepickerCalendar";
