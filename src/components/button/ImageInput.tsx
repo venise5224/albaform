@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import uploadIcon from "@/../public/icon/upload-md.svg";
 import uploadLargeIcon from "@/../public/icon/upload-lg.svg";
@@ -12,12 +12,14 @@ interface ImageInputProps {
   size?: "small" | "medium" | "large";
   limit?: number;
   onImageChange: (files: File[]) => void;
+  initialImage?: File[];
 }
 
 const ImageInput = ({
   size = "small",
   limit = 1,
   onImageChange,
+  initialImage,
 }: ImageInputProps) => {
   const [selectedImages, setSelectedImages] = useState<string[]>([]); // 미리보기 이미지 URL
   const [newFiles, setNewFiles] = useState<File[]>([]); // 실제 업로드할 파일
@@ -31,6 +33,24 @@ const ImageInput = ({
     medium: "h-[116px] w-[116px]",
     large: "h-[240px] w-[240px]",
   };
+  // 임시저장 이미지가 있을 시 이를 감지하여 미리보기 이미지 표출
+  useEffect(() => {
+    if (initialImage?.length) {
+      selectedImages.forEach((url) => URL.revokeObjectURL(url));
+
+      setSelectedImages(
+        initialImage.map((image) => URL.createObjectURL(image))
+      );
+      setNewFiles(initialImage);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialImage]);
+
+  useEffect(() => {
+    return () => {
+      selectedImages.forEach((url) => URL.revokeObjectURL(url));
+    };
+  }, [selectedImages]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
