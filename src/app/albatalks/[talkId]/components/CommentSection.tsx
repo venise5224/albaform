@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import getComments from "../getComments";
 import { Comment } from "@/types/comment";
 import SolidButton from "@/components/button/SolidButton";
@@ -12,6 +12,7 @@ import { z } from "zod";
 import { albaTalkCommentSchema } from "@/schema/albaTalkComment/albaTalkCommentSchema";
 import ErrorText from "@/components/errorText/ErrorText";
 import { cls } from "@/utils/dynamicTailwinds";
+import postComment from "../actions/postComment";
 
 const CommentSection = ({ id }: { id: number }) => {
   const [totalCount, setTotalCount] = useState("");
@@ -20,6 +21,7 @@ const CommentSection = ({ id }: { id: number }) => {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<z.infer<typeof albaTalkCommentSchema>>({
     resolver: zodResolver(albaTalkCommentSchema),
     mode: "onSubmit",
@@ -28,23 +30,33 @@ const CommentSection = ({ id }: { id: number }) => {
     },
   });
 
-  const onSubmit = async () => {
-    alert("제출");
+  const fetchComments = useCallback(async () => {
+    try {
+      const response = await getComments(id);
+      setTotalCount(response.totalItemCount);
+      setList(response.data);
+    } catch (error) {
+      console.error("댓글 목록을 가져오는데 실패했습니다.", error);
+    }
+  }, [id]);
+
+  const onSubmit = async (formData: z.infer<typeof albaTalkCommentSchema>) => {
+    try {
+      const response = await postComment({ id, formData });
+
+      if (response.status === 201) {
+        setList((prev) => [response.data, ...prev]);
+        setTotalCount((prev) => prev + 1);
+        reset();
+      }
+    } catch (error) {
+      console.error("댓글 등록에 실패했습니다.");
+    }
   };
 
   useEffect(() => {
-    const fetchComments = async () => {
-      try {
-        const response = await getComments(id);
-        setTotalCount(response.totalItemCount);
-        setList(response.data);
-      } catch (error) {
-        console.error("댓글 목록을 가져오는데 실패했습니다.", error);
-      }
-    };
-    console.log("error= " + errors.content?.message);
     fetchComments();
-  }, [id, errors]);
+  }, [fetchComments]);
 
   return (
     <section>
