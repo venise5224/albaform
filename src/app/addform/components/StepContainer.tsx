@@ -123,11 +123,17 @@ const StepContainer = () => {
         return;
       }
 
-      methods.setValue(
+      const dateFields = [
         "workStartDate",
-        handleDateRangeFormat(data.workStartDate)
-      );
-      methods.setValue("workEndDate", handleDateRangeFormat(data.workEndDate));
+        "workEndDate",
+        "recruitmentStartDate",
+        "recruitmentEndDate",
+      ] as const;
+
+      dateFields.forEach((field) => {
+        methods.setValue(field, handleDateRangeFormat(data[field]));
+      });
+
       methods.setValue("imageUrls", imgResponse.data);
 
       const updatedData = methods.getValues();

@@ -8,13 +8,13 @@ import DatePickerCalendar from "@/components/picker/DatepickerCalendar";
 import { addFormSchema } from "@/schema/addForm/addFormSchema";
 import { cls } from "@/utils/dynamicTailwinds";
 import { useAtom, useSetAtom } from "jotai";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { z } from "zod";
 import ImageInput from "@/components/button/ImageInput";
 import useViewPort from "@/hooks/useViewport";
-import { handleDateRangeFormat } from "@/utils/formatAddFormDate";
 import { base64ToFile, fileToBase64 } from "@/utils/imageFileConvert";
+import { AddFormStepProps } from "@/types/addform";
 
 const StepOneContents = () => {
   const viewPort = useViewPort();
@@ -29,7 +29,12 @@ const StepOneContents = () => {
   const setTemporaryDataByStep = useSetAtom(temporaryDataByStepAtom);
   const [temporaryDateRange, setTemporaryDateRange] = useState<
     [string, string]
-  >(["", ""]);
+  >(() => {
+    const startDate = watch("recruitmentStartDate");
+    const endDate = watch("recruitmentEndDate");
+    return [startDate || "", endDate || ""];
+  });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const fields = [
     "title",
     "description",
@@ -38,15 +43,31 @@ const StepOneContents = () => {
   ] as const;
   const [loading, setLoading] = useState(true);
 
-  // 모집 기간 날짜 포맷 변환 후 서버전달 데이터에 저장
+  const stepOneData = useMemo(() => {
+    return fields.reduce(
+      (acc, field) => ({
+        ...acc,
+        [field]:
+          field === "recruitmentStartDate"
+            ? temporaryDateRange[0]
+            : field === "recruitmentEndDate"
+              ? temporaryDateRange[1]
+              : watch(field),
+      }),
+      {} as NonNullable<AddFormStepProps["stepOne"]>
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [temporaryDateRange]);
+
+  // 추출한 필수값을 폼에 적용
   useEffect(() => {
-    if (temporaryDateRange[0] && temporaryDateRange[1]) {
-      const startDate = handleDateRangeFormat(temporaryDateRange[0]);
-      const endDate = handleDateRangeFormat(temporaryDateRange[1]);
-      setValue("recruitmentStartDate", startDate);
-      setValue("recruitmentEndDate", endDate);
+    if (stepOneData) {
+      fields.forEach((field) => {
+        setValue(field, stepOneData[field]);
+      });
     }
-  }, [temporaryDateRange, setValue]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stepOneData, setValue]);
 
   // 임시 데이터 atom 업데이트
   useEffect(() => {
