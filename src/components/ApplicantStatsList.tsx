@@ -5,9 +5,9 @@ import instance from "@/lib/instance";
 import addHyphensToPhoneNumber from "@/utils/addHyphensToPhoneNumber";
 import formatExperienceMonth from "@/utils/formatExperienceMonth";
 import translateStatus from "@/utils/translateStatus";
+import LoadingSpinner from "./spinner/LoadingSpinner";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { ClipLoader } from "react-spinners";
 
 interface ApplicantData {
   applicantId: number;
@@ -125,7 +125,7 @@ const ApplicantStatsList = () => {
         </>
       ) : (
         <div className="flex h-full w-full items-center justify-center">
-          <ClipLoader color="#F89A05" size={50} />
+          <LoadingSpinner />
         </div>
       )}
     </section>
