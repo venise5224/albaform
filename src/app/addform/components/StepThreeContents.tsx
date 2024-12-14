@@ -1,7 +1,7 @@
 import { useFormContext } from "react-hook-form";
 import { addFormSchema } from "@/schema/addForm/addFormSchema";
 import { z } from "zod";
-import { temporaryDataByStepAtom } from "@/atoms/addFormAtom";
+import { temporaryDataByStepAtom } from "@/atoms/addFormAtomStore";
 import { useSetAtom } from "jotai";
 import Location from "./stepThree/Location";
 import RecruitmentDate from "./stepThree/RecruitmentDate";
@@ -16,7 +16,6 @@ const StepThreeContents = () => {
   const { watch, setValue } = useFormContext<z.infer<typeof addFormSchema>>();
   const setTemporaryDataByStep = useSetAtom(temporaryDataByStepAtom);
   const [loading, setLoading] = useState(true);
-  const mockLocation = "광주광역시 남구 봉선로 168";
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const fields = [
@@ -57,7 +56,6 @@ const StepThreeContents = () => {
       fields.forEach((field) => {
         setValue(field, data[field]);
       });
-      setValue("location", mockLocation);
     }
     setLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps

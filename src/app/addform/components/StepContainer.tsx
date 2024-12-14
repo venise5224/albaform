@@ -14,8 +14,8 @@ import {
   addFormSubmitDisabledAtom,
   addFormIsSubmittingAtom,
   addFromSubmitTriggerAtom,
-} from "@/atoms/addFormAtom";
-import { useAtom, useAtomValue, useSetAtom } from "jotai";
+} from "@/atoms/addFormAtomStore";
+import { useAtom, useSetAtom } from "jotai";
 import { handleDateRangeFormat } from "@/utils/formatAddFormDate";
 import { addFormImgUpload } from "../actions/addFormImgUpload";
 import { useToast } from "@/hooks/useToast";
@@ -24,7 +24,7 @@ import { addFormSubmit } from "../actions/addFormSubmit";
 const StepContainer = () => {
   const searchParams = useSearchParams();
   const step = searchParams.get("step") || "stepOne";
-  const currentImageList = useAtomValue(currentImageListAtom);
+  const [currentImageList, setCurrentImageList] = useAtom(currentImageListAtom);
   const setAddFormSubmitDisabled = useSetAtom(addFormSubmitDisabledAtom);
   const setAddFormIsSubmitting = useSetAtom(addFormIsSubmittingAtom);
   const [submitTrigger, setSubmitTrigger] = useAtom(addFromSubmitTriggerAtom);
@@ -160,6 +160,8 @@ const StepContainer = () => {
       });
 
       methods.reset();
+      setCurrentImageList([]);
+
       router.push(`/alba/${id}`);
     } catch (error) {
       console.error("알바폼 등록 중 오류 발생", error);

@@ -3,7 +3,7 @@ import { addFormSchema } from "@/schema/addForm/addFormSchema";
 import { z } from "zod";
 import { useEffect, useState } from "react";
 import RequirementPicker from "@/components/picker/RequirementPicker";
-import { temporaryDataByStepAtom } from "@/atoms/addFormAtom";
+import { temporaryDataByStepAtom } from "@/atoms/addFormAtomStore";
 import { useSetAtom } from "jotai";
 import ErrorText from "@/components/errorText/ErrorText";
 
