@@ -32,7 +32,7 @@ const GetMyApplicationModal = () => {
   });
 
   const onSubmit = async (data: z.infer<typeof getMyApplicationSchema>) => {
-    openModal("MyApplicationModal");
+    // 제출 내역보기 위한 정보를 서버로 요청 보낸 이후 통과한다면  openModal("MyApplicationModal"); 해야됨.
   };
 
   return (

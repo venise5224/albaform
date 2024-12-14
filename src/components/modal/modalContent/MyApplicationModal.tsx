@@ -37,9 +37,11 @@ const MyApplicationModal = () => {
     experienceMonths: 0,
   });
   const [isLoading, setIsLoading] = useState(false);
-  const { formId } = useParams();
+  const { formId = 260 } = useParams();
 
-  const formattedExperienceMonth = formatExperienceMonth(data.experienceMonths);
+  const formattedExperienceMonth = formatExperienceMonth(
+    data?.experienceMonths
+  );
 
   useEffect(() => {
     const fetchMyApplicationData = async () => {
@@ -48,7 +50,7 @@ const MyApplicationModal = () => {
         const res = await instance(
           `${process.env.NEXT_PUBLIC_API_URL}/forms/${formId}/my-application`
         );
-        setData(res.data.data);
+        setData(res.data);
         setIsLoading(false);
       } catch (error) {
         console.error("지원 내역을 조회하지 못하였습니다.", error);
@@ -59,39 +61,45 @@ const MyApplicationModal = () => {
 
   return (
     <ModalContainer>
-      {!isLoading ? (
-        <div className="flex flex-col pb-[8px]">
-          <h2 className="text-2lg font-semibold text-black-400 pc:text-2xl">
-            제출 내용
-          </h2>
-          <section>
-            <div className="flex justify-between border border-b-line-100 py-[14px]">
-              <h3 className="text-black-100">이름</h3>
-              <span className="text-black-400">{data?.name}</span>
-            </div>
-            <div className="flex justify-between border border-b-line-100 py-[14px]">
-              <h3 className="text-black-100">연락처</h3>
-              <span className="text-black-400">{data?.phoneNumber}</span>
-            </div>
-            <div className="flex justify-between border border-b-line-100 py-[14px]">
-              <h3 className="text-black-100">경력</h3>
-              <span className="text-black-400">{formattedExperienceMonth}</span>
-            </div>
-          </section>
-          <section className="flex flex-col gap-[14px]">
-            <h3 className="text-black-100">이력서</h3>
-            <ResumInput title={data.resumeName} />
-          </section>
-          <section className="felx-col flex gap-[14px]">
-            <h3 className="text-black-100">자기소개</h3>
-            <span className="h-[244px] w-full resize-none overflow-scroll rounded-lg border border-gray-200 p-[14px]">
-              {data.introduction}
-            </span>
-          </section>
-        </div>
-      ) : (
-        <LoadingSpinner />
-      )}
+      <section className="h-[622px] w-[375px] px-6 pc:h-[882px] pc:w-[770px]">
+        {!isLoading ? (
+          <div className="flex flex-col gap-4 pb-[8px]">
+            <h2 className="text-2lg font-semibold text-black-400 pc:text-2xl">
+              제출 내용
+            </h2>
+            <section>
+              <div className="flex justify-between border-b border-b-line-100 py-[14px]">
+                <h3 className="text-black-100">이름</h3>
+                <span className="text-black-400">{data?.name}</span>
+              </div>
+              <div className="flex justify-between border-b border-b-line-100 py-[14px]">
+                <h3 className="text-black-100">연락처</h3>
+                <span className="text-black-400">{data?.phoneNumber}</span>
+              </div>
+              <div className="flex justify-between border-b border-b-line-100 py-[14px]">
+                <h3 className="text-black-100">경력</h3>
+                <span className="text-black-400">
+                  {formattedExperienceMonth}
+                </span>
+              </div>
+            </section>
+            <section className="flex flex-col gap-[14px]">
+              <h3 className="text-black-100">이력서</h3>
+              <ResumInput title={data?.resumeName} />
+            </section>
+            <section className="flex flex-col gap-[14px]">
+              <h3 className="text-black-100">자기소개</h3>
+              <span className="h-[244px] w-full resize-none overflow-scroll rounded-lg border border-gray-200 p-[14px]">
+                {data?.introduction}
+              </span>
+            </section>
+          </div>
+        ) : (
+          <div className="flex h-full w-full items-center justify-center">
+            <LoadingSpinner />
+          </div>
+        )}
+      </section>
     </ModalContainer>
   );
 };

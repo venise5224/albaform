@@ -7,16 +7,9 @@ const Page = () => {
 
   return (
     <div>
-      <div>
-        <button onClick={() => openModal("SelectLocationModal")}>
-          위치 선택 모달
-        </button>
-      </div>
-      <div>
-        <button onClick={() => openModal("ChangeCEOInfoModal")}>
-          사장님 정보 수정 모달
-        </button>
-      </div>
+      <button onClick={() => openModal("MyApplicationModal")}>
+        지원 내역 제출 모달
+      </button>
     </div>
   );
 };
