@@ -16,3 +16,12 @@ export const addFormStepAtom = atom<AlbaformCreateStep>({
 export const currentImageListAtom = atom<File[]>([]);
 
 export const temporaryDataByStepAtom = atom<AddFormStepProps>({});
+
+// 등록 버튼 클릭 시 트리거
+export const addFromSubmitTriggerAtom = atom<boolean>(false);
+
+// 등록 버튼 비활성화
+export const addFormSubmitDisabledAtom = atom<boolean>(false);
+
+// 등록 중 여부
+export const addFormIsSubmittingAtom = atom<boolean>(false);

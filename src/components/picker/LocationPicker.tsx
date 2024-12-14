@@ -1,6 +1,10 @@
 import Image from "next/image";
 
-const LocationPicker = () => {
+interface LocationPickerProps {
+  initialLocation: string;
+}
+
+const LocationPicker = ({ initialLocation }: LocationPickerProps) => {
   return (
     <section className="flex h-[92px] w-[327px] flex-col gap-4 text-md pc:h-[112px] pc:w-[640px] pc:text-xl">
       <h3 className="font-medium text-black-400">
@@ -13,7 +17,7 @@ const LocationPicker = () => {
         <div className="relative size-6 pc:size-9">
           <Image src="/icon/pin-md.svg" fill alt="핀 아이콘" />
         </div>
-        <span>위치를 입력해주세요.</span>
+        <span>{initialLocation || "위치를 입력해주세요."}</span>
       </button>
     </section>
   );

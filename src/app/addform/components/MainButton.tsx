@@ -1,12 +1,19 @@
 "use client";
 
-import { temporaryDataByStepAtom } from "@/atoms/addFormAtom";
+import {
+  addFormIsSubmittingAtom,
+  addFormSubmitDisabledAtom,
+  addFromSubmitTriggerAtom,
+  temporaryDataByStepAtom,
+} from "@/atoms/addFormAtom";
 import SolidButton from "@/components/button/SolidButton";
-import { useAtomValue } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 
-// 추후 form 작업을 하며 zod 타입, react-hook-form 타입이 추가될 예정입니다.
 const MainButton = () => {
   const temporaryDataByStep = useAtomValue(temporaryDataByStepAtom);
+  const isDisabled = useAtomValue(addFormSubmitDisabledAtom);
+  const isSubmitting = useAtomValue(addFormIsSubmittingAtom);
+  const setAddFormSubmitTrigger = useSetAtom(addFromSubmitTriggerAtom);
   const temporaryDataArr = [
     { step: "stepOne", data: temporaryDataByStep.stepOne },
     { step: "stepTwo", data: temporaryDataByStep.stepTwo },
@@ -22,17 +29,18 @@ const MainButton = () => {
     });
   };
 
-  const onSubmit = () => {
-    // 성공 시 임시데이터 삭제
-  };
-
   return (
     <div className="flex flex-col space-y-2 p-6">
       <SolidButton style="outOrange300" onClick={handleTemporarySave}>
         임시 저장
       </SolidButton>
-      <SolidButton style="orange300" onClick={onSubmit} disabled={true}>
-        등록하기
+      <SolidButton
+        type="submit"
+        style="orange300"
+        onClick={() => setAddFormSubmitTrigger(true)}
+        disabled={isDisabled || isSubmitting}
+      >
+        {isSubmitting ? "등록중..." : "등록하기"}
       </SolidButton>
     </div>
   );
