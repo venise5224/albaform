@@ -1,14 +1,10 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
 import { addFormSchema } from "@/schema/addForm/addFormSchema";
-import StepOneContents from "./StepOneContents";
-import StepTwoContents from "./StepTwoContents";
-import StepThreeContents from "./StepThreeContents";
 import { z } from "zod";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider } from "react-hook-form";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Fragment, useEffect } from "react";
+import { useEffect } from "react";
 import {
   currentImageListAtom,
   addFormSubmitDisabledAtom,
@@ -20,6 +16,8 @@ import { handleDateRangeFormat } from "@/utils/formatAddFormDate";
 import { addFormImgUpload } from "../actions/addFormImgUpload";
 import { useToast } from "@/hooks/useToast";
 import { addFormSubmit } from "../actions/addFormSubmit";
+import { useAddForm } from "@/hooks/useAddForm";
+import StepContent from "./StepContent";
 
 const StepContainer = () => {
   const searchParams = useSearchParams();
@@ -30,41 +28,21 @@ const StepContainer = () => {
   const [submitTrigger, setSubmitTrigger] = useAtom(addFromSubmitTriggerAtom);
   const { addToast } = useToast();
   const router = useRouter();
+  const { methods, loadAllTempData } = useAddForm();
 
-  const methods = useForm<z.infer<typeof addFormSchema>>({
-    resolver: zodResolver(addFormSchema),
-    mode: "onSubmit",
-    defaultValues: {
-      title: "",
-      description: "",
-      recruitmentStartDate: "",
-      recruitmentEndDate: "",
-      imageUrls: [],
-      numberOfPositions: 0,
-      gender: "",
-      education: "",
-      age: "",
-      preferred: "",
-      location: "",
-      workStartDate: "",
-      workEndDate: "",
-      workStartTime: "",
-      workEndTime: "",
-      workDays: [],
-      isNegotiableWorkDays: false,
-      hourlyWage: 0,
-      isPublic: false,
-    },
-  });
-
-  // 등록 버튼 활성화 여부
+  // 등록 버튼 활성화 여부 (선택값이 많아서 isValid 인식의 이상동작으로 값들이 모두 채워지면 활성화)
   useEffect(() => {
-    if (!methods.formState.isValid) {
-      setAddFormSubmitDisabled(true);
-    } else {
-      setAddFormSubmitDisabled(false);
-    }
-  }, [methods.formState.isValid, setAddFormSubmitDisabled]);
+    const values = methods.getValues();
+    const isComplete = Object.values(values).every((value) => {
+      if (typeof value === "number") {
+        return value !== undefined;
+      }
+      return value !== undefined && value !== "";
+    });
+
+    setAddFormSubmitDisabled(!isComplete);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [step, methods.watch(), setAddFormSubmitDisabled]);
 
   // 등록 중 여부
   useEffect(() => {
@@ -77,37 +55,8 @@ const StepContainer = () => {
 
   // 마운트 시 전체 임시저장 데이터 가져오기
   useEffect(() => {
-    const loadAllTempData = () => {
-      const TempDataArr = ["stepOne", "stepTwo", "stepThree"];
-
-      TempDataArr.forEach((step) => {
-        const localStorageData = localStorage.getItem(step);
-
-        if (localStorageData) {
-          const parsedData = JSON.parse(localStorageData);
-
-          Object.entries(parsedData).forEach(([key, value]) => {
-            if (key !== "tempImage") {
-              methods.setValue(
-                key as keyof z.infer<typeof addFormSchema>,
-                value as z.infer<typeof addFormSchema>[keyof z.infer<
-                  typeof addFormSchema
-                >]
-              );
-            }
-          });
-        }
-      });
-    };
-
     loadAllTempData();
-  }, [methods]);
-
-  const componentsByStepArr = [
-    { step: "stepOne", component: StepOneContents },
-    { step: "stepTwo", component: StepTwoContents },
-    { step: "stepThree", component: StepThreeContents },
-  ];
+  }, [loadAllTempData]);
 
   const onSubmit = async (data: z.infer<typeof addFormSchema>) => {
     try {
@@ -186,11 +135,7 @@ const StepContainer = () => {
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)} className="p-6">
-        {componentsByStepArr.map((component) => (
-          <Fragment key={component.step}>
-            {step === component.step && <component.component />}
-          </Fragment>
-        ))}
+        <StepContent step={step} />
       </form>
     </FormProvider>
   );

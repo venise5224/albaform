@@ -12,7 +12,9 @@ const HourlyWageInput = ({
   setHourlyWage,
   initialHourlyWage,
 }: HourlyWageInputProps) => {
-  const [inputValue, setInputValue] = useState(initialHourlyWage || "");
+  const [inputValue, setInputValue] = useState(
+    initialHourlyWage === "0" ? "" : initialHourlyWage
+  );
   const [wage, setWage] = useState("9860");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
