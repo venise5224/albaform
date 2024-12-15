@@ -61,7 +61,7 @@ const MyApplicationModal = () => {
 
   return (
     <ModalContainer>
-      <section className="h-[622px] w-[375px] px-6 pc:h-[882px] pc:w-[770px]">
+      <section className="h-[668px] w-full px-6 pc:h-[668px] pc:w-[440px]">
         {!isLoading ? (
           <div className="flex flex-col gap-4 pb-[8px]">
             <h2 className="text-2lg font-semibold text-black-400 pc:text-2xl">
@@ -83,11 +83,11 @@ const MyApplicationModal = () => {
                 </span>
               </div>
             </section>
-            <section className="flex flex-col gap-[14px]">
+            <section className="mt-4 flex flex-col gap-[14px]">
               <h3 className="text-black-100">이력서</h3>
               <ResumInput title={data?.resumeName} />
             </section>
-            <section className="flex flex-col gap-[14px]">
+            <section className="mt-4 flex flex-col gap-[14px]">
               <h3 className="text-black-100">자기소개</h3>
               <span className="h-[244px] w-full resize-none overflow-scroll rounded-lg border border-gray-200 p-[14px]">
                 {data?.introduction}
