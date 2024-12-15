@@ -149,7 +149,7 @@ const StepOneContents = () => {
           error={errors.title}
           name="title"
           className={cls(
-            "addform-input-base",
+            "addform-input-base outline-none",
             errors.title ? "ring-1 ring-red" : ""
           )}
         />

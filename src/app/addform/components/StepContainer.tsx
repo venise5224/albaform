@@ -30,14 +30,28 @@ const StepContainer = () => {
   const router = useRouter();
   const { methods, loadAllTempData } = useAddForm();
 
-  // 등록 버튼 활성화 여부 (선택값이 많아서 isValid 인식의 이상동작으로 값들이 모두 채워지면 활성화)
+  // 등록 버튼 활성화 여부 (선택값이 많아서 isValid 미동작으로 값들이 모두 채워지면 활성화)
   useEffect(() => {
     const values = methods.getValues();
+    const hourlyWage = values.hourlyWage;
+    const workDays = values.workDays;
+
     const isComplete = Object.values(values).every((value) => {
+      if (value === hourlyWage) {
+        return value > 0;
+      }
+
+      if (value === workDays) {
+        return workDays.length > 0;
+      }
+
       if (typeof value === "number") {
         return value !== undefined;
       }
-      return value !== undefined && value !== "";
+
+      const result = value !== undefined && value !== "";
+
+      return result;
     });
 
     setAddFormSubmitDisabled(!isComplete);
