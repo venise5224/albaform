@@ -4,35 +4,114 @@ import EditDeleteDropdown from "@/components/dropdown/EditDeleteDropdown";
 import Image from "next/image";
 import kebabIcon from "@/../public/icon/kebab-md.svg";
 import commentIcon from "@/../public/icon/comment-md.svg";
-import likeIcon from "@/../public/icon/heart-md.svg";
-import { PostCardProps } from "@/types/post";
+import heartIcon from "@/../public/icon/heart-md.svg";
+import hrartFillIcon from "@/../public/icon/heart-fill-md.svg";
 import ProfileImage from "./ProfileImage";
 import formatYearMonthDay from "@/utils/formatYearMonthDay";
+import { useEffect, useState } from "react";
+import postLike from "../actions/postLike";
+import postLikeCancel from "../actions/postLikeCancel";
+import deletePosts from "../actions/deletePosts";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/hooks/useToast";
 
 interface props {
-  info: PostCardProps;
+  info: {
+    writer: {
+      imageUrl: string;
+      nickname: string;
+      id: number;
+    };
+    updatedAt: string;
+    createdAt: string;
+    commentCount: number;
+    likeCount: number;
+    imageUrl: string;
+    content: string;
+    title: string;
+    id: number;
+    isLiked: boolean;
+  };
+  userId: number;
+  accessToken: string | undefined;
 }
 
-const Header = ({ info }: props) => {
+const Header = ({ info, userId, accessToken }: props) => {
+  const [isLiked, setIsLiked] = useState(info.isLiked);
+  const [likeCount, setLikeCount] = useState(info.likeCount);
+  const router = useRouter();
+  const { addToast } = useToast();
+
+  const handleEdit = async () => {
+    router.push(`/addtalk?talkId=${info.id}`);
+  };
+
+  const handleDelete = async () => {
+    try {
+      const response = await deletePosts(info.id);
+
+      if (response.status === 204) {
+        addToast("게시글을 삭제했습니다.", "success");
+        router.push("/albatalk");
+      }
+    } catch (error) {
+      console.error("게시글 삭제에 실패했습니다.", error);
+    }
+  };
+
+  const handleLikeToggle = async () => {
+    setIsLiked(!isLiked);
+    setLikeCount((prev) => (isLiked ? prev - 1 : prev + 1));
+
+    try {
+      let response;
+      if (isLiked) {
+        // 좋아요 취소 요청
+        response = await postLikeCancel(info.id);
+      } else {
+        // 좋아요 요청
+        response = await postLike(info.id);
+      }
+
+      if (response.status !== 200) {
+        console.error("좋아요 요청에 실패했습니다.");
+      }
+    } catch (error) {
+      console.error("좋아요 요청 에러:", error);
+
+      setIsLiked((prev) => !prev);
+      setLikeCount((prev) => prev + (isLiked ? -1 : 1));
+    }
+  };
+
+  useEffect(() => {
+    if (!accessToken) {
+      addToast("로그인이 필요한 페이지입니다.", "warning");
+      router.push("/signin/applicant");
+    }
+  });
+
   return (
     <div>
       <div className="border-bg-line-200 flex items-center justify-between border-b pb-6 pc:pb-5">
         <h2 className="text-lg font-semibold text-black-400 pc:text-2xl tablet:text-xl">
           {info.title}
         </h2>
-        <EditDeleteDropdown
-          id={String(info.id)}
-          onEdit={() => alert("수정")}
-          onDelete={() => alert("삭제")}
-        >
-          <Image
-            src={kebabIcon}
-            width={24}
-            height={24}
-            className="pc:size-9"
-            alt="수정 및 삭제 메뉴"
-          />
-        </EditDeleteDropdown>
+        {info.writer.id === userId && (
+          <EditDeleteDropdown
+            id={String(info.id)}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          >
+            <Image
+              src={kebabIcon}
+              width={24}
+              height={24}
+              className="pc:size-9"
+              alt="수정 및 삭제 메뉴"
+            />
+          </EditDeleteDropdown>
+        )}
       </div>
       <div className="mt-6 flex items-center justify-between pc:mt-10">
         <div className="flex items-center gap-x-4 pc:gap-x-8">
@@ -60,9 +139,9 @@ const Header = ({ info }: props) => {
             </small>
           </div>
           <div className="flex items-center gap-x-[2px]">
-            <button type="button">
+            <button type="button" onClick={handleLikeToggle}>
               <Image
-                src={likeIcon}
+                src={isLiked ? hrartFillIcon : heartIcon}
                 width={24}
                 height={24}
                 className="pc:size-9"
@@ -70,7 +149,7 @@ const Header = ({ info }: props) => {
               />
             </button>
             <small className="text-xs text-gray-500 pc:text-lg">
-              {info.likeCount}
+              {likeCount}
             </small>
           </div>
         </div>

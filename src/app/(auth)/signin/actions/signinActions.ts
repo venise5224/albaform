@@ -52,7 +52,7 @@ export const signinAction = async (formData: FormData) => {
 
   const { accessToken, refreshToken, ...rest } = await response.json();
 
-  await setCookie(accessToken, refreshToken, rest.user.role);
+  await setCookie(accessToken, refreshToken, rest.user.role, rest.user.id);
 
   return {
     status: response.status,

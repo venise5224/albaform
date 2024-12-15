@@ -13,9 +13,9 @@ const getAlbaTalkDetail = async (talkId: string) => {
 
     const result = await response.json();
 
-    return result;
+    return { data: result, status: 200 };
   } catch (error) {
-    console.error("알바 토크 상세를 조회하는데 실패했습니다.", error);
+    console.error("알바 토크 상세를 조회하는데 실패했습니다:", error);
     return null;
   }
 };

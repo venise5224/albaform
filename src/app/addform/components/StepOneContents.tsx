@@ -14,6 +14,7 @@ import { z } from "zod";
 import ImageInput from "@/components/button/ImageInput";
 import useViewPort from "@/hooks/useViewport";
 import { handleDateRangeFormat } from "@/utils/formatAddFormDate";
+import { base64ToFile, fileToBase64 } from "@/utils/imageFileConvert";
 
 const StepOneContents = () => {
   const viewPort = useViewPort();
@@ -29,6 +30,13 @@ const StepOneContents = () => {
   const [temporaryDateRange, setTemporaryDateRange] = useState<
     [string, string]
   >(["", ""]);
+  const fields = [
+    "title",
+    "description",
+    "recruitmentStartDate",
+    "recruitmentEndDate",
+  ] as const;
+  const [loading, setLoading] = useState(true);
 
   // 모집 기간 날짜 포맷 변환 후 서버전달 데이터에 저장
   useEffect(() => {
@@ -42,35 +50,65 @@ const StepOneContents = () => {
 
   // 임시 데이터 atom 업데이트
   useEffect(() => {
-    const temporaryStepOneData = {
-      title: getValues("title"),
-      description: getValues("description"),
-      recruitmentStartDate: temporaryDateRange[0],
-      recruitmentEndDate: temporaryDateRange[1],
-      imageUrls: currentImageList, // 임시저장을 위해 서버 업로드 전 이미지를 저장
+    const updateTemporaryData = async () => {
+      const base64Images = await Promise.all(
+        currentImageList.map((img) => fileToBase64(img))
+      );
+
+      const temporaryStepOneData = {
+        title: getValues("title"),
+        description: getValues("description"),
+        recruitmentStartDate: temporaryDateRange[0],
+        recruitmentEndDate: temporaryDateRange[1],
+        tempImage: base64Images, // 임시저장을 위해 서버 업로드 전 이미지를 저장
+      };
+
+      setTemporaryDataByStep({
+        stepOne: temporaryStepOneData,
+      });
     };
 
-    setTemporaryDataByStep({
-      stepOne: temporaryStepOneData,
-    });
+    updateTemporaryData();
   }, [temporaryDateRange, getValues, setTemporaryDataByStep, currentImageList]);
 
   // 임시 데이터 있으면 로컬스토리지에서 불러오기
   useEffect(() => {
-    const localStorageData = localStorage.getItem("stepOne");
-    if (localStorageData) {
-      const parsedData = JSON.parse(localStorageData);
-      setValue("title", parsedData.title);
-      setValue("description", parsedData.description);
-      setValue("recruitmentStartDate", parsedData.recruitmentStartDate);
-      setValue("recruitmentEndDate", parsedData.recruitmentEndDate);
-      setCurrentImageList(parsedData.imageUrls);
-      setTemporaryDateRange([
-        parsedData.recruitmentStartDate,
-        parsedData.recruitmentEndDate,
-      ]);
-    }
+    const loadData = async () => {
+      const localStorageData = localStorage.getItem("stepOne");
+      if (localStorageData) {
+        const parsedData = JSON.parse(localStorageData);
+        fields.forEach((field) => {
+          setValue(field, parsedData[field]);
+        });
+
+        // 임시 이미지 파일 객체로 변환
+        Promise.all(
+          parsedData.tempImage.map(async (base64: string) => {
+            return await base64ToFile(base64, "imageUrls");
+          })
+        ).then((files) => {
+          setCurrentImageList(files);
+        });
+
+        setTemporaryDateRange([
+          parsedData.recruitmentStartDate,
+          parsedData.recruitmentEndDate,
+        ]);
+      }
+      setLoading(false);
+    };
+
+    loadData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setValue, setCurrentImageList]);
+
+  if (loading) {
+    return (
+      <div className="flex w-full items-center justify-center">
+        잠시만 기다려주세요...
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col space-y-8 pc:w-[640px]">
@@ -147,6 +185,8 @@ const StepOneContents = () => {
         <ImageInput
           size={viewPort === "pc" ? "medium" : "small"}
           onImageChange={setCurrentImageList}
+          initialImage={currentImageList}
+          limit={3}
         />
       </div>
     </div>

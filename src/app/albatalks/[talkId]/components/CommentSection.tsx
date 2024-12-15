@@ -14,8 +14,8 @@ import ErrorText from "@/components/errorText/ErrorText";
 import { cls } from "@/utils/dynamicTailwinds";
 import postComment from "../actions/postComment";
 
-const CommentSection = ({ id }: { id: number }) => {
-  const [totalCount, setTotalCount] = useState("");
+const CommentSection = ({ id, userId }: { id: number; userId: number }) => {
+  const [totalCount, setTotalCount] = useState(0);
   const [list, setList] = useState<Comment[]>([]);
   const {
     register,
@@ -29,6 +29,21 @@ const CommentSection = ({ id }: { id: number }) => {
       content: "",
     },
   });
+
+  const handleUpdatedComment = (updatedComment: Comment) => {
+    setList((prevList) =>
+      prevList.map((comment) =>
+        comment.id === updatedComment.id ? updatedComment : comment
+      )
+    );
+  };
+
+  const handleDeleteComment = (commentId: number) => {
+    setList((prevList) =>
+      prevList.filter((comment) => comment.id !== commentId)
+    );
+    setTotalCount((prevCount) => prevCount - 1);
+  };
 
   const fetchComments = useCallback(async () => {
     try {
@@ -50,7 +65,7 @@ const CommentSection = ({ id }: { id: number }) => {
         reset();
       }
     } catch (error) {
-      console.error("댓글 등록에 실패했습니다.");
+      console.error("댓글 등록에 실패했습니다.", error);
     }
   };
 
@@ -61,7 +76,7 @@ const CommentSection = ({ id }: { id: number }) => {
   return (
     <section>
       <h3 className="mt-[104px] border-b border-line-200 pb-4 text-lg font-semibold text-black-400 pc:mt-[100px] pc:text-2xl tablet:text-xl">
-        댓글({totalCount ?? 0})
+        댓글({totalCount})
       </h3>
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -72,7 +87,7 @@ const CommentSection = ({ id }: { id: number }) => {
             id="content"
             {...register("content")}
             className={cls(
-              "h-[132px] w-full rounded-lg bg-background-200 p-[14px] placeholder:text-md placeholder:text-gray-400 pc:h-40 pc:placeholder:text-xl tablet:placeholder:text-lg",
+              "h-[132px] w-full resize-none appearance-none rounded-lg bg-background-200 p-[14px] placeholder:text-md placeholder:text-gray-400 pc:h-40 pc:placeholder:text-xl tablet:placeholder:text-lg",
               errors.content ? "border border-red" : ""
             )}
             placeholder="댓글을 입력해주세요."
@@ -92,7 +107,15 @@ const CommentSection = ({ id }: { id: number }) => {
       </form>
       <ul className="mt-6 flex flex-col gap-y-4 pc:mt-14 pc:gap-y-6 tablet:mt-10">
         {list?.length > 0 ? (
-          list?.map((item) => <CommentItem key={item.id} item={item} />)
+          list?.map((item) => (
+            <CommentItem
+              key={item.id}
+              userId={userId}
+              item={item}
+              onUpdatedComment={handleUpdatedComment}
+              onDeleteComment={handleDeleteComment}
+            />
+          ))
         ) : (
           <EmptyComment />
         )}
