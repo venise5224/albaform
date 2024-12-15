@@ -17,6 +17,11 @@ const Page = () => {
           사장님 정보 수정 모달
         </button>
       </div>
+      <div>
+        <button onClick={() => openModal("GetMyApplicationModal")}>
+          내 지원 현황 모달
+        </button>
+      </div>
     </div>
   );
 };

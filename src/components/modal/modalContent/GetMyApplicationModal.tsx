@@ -11,12 +11,17 @@ import Image from "next/image";
 import { useState } from "react";
 import SolidButton from "@/components/button/SolidButton";
 import { useModal } from "@/hooks/useModal";
-import useViewPort from "@/hooks/useViewport";
+import { useParams, useRouter } from "next/navigation";
+import { getMyApplicationAction } from "../modalActions/getMyApplicationAction";
+import { useToast } from "@/hooks/useToast";
 
 const GetMyApplicationModal = () => {
   const { closeModal } = useModal();
-  const viewPort = useViewPort();
+  const { addToast } = useToast();
   const [visible, setVisible] = useState(false);
+  const router = useRouter();
+  const params = useParams();
+  const id = params.formId as string;
   const {
     register,
     handleSubmit,
@@ -32,7 +37,27 @@ const GetMyApplicationModal = () => {
   });
 
   const onSubmit = async (data: z.infer<typeof getMyApplicationSchema>) => {
-    // 기능 구현 필요
+    try {
+      const formData = new FormData();
+      Object.entries(data).forEach(([key, value]) => {
+        formData.append(key, value || "");
+      });
+
+      const response = await getMyApplicationAction(formData, id);
+
+      if (response.status === 200) {
+        const applicationId = response.data.id;
+        router.push(`/application/${applicationId}`); //지원 상세 조회 페이지로 이동해야함
+
+        closeModal();
+      } else {
+        console.error(response.message, response.status);
+        addToast(response.message as string, "warning");
+      }
+    } catch (error) {
+      console.error("지원 내역 조회 에러 발생", error);
+      addToast("지원 내역 조회 중 오류가 발생했습니다.", "warning");
+    }
   };
 
   return (
@@ -43,12 +68,14 @@ const GetMyApplicationModal = () => {
         </h2>
         <div className="mt-6 text-md font-medium text-gray-400 pc:mt-8 pc:text-lg">
           <p>
+            {/* 초기 데이터를 불러올 수가 없음 */}
             지원일시{" "}
             <span className="ml-2 text-md font-medium text-black-200 pc:ml-6 pc:text-lg">
               {"2024년 05월 29일 10:15"}
             </span>
           </p>
           <p className="mt-[6px] pc:mt-[14px]">
+            {/* 초기 데이터를 불러올 수가 없음 */}
             진행 상태
             <span className="ml-2 rounded-[4px] bg-orange-500 px-2 py-1 text-[12px] font-semibold leading-[20px] text-orange-300 pc:ml-6 pc:px-3 pc:py-[6px] pc:text-lg">
               {"면접대기"}
@@ -122,12 +149,8 @@ const GetMyApplicationModal = () => {
           <div className="mt-6 w-[327px] pc:mt-[46px] pc:w-[360px]">
             <SolidButton
               disabled={!isValid || isSubmitting}
-              size={viewPort === "pc" ? "large" : "small"}
               style="orange300"
               type="submit"
-              onClick={() => {
-                closeModal();
-              }}
             >
               지원 내역 상세 보기
             </SolidButton>
