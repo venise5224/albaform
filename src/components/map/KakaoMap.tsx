@@ -33,8 +33,6 @@ const KakaoMap = ({ location }: { location: string }) => {
                 position: coords,
                 map: map,
               });
-
-              console.log(`주소(${location})의 좌표:`, coords);
             } else {
               console.error("주소를 찾을 수 없습니다:", location);
             }

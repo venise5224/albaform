@@ -62,7 +62,7 @@ export const signupActions = async (formData: FormData) => {
     const resData = await response.json();
     const { accessToken, refreshToken, ...rest } = resData;
 
-    await setCookie(accessToken, refreshToken, rest.user.role);
+    await setCookie(accessToken, refreshToken, rest.user.role, rest.user.id);
 
     return {
       status: response.status,
