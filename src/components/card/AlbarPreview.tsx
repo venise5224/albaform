@@ -1,11 +1,14 @@
-import { AlbarformData } from "@/types/alba";
-import { formatDate } from "@/utils/formatDate";
-import { getDday } from "@/utils/getDday";
-import isPast from "@/utils/isPast";
+"use client";
+
 import Image from "next/image";
-import AlbaPreviewDropdown from "../dropdown/AlbaPreviewDropdown";
-import { useRouter } from "next/navigation";
+import isPast from "@/utils/isPast";
 import instance from "@/lib/instance";
+import AlbaPreviewDropdown from "../dropdown/AlbaPreviewDropdown";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { getDday } from "@/utils/getDday";
+import { formatDate } from "@/utils/formatDate";
+import { AlbarformData } from "@/types/alba";
 import { useToast } from "@/hooks/useToast";
 
 interface AlbarPreviewProps {
@@ -13,8 +16,12 @@ interface AlbarPreviewProps {
 }
 
 const AlbarPreview = ({ info }: AlbarPreviewProps) => {
+  const [cookie, setCookie] = useState<{
+    role: "APPLICANT" | "OWNER";
+    userId: number;
+  }>();
   const router = useRouter();
-  const isRecruiting = isPast(info.recruitmentEndDate);
+  const isRecruiting = !isPast(info.recruitmentEndDate);
   const dday = getDday(info.recruitmentEndDate);
   const imageStyle = info.imageUrls[0] ? "object-cover" : "p-10 object-contain";
   const { addToast } = useToast();
@@ -27,6 +34,28 @@ const AlbarPreview = ({ info }: AlbarPreviewProps) => {
   const goToApply = () => {
     router.push(`/apply/${info.id}`);
   };
+
+  useEffect(() => {
+    const getCookie = async () => {
+      try {
+        const res = await fetch("/api/cookie", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!res.ok) {
+          console.error("쿠키를 가져오지 못했습니다.");
+        }
+        const data = await res.json();
+        setCookie(data);
+      } catch (error) {
+        console.error("Error fetching cookies:", error);
+      }
+    };
+    getCookie();
+  }, [cookie]);
 
   const onScrap = async () => {
     const result = await instance(
