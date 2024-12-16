@@ -18,8 +18,19 @@ import { useToast } from "@/hooks/useToast";
 import { addFormSubmit } from "../actions/addFormSubmit";
 import { useAddForm } from "@/hooks/useAddForm";
 import StepContent from "./StepContent";
+import { formatDate } from "@/utils/formatDate";
+import { base64ToFile } from "@/utils/imageFileConvert";
 
-const StepContainer = () => {
+interface StepContainerProps {
+  albaForm?:
+    | z.infer<typeof addFormSchema>
+    | {
+        status: number;
+        message: string;
+      };
+}
+
+const StepContainer = ({ albaForm }: StepContainerProps) => {
   const searchParams = useSearchParams();
   const step = searchParams.get("step") || "stepOne";
   const [currentImageList, setCurrentImageList] = useAtom(currentImageListAtom);
@@ -30,6 +41,43 @@ const StepContainer = () => {
   const router = useRouter();
   const { methods, loadAllTempData } = useAddForm();
 
+  useEffect(() => {
+    if (albaForm) {
+      if ("status" in albaForm) {
+        addToast(albaForm.message, "warning");
+        return;
+      } else {
+        const workDates = formatDate(
+          albaForm.workStartDate,
+          albaForm.workEndDate
+        );
+
+        const recruitmentDates = formatDate(
+          albaForm.recruitmentStartDate,
+          albaForm.recruitmentEndDate
+        );
+
+        methods.reset({
+          ...albaForm,
+          workStartDate: workDates[0],
+          workEndDate: workDates[1],
+          recruitmentStartDate: recruitmentDates[0],
+          recruitmentEndDate: recruitmentDates[1],
+        });
+
+        if (albaForm.imageUrls && albaForm.imageUrls.length > 0) {
+          const convertToFile = async () => {
+            const files = await Promise.all(
+              albaForm.imageUrls!.map((url) => base64ToFile(url, "serverImage"))
+            );
+            setCurrentImageList(files);
+          };
+          convertToFile();
+        }
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [albaForm]);
   // 등록 버튼 활성화 여부 (선택값이 많아서 isValid 미동작으로 값들이 모두 채워지면 활성화)
   useEffect(() => {
     const values = methods.getValues();
@@ -75,6 +123,7 @@ const StepContainer = () => {
   const onSubmit = async (data: z.infer<typeof addFormSchema>) => {
     try {
       const imgFormData = new FormData();
+
       currentImageList.forEach((img) => {
         imgFormData.append("image", img);
       });
@@ -148,7 +197,10 @@ const StepContainer = () => {
 
   return (
     <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)} className="p-6">
+      <form
+        onSubmit={methods.handleSubmit(onSubmit)}
+        className="min-w-[640px] p-6"
+      >
         <StepContent step={step} />
       </form>
     </FormProvider>

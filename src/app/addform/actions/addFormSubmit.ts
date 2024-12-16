@@ -28,7 +28,7 @@ export const addFormSubmit = async (formData: FormData) => {
     hourlyWage: Number(formData.get("hourlyWage")),
     isPublic: Boolean(formData.get("isPublic")),
   };
-
+  console.log(data);
   const checkData = addFormSchema.safeParse(data);
 
   if (!checkData.success) {

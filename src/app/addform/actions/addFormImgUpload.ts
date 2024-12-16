@@ -6,7 +6,7 @@ export const addFormImgUpload = async (imgFormData: FormData) => {
   try {
     const files = Array.from(imgFormData.getAll("image"));
     const uploadResults: string[] = [];
-
+    console.log(files);
     for (const file of files) {
       const singleImgFormData = new FormData();
       singleImgFormData.append("image", file);
@@ -18,7 +18,7 @@ export const addFormImgUpload = async (imgFormData: FormData) => {
           body: singleImgFormData,
         }
       );
-
+      console.log(response);
       const responseErrorText = {
         400: "이미지를 확인해주세요.",
         401: "로그인이 필요한 서비스입니다.",
