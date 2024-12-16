@@ -11,4 +11,5 @@ export enum ModalType {
   ShareSNSModal = "ShareSNSModal", // 공유하기 버튼 눌렀을 때 뜨는 모달
   SelectLocationModal = "SelectLocationModal", // 근무지역 위치 선택 모달
   ApplicantListModal = "ApplicantListModal", // 지원 현황 조회 모달
+  LoginRequestModal = "LoginRequiredModal", // 로그인 요청 모달
 }

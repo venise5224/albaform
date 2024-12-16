@@ -5,6 +5,7 @@ import getAlbaTalkDetail from "./getAlbaTalkDetail";
 import Content from "./components/Content";
 import CommentSection from "./components/CommentSection";
 import { cookies } from "next/headers";
+import NoticeLoginRequired from "./components/NoticeLoginRequired";
 
 interface pageProps {
   params: Promise<{ talkId: string }>;
@@ -21,9 +22,10 @@ const AlbaTalkDetailPage = async ({ params }: pageProps) => {
 
   return (
     <div>
-      <Header info={info} userId={Number(userId)} accessToken={accessToken} />
+      <Header info={info} userId={Number(userId)} />
       <Content content={info.content} />
       <CommentSection id={info.id} userId={Number(userId)} />
+      <NoticeLoginRequired accessToken={accessToken} />
     </div>
   );
 };

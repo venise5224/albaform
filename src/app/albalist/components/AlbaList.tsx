@@ -68,7 +68,7 @@ const AlbaList = ({ list, nextCursor, role, params }: AlbaListProps) => {
   const observerRef = useInfinityScroll({ fetchMoreData });
 
   return (
-    <main className="min-h-screen bg-background-100">
+    <main className="min-h-screen">
       <section className="mx-auto mt-[9px] w-[327px] pc:mt-14 pc:w-[1479px] tablet:mt-[14px]">
         {albaList.length > 0 ? (
           <ul className="flex flex-col gap-y-8 pc:flex-row pc:flex-wrap pc:gap-x-6 pc:gap-y-16 tablet:gap-y-12">

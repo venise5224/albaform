@@ -33,10 +33,9 @@ interface props {
     isLiked: boolean;
   };
   userId: number;
-  accessToken: string | undefined;
 }
 
-const Header = ({ info, userId, accessToken }: props) => {
+const Header = ({ info, userId }: props) => {
   const [isLiked, setIsLiked] = useState(info.isLiked);
   const [likeCount, setLikeCount] = useState(info.likeCount);
   const router = useRouter();
@@ -83,13 +82,6 @@ const Header = ({ info, userId, accessToken }: props) => {
       setLikeCount((prev) => prev + (isLiked ? -1 : 1));
     }
   };
-
-  useEffect(() => {
-    if (!accessToken) {
-      addToast("로그인이 필요한 페이지입니다.", "warning");
-      router.push("/signin/applicant");
-    }
-  });
 
   return (
     <div>
