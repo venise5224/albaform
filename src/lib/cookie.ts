@@ -6,7 +6,8 @@ import { cookies } from "next/headers";
 export const setCookie = async (
   accessToken: string,
   refreshToken: string,
-  role: string
+  role: string,
+  id: string
 ) => {
   const tokenArr = [
     {
@@ -22,6 +23,10 @@ export const setCookie = async (
     {
       name: "role",
       value: role,
+    },
+    {
+      name: "id",
+      value: id,
     },
   ];
 

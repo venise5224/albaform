@@ -22,8 +22,11 @@ const DatePickerCalendar = ({
     }
   }, [range, setDateRange]);
 
+  // 사용자가 선택한 값이 있으면 빈 문자열로 되지 않고 초기값으로 설정
   useEffect(() => {
-    setRange(initialDate);
+    if (initialDate[0] && initialDate[1]) {
+      setRange(initialDate);
+    }
   }, [initialDate]);
 
   return (

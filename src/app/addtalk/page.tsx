@@ -1,7 +1,12 @@
+import { Suspense } from "react";
 import AddTalkForm from "./components/AddTalkForm";
 
 const AddTalkPage = () => {
-  return <AddTalkForm />;
+  return (
+    <Suspense>
+      <AddTalkForm />
+    </Suspense>
+  );
 };
 
 export default AddTalkPage;

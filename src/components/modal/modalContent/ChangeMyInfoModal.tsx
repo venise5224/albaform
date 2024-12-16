@@ -1,22 +1,25 @@
 "use client";
 
-import Image from "next/image";
 import ModalContainer from "../modalContainer/ModalContainer";
 import FormInput from "@/components/input/FormInput";
 import ErrorText from "@/components/errorText/ErrorText";
-import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { Path, useForm } from "react-hook-form";
 import { changeMyInfoSchema } from "@/schema/modal/changeMyInfoSchema";
 import { z } from "zod";
 import SolidButton from "@/components/button/SolidButton";
-import useViewPort from "@/hooks/useViewport";
 import { useModal } from "@/hooks/useModal";
+import ProfileImg from "@/app/(auth)/signup/components/ProfileImg";
+import { useToast } from "@/hooks/useToast";
+import { useAtomValue } from "jotai";
+import { profileImgAtom } from "@/atoms/signupAtomStore";
+import { profileImgActions } from "@/app/(auth)/signup/actions/profileImgActions";
+import { changeMyInfoAction } from "../modalActions/changeMyInfoAction";
 
 const ChangeMyInfoModal = () => {
   const { closeModal } = useModal();
-  const viewPort = useViewPort();
-  const [previewSrc, setPreviewSrc] = useState("");
+  const { addToast } = useToast();
+  const profileImg = useAtomValue(profileImgAtom);
   const {
     register,
     handleSubmit,
@@ -26,12 +29,82 @@ const ChangeMyInfoModal = () => {
     mode: "onChange",
     defaultValues: {
       name: "",
-      nickName: "",
+      nickname: "",
       phoneNumber: "",
     },
   });
 
-  const onSubmit = async () => {}; // 기능 구현 필요
+  const inputArr = [
+    {
+      label: "이름",
+      name: "name",
+      type: "text",
+      placeholder: "이름을 입력해주세요.",
+      error: errors.name,
+      register: register("name"),
+    },
+    {
+      label: "닉네임",
+      name: "nickname",
+      type: "text",
+      placeholder: "닉네임을 입력해주세요.",
+      error: errors.nickname,
+      register: register("nickname"),
+    },
+    {
+      label: "연락처",
+      name: "phoneNumber",
+      type: "tel",
+      placeholder: "숫자만 입력해주세요.",
+      error: errors.phoneNumber,
+      register: register("phoneNumber"),
+    },
+  ];
+
+  const onSubmit = async (data: z.infer<typeof changeMyInfoSchema>) => {
+    try {
+      const formData = new FormData();
+      Object.entries(data).forEach(([key, value]) => {
+        formData.append(key, value || "");
+      });
+
+      const response = await changeMyInfoAction(formData);
+
+      if (response.status === 200) {
+        if (profileImg) {
+          const imgFormData = new FormData();
+          imgFormData.append("image", profileImg);
+
+          try {
+            const profileImgResponse = await profileImgActions(imgFormData);
+
+            if (profileImgResponse.status !== 200) {
+              addToast(profileImgResponse.message as string, "warning");
+              console.error(
+                "프로필 사진 업로드 오류",
+                profileImgResponse.message
+              );
+            }
+          } catch (error) {
+            console.error("프로필 사진 업로드 오류", error);
+            addToast(
+              "정보 수정은 완료되었으나 프로필 사진 업로드 중 오류가 발생했습니다.",
+              "warning"
+            );
+          }
+        }
+
+        addToast("정보 수정이 완료되었습니다.", "info");
+        closeModal();
+      } else {
+        console.error(response.message, response.status);
+        addToast(response.message as string, "warning");
+      }
+    } catch (error) {
+      console.error("정보 수정 에러 발생", error);
+      addToast("정보 수정 중 오류가 발생했습니다.", "warning");
+    }
+  };
 
   return (
     <ModalContainer>
@@ -39,87 +112,36 @@ const ChangeMyInfoModal = () => {
         <strong className="text-2lg font-semibold text-black-400 pc:text-[32px] pc:leading-[46px]">
           내 정보 수정
         </strong>
-        <label className="relative mt-10 cursor-pointer pc:mt-[50px]">
-          <Image
-            src={previewSrc || "/icon/profile-circle-lg.svg"}
-            alt="프로필사진 변경"
-            width={80}
-            height={80}
-            className="size-20 rounded-full border-4 border-line-100 bg-background-200 object-cover pc:size-[100px]"
-            priority={true}
-          />
-          <Image
-            src="/icon/write-lg.svg"
-            alt="프로필사진 변경버튼"
-            width={24}
-            height={24}
-            className="absolute bottom-2 right-0 size-6 rounded-full border-[3px] border-gray-50 bg-background-300 pc:bottom-0 pc:size-9"
-            priority={true}
-          />
-          <input className="hidden" />
-        </label>
+        <div className="mt-10 pc:mt-[50px]">
+          <ProfileImg />
+        </div>
 
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="relative mt-[25px] flex flex-col pc:mt-10">
-            <label htmlFor="name" className={labelStyle}>
-              이름<span className="text-red"> *</span>
-            </label>
-            <FormInput
-              id="name"
-              name="name"
-              type="text"
-              register={register}
-              error={errors.name}
-              className={inputStyle}
-              placeholder="이름을 입력해주세요."
-            />
-            <ErrorText error={errors.name}>{errors.name?.message}</ErrorText>
-          </div>
-          <div className="relative flex flex-col">
-            <label
-              htmlFor="nickName"
-              className={`${labelStyle} mt-[17px] pc:mt-8`}
-            >
-              닉네임<span className="text-red"> *</span>
-            </label>
-            <FormInput
-              id="nickName"
-              name="nickName"
-              type="text"
-              register={register}
-              error={errors.nickName}
-              className={inputStyle}
-              placeholder="닉네임을 입력해주세요"
-            />
-            <ErrorText error={errors.nickName}>
-              {errors.nickName?.message}
-            </ErrorText>
-          </div>
-          <div className="relative flex flex-col">
-            <label
-              htmlFor="phoneNumber"
-              className={`${labelStyle} mt-[17px] pc:mt-8`}
-            >
-              연락처<span className="text-red"> *</span>
-            </label>
-            <FormInput
-              id="phoneNumber"
-              name="phoneNumber"
-              type="tel"
-              register={register}
-              error={errors.phoneNumber}
-              className={inputStyle}
-              placeholder="숫자만 입력해주세요."
-            />
-            <ErrorText error={errors.phoneNumber}>
-              {errors.phoneNumber?.message}
-            </ErrorText>
-          </div>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="mt-[25px] flex flex-col gap-[17px] pc:mt-10 pc:gap-8"
+        >
+          {inputArr.map((input) => (
+            <div key={input.name} className="relative flex flex-col">
+              <label htmlFor={input.name} className={labelStyle}>
+                {input.label}
+                <span className="text-red"> *</span>
+              </label>
+              <FormInput
+                id={input.name}
+                name={input.name as Path<z.infer<typeof changeMyInfoSchema>>}
+                type={input.type}
+                register={register}
+                error={input.error}
+                className={inputStyle}
+                placeholder={input.placeholder}
+              />
+              <ErrorText error={input.error}>{input.error?.message}</ErrorText>
+            </div>
+          ))}
 
           <div className="mt-6 flex gap-[11px] pc:mt-[30px] pc:gap-3">
             <div className={buttmonContainerStyle}>
               <SolidButton
-                size={viewPort === "pc" ? "large" : "small"}
                 style="gray100"
                 type="button"
                 onClick={() => {
@@ -132,12 +154,8 @@ const ChangeMyInfoModal = () => {
             <div className={buttmonContainerStyle}>
               <SolidButton
                 disabled={!isValid || isSubmitting}
-                size={viewPort === "pc" ? "large" : "small"}
                 style="orange300"
                 type="submit"
-                onClick={() => {
-                  closeModal();
-                }}
               >
                 수정하기
               </SolidButton>

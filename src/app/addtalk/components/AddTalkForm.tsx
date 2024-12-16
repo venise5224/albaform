@@ -10,17 +10,23 @@ import useViewPort from "@/hooks/useViewport";
 import { z } from "zod";
 import { cls } from "@/utils/dynamicTailwinds";
 import ErrorText from "@/components/errorText/ErrorText";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useToast } from "@/hooks/useToast";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import uploadImage from "../actions/uploadImage";
 import addTalk from "../actions/addTalk";
+import getAlbaTalkDetail from "@/app/albatalks/[talkId]/getAlbaTalkDetail";
+import patchPost from "../actions/patchPost";
 
 const AddTalkForm = () => {
+  const searchParams = useSearchParams();
+  const talkId = searchParams.get("talkId");
+
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<z.infer<typeof addTalkSchema>>({
     resolver: zodResolver(addTalkSchema),
     mode: "onChange",
@@ -30,9 +36,65 @@ const AddTalkForm = () => {
     },
   });
   const [images, setImages] = useState<File[]>([]);
+  const [existingImages, setExistingImages] = useState<File[]>([]);
+  const [existingImageUrl, setExistingImageUrl] = useState("");
   const { addToast } = useToast();
   const viewPort = useViewPort();
   const router = useRouter();
+
+  const urlToFile = async (imageUrl: string): Promise<File> => {
+    try {
+      // URL에서 파일 이름 추출
+      const fileName = imageUrl.split("/").pop() || "default.jpg";
+
+      // URL에서 Blob 데이터 가져오기
+      const response = await fetch(imageUrl);
+      if (!response.ok) {
+        console.error("이미지를 가져오는 데 실패했습니다.");
+      }
+
+      const blob = await response.blob();
+
+      // Blob을 File 객체로 변환
+      const file = new File([blob], fileName, { type: blob.type });
+      return file;
+    } catch (error) {
+      console.error("이미지를 파일로 변환하는 데 실패했습니다: ", error);
+      throw error;
+    }
+  };
+
+  useEffect(() => {
+    if (talkId) {
+      const fetchData = async () => {
+        try {
+          const response = await getAlbaTalkDetail(talkId);
+
+          if (response && response.status === 200) {
+            setValue("title", response.data.title);
+            setValue("content", response.data.content);
+
+            if (response.data.imageUrl) {
+              const file = await urlToFile(response.data.imageUrl);
+
+              setImages([file]);
+              setExistingImages([file]);
+              setExistingImageUrl(response.data.imageUrl);
+            } else {
+              setImages([]);
+            }
+          } else {
+            addToast("데이터를 불러오는데 실패했습니다.", "warning");
+          }
+        } catch (error) {
+          addToast("데이터를 불러오는데 실패했습니다.", "warning");
+          console.error("데이터 불러오는데 실패: ", error);
+        }
+      };
+
+      fetchData();
+    }
+  }, [talkId]);
 
   const onCancel = () => {
     router.push("/albatalk");
@@ -42,11 +104,12 @@ const AddTalkForm = () => {
     try {
       let imageUrl = "";
 
-      if (images.length > 0) {
+      if (images.length > 0 && images[0] !== existingImages[0]) {
         const imageUrlResponse = await uploadImage(images[0]);
 
         if (imageUrlResponse.status === 201) {
           imageUrl = imageUrlResponse.data;
+          setExistingImageUrl("");
         } else {
           addToast("이미지 등록 중 문제가 발생했습니다.", "warning");
           console.error("이미지 등록 실패: ", imageUrlResponse.error);
@@ -57,17 +120,29 @@ const AddTalkForm = () => {
       const data = {
         title: formData.title,
         content: formData.content,
-        imageUrl,
+        imageUrl: imageUrl || (!images[0] ? "" : existingImageUrl),
       };
 
-      const response = await addTalk(data);
+      if (!talkId) {
+        const response = await addTalk(data);
 
-      if (response.status === 201) {
-        addToast("글이 등록되었습니다.", "success");
-        router.push(`/boards/${response.data.id}`);
+        if (response.status === 201) {
+          addToast("글이 등록되었습니다.", "success");
+          router.push(`/albatalks/${response.data.id}`);
+        } else {
+          addToast("글 등록에 실패했습니다.", "warning");
+          console.error("글 등록 실패: ", response.error);
+        }
       } else {
-        addToast("글 등록에 실패했습니다.", "warning");
-        console.error("글 등록 실패: ", response.error);
+        const response = await patchPost(Number(talkId), data);
+
+        if (response.status === 200) {
+          addToast("글이 수정되었습니다.", "success");
+          router.push(`/albatalks/${response.data.id}`);
+        } else {
+          addToast("글 수정에 실패했습니다.", "warning");
+          console.error("글 수정 실패: ", response.error);
+        }
       }
     } catch (error) {
       addToast("요청에 실패했습니다.", "warning");
@@ -81,7 +156,7 @@ const AddTalkForm = () => {
       className="relative mx-auto max-w-[327px] pt-4 pc:max-w-[1480px] pc:pt-10 tablet:max-w-[600px] tablet:pt-[23px]"
     >
       <h3 className="mb-8 border-b border-line-200 pb-4 text-2lg font-semibold pc:mb-[72px] pc:pb-10 pc:text-3xl tablet:pb-[23px]">
-        글쓰기
+        {talkId ? "글 수정하기" : "글쓰기"}
       </h3>
       <div className="flex flex-col gap-y-10 pc:gap-y-6">
         <div className="relative flex flex-col gap-y-4">
@@ -130,11 +205,12 @@ const AddTalkForm = () => {
             size={viewPort === "pc" ? "large" : "medium"}
             onImageChange={setImages}
             limit={1}
+            initialImage={images}
           />
         </div>
       </div>
       <div className="mb-[18px] mt-[34px] flex flex-col gap-y-1 pc:absolute pc:right-0 pc:top-0 pc:h-[58px] pc:w-[372px] pc:flex-row pc:gap-x-3 tablet:absolute tablet:right-0 tablet:top-0 tablet:mb-0 tablet:mt-4 tablet:h-[46px] tablet:w-[217px] tablet:flex-row tablet:gap-x-2">
-        <SolidButton style="gray100" onClick={onCancel}>
+        <SolidButton type="button" style="gray100" onClick={onCancel}>
           취소
         </SolidButton>
         <SolidButton style="orange300">등록하기</SolidButton>

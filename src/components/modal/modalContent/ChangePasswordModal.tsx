@@ -11,11 +11,12 @@ import { useForm, Path } from "react-hook-form";
 import { changePasswordSchema } from "@/schema/modal/changePasswordSchema";
 import SolidButton from "@/components/button/SolidButton";
 import { useModal } from "@/hooks/useModal";
-import useViewPort from "@/hooks/useViewport";
+import { changePasswordAction } from "../modalActions/changePasswordAction";
+import { useToast } from "@/hooks/useToast";
 
 const ChangePasswordModal = () => {
   const { closeModal } = useModal();
-  const viewPort = useViewPort();
+  const { addToast } = useToast();
   const [visible, setVisible] = useState({
     currentPassword: false,
     newPassword: false,
@@ -70,8 +71,26 @@ const ChangePasswordModal = () => {
     },
   ];
 
-  const onSubmit = () => {
-    // 제출 기능 필요
+  const onSubmit = async (data: z.infer<typeof changePasswordSchema>) => {
+    try {
+      const formData = new FormData();
+      Object.entries(data).forEach(([key, value]) => {
+        formData.append(key, value || "");
+      });
+
+      const response = await changePasswordAction(formData);
+
+      if (response.status === 200) {
+        addToast("비밀번호 변경이 완료되었습니다.", "info");
+        closeModal();
+      } else {
+        console.error(response.message, response.status);
+        addToast(response.message as string, "warning");
+      }
+    } catch (error) {
+      console.error("정보 수정 에러 발생", error);
+      addToast("정보 수정 중 오류가 발생했습니다.", "warning");
+    }
   };
 
   return (
@@ -121,7 +140,6 @@ const ChangePasswordModal = () => {
           <div className="mt-6 flex gap-[11px] pc:mt-[30px] pc:gap-3">
             <div className={buttmonContainerStyle}>
               <SolidButton
-                size={viewPort === "pc" ? "large" : "small"}
                 style="gray100"
                 type="button"
                 onClick={() => {
@@ -134,12 +152,8 @@ const ChangePasswordModal = () => {
             <div className={buttmonContainerStyle}>
               <SolidButton
                 disabled={!isValid || isSubmitting}
-                size={viewPort === "pc" ? "large" : "small"}
                 style="orange300"
                 type="submit"
-                onClick={() => {
-                  closeModal();
-                }}
               >
                 수정하기
               </SolidButton>

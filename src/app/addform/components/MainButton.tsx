@@ -5,7 +5,7 @@ import {
   addFormSubmitDisabledAtom,
   addFromSubmitTriggerAtom,
   temporaryDataByStepAtom,
-} from "@/atoms/addFormAtom";
+} from "@/atoms/addFormAtomStore";
 import SolidButton from "@/components/button/SolidButton";
 import { useAtomValue, useSetAtom } from "jotai";
 
