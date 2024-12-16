@@ -10,9 +10,12 @@ export const changeCEOInfoSchema = z.object({
     .regex(/^[0-9]+$/, { message: "올바르지 않은 번호입니다." }),
   phoneNumber: z
     .string()
-    .regex(/^(|010|011|016|017|018|019)\d{7,8}$/, {
-      message: "올바르지 않은 번호입니다.",
-    })
-    .nullish(),
+    .refine(
+      (value) =>
+        value === "" || /^(010|011|016|017|018|019)\d{7,8}$/.test(value),
+      {
+        message: "올바르지 않은 번호입니다.",
+      }
+    ),
   location: z.string().min(1, { message: "가게 위치를 입력해주세요." }),
 });
