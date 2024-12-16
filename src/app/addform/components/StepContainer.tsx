@@ -28,7 +28,7 @@ interface StepContainerProps {
         status: number;
         message: string;
       };
-  formId: string;
+  formId?: string;
 }
 
 const StepContainer = ({ albaForm, formId }: StepContainerProps) => {
