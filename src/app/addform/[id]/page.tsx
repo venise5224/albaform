@@ -44,7 +44,7 @@ const EditFormPage = async ({ params }: EditFormPageProps) => {
 
   const albaForm = await getAlbaForm();
 
-  return <StepContainer albaForm={albaForm} />;
+  return <StepContainer albaForm={albaForm} formId={id} />;
 };
 
 export default EditFormPage;

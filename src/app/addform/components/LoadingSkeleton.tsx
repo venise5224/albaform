@@ -12,7 +12,7 @@ const LoadingSkeleton = ({
         .map((_, i) => (
           <div
             key={i}
-            className="h-16 w-[327px] rounded-lg bg-background-200"
+            className="h-16 w-[327px] rounded-lg bg-background-200 pc:w-[640px]"
           />
         ))}
       {isImage && (

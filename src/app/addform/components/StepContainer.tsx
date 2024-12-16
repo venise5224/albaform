@@ -4,7 +4,7 @@ import { addFormSchema } from "@/schema/addForm/addFormSchema";
 import { z } from "zod";
 import { FormProvider } from "react-hook-form";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import {
   currentImageListAtom,
   addFormSubmitDisabledAtom,
@@ -28,9 +28,10 @@ interface StepContainerProps {
         status: number;
         message: string;
       };
+  formId: string;
 }
 
-const StepContainer = ({ albaForm }: StepContainerProps) => {
+const StepContainer = ({ albaForm, formId }: StepContainerProps) => {
   const searchParams = useSearchParams();
   const step = searchParams.get("step") || "stepOne";
   const [currentImageList, setCurrentImageList] = useAtom(currentImageListAtom);
@@ -38,11 +39,13 @@ const StepContainer = ({ albaForm }: StepContainerProps) => {
   const setAddFormIsSubmitting = useSetAtom(addFormIsSubmittingAtom);
   const [submitTrigger, setSubmitTrigger] = useAtom(addFromSubmitTriggerAtom);
   const { addToast } = useToast();
-  const router = useRouter();
   const { methods, loadAllTempData } = useAddForm();
+  const router = useRouter();
+  const isEdit = albaForm && !("status" in albaForm);
+  const isInitialized = useRef(false);
 
   useEffect(() => {
-    if (albaForm) {
+    if (albaForm && !isInitialized.current) {
       if ("status" in albaForm) {
         addToast(albaForm.message, "warning");
         return;
@@ -74,10 +77,12 @@ const StepContainer = ({ albaForm }: StepContainerProps) => {
           };
           convertToFile();
         }
+        isInitialized.current = true;
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [albaForm]);
+
   // 등록 버튼 활성화 여부 (선택값이 많아서 isValid 미동작으로 값들이 모두 채워지면 활성화)
   useEffect(() => {
     const values = methods.getValues();
@@ -124,63 +129,81 @@ const StepContainer = ({ albaForm }: StepContainerProps) => {
     try {
       const imgFormData = new FormData();
 
-      currentImageList.forEach((img) => {
-        imgFormData.append("image", img);
-      });
+      if (albaForm && !("status" in albaForm)) {
+        const existingUrls = albaForm.imageUrls || [];
 
-      const imgResponse = await addFormImgUpload(imgFormData);
+        const newImageList = currentImageList.filter(
+          (img) => img.name !== "serverImage"
+        );
 
-      if (imgResponse.status !== 201) {
-        addToast(imgResponse.message as string, "warning");
-        return;
-      }
+        let uploadUrls: string[] = [];
 
-      const dateFields = [
-        "workStartDate",
-        "workEndDate",
-        "recruitmentStartDate",
-        "recruitmentEndDate",
-      ] as const;
+        newImageList.forEach((img) => {
+          imgFormData.append("image", img);
+        });
 
-      dateFields.forEach((field) => {
-        methods.setValue(field, handleDateRangeFormat(data[field]));
-      });
+        const imgResponse = await addFormImgUpload(imgFormData);
 
-      methods.setValue("imageUrls", imgResponse.data);
-
-      const updatedData = methods.getValues();
-
-      const formData = new FormData();
-      formData.append("imageUrls", JSON.stringify(imgResponse.data));
-      formData.append("workDays", JSON.stringify(updatedData.workDays));
-
-      Object.entries(updatedData).forEach(([key, value]) => {
-        if (key !== "imageUrls" && key !== "workDays") {
-          formData.append(key, value as string);
+        if (imgResponse.status !== 201) {
+          addToast(imgResponse.message as string, "warning");
+          return;
         }
-      });
 
-      const response = await addFormSubmit(formData);
+        if (imgResponse.data) {
+          uploadUrls = [...existingUrls, ...imgResponse.data];
+        }
 
-      if (response.status === false) {
-        addToast("입력하신 내용을 확인해주세요.", "warning");
-        return;
-      } else if (response.status !== 201) {
-        addToast(response.message as string, "warning");
-        return;
+        const dateFields = [
+          "workStartDate",
+          "workEndDate",
+          "recruitmentStartDate",
+          "recruitmentEndDate",
+        ] as const;
+
+        dateFields.forEach((field) => {
+          methods.setValue(field, handleDateRangeFormat(data[field]));
+        });
+
+        methods.setValue("imageUrls", uploadUrls);
+
+        const updatedData = methods.getValues();
+
+        const formData = new FormData();
+        formData.append("imageUrls", JSON.stringify(uploadUrls));
+        formData.append("workDays", JSON.stringify(updatedData.workDays));
+
+        Object.entries(updatedData).forEach(([key, value]) => {
+          if (key !== "imageUrls" && key !== "workDays") {
+            formData.append(key, value as string);
+          }
+        });
+
+        const response = await addFormSubmit(formData, isEdit, formId);
+
+        if (response.status === false) {
+          addToast("입력하신 내용을 확인해주세요.", "warning");
+          return;
+        } else if (response.status !== 201 && response.status !== 200) {
+          addToast(response.message as string, "warning");
+          return;
+        }
+
+        const { id } = response;
+        if (isEdit) {
+          addToast("알바폼 수정이 완료되었습니다.", "success");
+        } else {
+          addToast("알바폼 등록이 완료되었습니다.", "success");
+        }
+
+        ["stepOne", "stepTwo", "stepThree"].forEach((step) => {
+          localStorage.removeItem(step);
+        });
+
+        methods.reset();
+        setCurrentImageList([]);
+
+        router.push(`/alba/${id}`);
       }
-
-      const { id } = response;
-      addToast("알바폼 등록이 완료되었습니다.", "success");
-
-      ["stepOne", "stepTwo", "stepThree"].forEach((step) => {
-        localStorage.removeItem(step);
-      });
-
-      methods.reset();
-      setCurrentImageList([]);
-
-      router.push(`/alba/${id}`);
     } catch (error) {
       console.error("알바폼 등록 중 오류 발생", error);
       addToast("알바폼 등록 중 오류가 발생했습니다.", "warning");
@@ -197,10 +220,7 @@ const StepContainer = ({ albaForm }: StepContainerProps) => {
 
   return (
     <FormProvider {...methods}>
-      <form
-        onSubmit={methods.handleSubmit(onSubmit)}
-        className="min-w-[640px] p-6"
-      >
+      <form onSubmit={methods.handleSubmit(onSubmit)} className="p-6">
         <StepContent step={step} />
       </form>
     </FormProvider>
