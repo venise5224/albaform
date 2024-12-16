@@ -52,12 +52,14 @@ const StepContainer = ({ albaForm, formId }: StepContainerProps) => {
       } else {
         const workDates = formatDate(
           albaForm.workStartDate,
-          albaForm.workEndDate
+          albaForm.workEndDate,
+          true
         );
 
         const recruitmentDates = formatDate(
           albaForm.recruitmentStartDate,
-          albaForm.recruitmentEndDate
+          albaForm.recruitmentEndDate,
+          true
         );
 
         methods.reset({
@@ -129,81 +131,84 @@ const StepContainer = ({ albaForm, formId }: StepContainerProps) => {
     try {
       const imgFormData = new FormData();
 
+      const newImageList = currentImageList.filter(
+        (img) => img.name !== "serverImage"
+      );
+
+      let uploadUrls: string[] = [];
+
       if (albaForm && !("status" in albaForm)) {
         const existingUrls = albaForm.imageUrls || [];
+        uploadUrls = [...existingUrls];
+      }
 
-        const newImageList = currentImageList.filter(
-          (img) => img.name !== "serverImage"
-        );
-
-        let uploadUrls: string[] = [];
-
+      if (newImageList.length > 0) {
         newImageList.forEach((img) => {
           imgFormData.append("image", img);
         });
-
-        const imgResponse = await addFormImgUpload(imgFormData);
-
-        if (imgResponse.status !== 201) {
-          addToast(imgResponse.message as string, "warning");
-          return;
-        }
-
-        if (imgResponse.data) {
-          uploadUrls = [...existingUrls, ...imgResponse.data];
-        }
-
-        const dateFields = [
-          "workStartDate",
-          "workEndDate",
-          "recruitmentStartDate",
-          "recruitmentEndDate",
-        ] as const;
-
-        dateFields.forEach((field) => {
-          methods.setValue(field, handleDateRangeFormat(data[field]));
-        });
-
-        methods.setValue("imageUrls", uploadUrls);
-
-        const updatedData = methods.getValues();
-
-        const formData = new FormData();
-        formData.append("imageUrls", JSON.stringify(uploadUrls));
-        formData.append("workDays", JSON.stringify(updatedData.workDays));
-
-        Object.entries(updatedData).forEach(([key, value]) => {
-          if (key !== "imageUrls" && key !== "workDays") {
-            formData.append(key, value as string);
-          }
-        });
-
-        const response = await addFormSubmit(formData, isEdit, formId);
-
-        if (response.status === false) {
-          addToast("입력하신 내용을 확인해주세요.", "warning");
-          return;
-        } else if (response.status !== 201 && response.status !== 200) {
-          addToast(response.message as string, "warning");
-          return;
-        }
-
-        const { id } = response;
-        if (isEdit) {
-          addToast("알바폼 수정이 완료되었습니다.", "success");
-        } else {
-          addToast("알바폼 등록이 완료되었습니다.", "success");
-        }
-
-        ["stepOne", "stepTwo", "stepThree"].forEach((step) => {
-          localStorage.removeItem(step);
-        });
-
-        methods.reset();
-        setCurrentImageList([]);
-
-        router.push(`/alba/${id}`);
       }
+
+      const imgResponse = await addFormImgUpload(imgFormData);
+
+      if (imgResponse.status !== 201) {
+        addToast(imgResponse.message as string, "warning");
+        return;
+      }
+
+      if (imgResponse.data) {
+        uploadUrls = [...uploadUrls, ...imgResponse.data];
+      }
+
+      const dateFields = [
+        "workStartDate",
+        "workEndDate",
+        "recruitmentStartDate",
+        "recruitmentEndDate",
+      ] as const;
+
+      dateFields.forEach((field) => {
+        methods.setValue(field, handleDateRangeFormat(data[field]));
+      });
+
+      methods.setValue("imageUrls", uploadUrls);
+
+      const updatedData = methods.getValues();
+
+      const formData = new FormData();
+      formData.append("imageUrls", JSON.stringify(uploadUrls));
+      formData.append("workDays", JSON.stringify(updatedData.workDays));
+
+      Object.entries(updatedData).forEach(([key, value]) => {
+        if (key !== "imageUrls" && key !== "workDays") {
+          formData.append(key, value as string);
+        }
+      });
+
+      const response = await addFormSubmit(formData, isEdit, formId);
+
+      if (response.status === false) {
+        addToast("입력하신 내용을 확인해주세요.", "warning");
+        return;
+      } else if (response.status !== 201 && response.status !== 200) {
+        addToast(response.message as string, "warning");
+        return;
+      }
+
+      const { id } = response;
+      if (isEdit) {
+        addToast("알바폼 수정이 완료되었습니다.", "success");
+      } else {
+        addToast("알바폼 등록이 완료되었습니다.", "success");
+      }
+
+      ["stepOne", "stepTwo", "stepThree"].forEach((step) => {
+        localStorage.removeItem(step);
+      });
+
+      methods.reset();
+      setCurrentImageList([]);
+
+      router.push(`/alba/${id}`);
     } catch (error) {
       console.error("알바폼 등록 중 오류 발생", error);
       addToast("알바폼 등록 중 오류가 발생했습니다.", "warning");

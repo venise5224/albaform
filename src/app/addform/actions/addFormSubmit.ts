@@ -5,8 +5,8 @@ import { addFormSchema } from "@/schema/addForm/addFormSchema";
 
 export const addFormSubmit = async (
   formData: FormData,
-  isEdit = false,
-  formId: string
+  isEdit: boolean | undefined,
+  formId?: string
 ) => {
   const imageUrlsString = formData.get("imageUrls")?.toString() ?? "[]";
   const workDaysString = formData.get("workDays")?.toString() ?? "[]";
