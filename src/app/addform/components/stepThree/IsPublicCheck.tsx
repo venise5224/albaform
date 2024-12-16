@@ -9,7 +9,7 @@ const IsPublicCheck = () => {
   const [checked, setChecked] = useState({
     isPublic: watch("isPublic") ?? true,
   });
-  console.log(watch("isPublic"));
+
   const handleCheckBoxToggle = (key: "isPublic") => {
     setChecked((prev) => ({
       ...prev,
@@ -28,7 +28,7 @@ const IsPublicCheck = () => {
         <span className="text-orange-300"> *</span>
       </label>
       <CheckBoxButton
-        name="비공개"
+        name="공개"
         onChange={() => handleCheckBoxToggle("isPublic")}
         checked={!checked.isPublic}
       />
