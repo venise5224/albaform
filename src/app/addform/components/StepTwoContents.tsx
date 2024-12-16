@@ -10,16 +10,21 @@ import ErrorText from "@/components/errorText/ErrorText";
 const StepTwoContents = () => {
   const {
     setValue,
+    getValues,
     formState: { errors },
   } = useFormContext<z.infer<typeof addFormSchema>>();
   const setTemporaryDataByStep = useSetAtom(temporaryDataByStepAtom);
-  const [stepTwoData, setStepTwoData] = useState({
-    numberOfPositions: 0,
-    gender: "",
-    education: "",
-    age: "",
-    preferred: "",
+  const [stepTwoData, setStepTwoData] = useState(() => {
+    const currentValues = getValues();
+    return {
+      numberOfPositions: currentValues.numberOfPositions || 0,
+      gender: currentValues.gender || "",
+      education: currentValues.education || "",
+      age: currentValues.age || "",
+      preferred: currentValues.preferred || "",
+    };
   });
+
   const fields = [
     "numberOfPositions",
     "gender",
