@@ -1,0 +1,150 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 기본 색상 변수 설정 */
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+/* Pretendard 폰트 설정 */
+@font-face {
+  font-family: "Pretendard";
+  src: url("https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff")
+    format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* 전역 스타일 */
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Pretendard, Arial, Helvetica, sans-serif;
+}
+
+/* Bounce In 애니메이션 */
+@keyframes bounceIn {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-bounceIn {
+  animation: bounceIn 0.6s ease-out;
+}
+
+/* Components Layer */
+@layer components {
+  /* Modal 스타일 */
+  .modal-image-container {
+    @apply animate-bounceIn relative size-[80px];
+  }
+  .modal-title {
+    @apply mt-[24px] text-2lg font-semibold text-black-400;
+  }
+  .modal-sub-title {
+    @apply mt-[8px] text-md font-regular text-gray-400;
+  }
+
+  /* Form 기본 스타일 */
+  .form-input-base {
+    @apply max-w-[640px] rounded-lg border-[0.5px] border-gray-200 p-[14px] placeholder:text-gray-400 focus:border-orange-300;
+  }
+
+  .addform-input-base {
+    @apply max-w-[640px] rounded-lg border-none bg-background-200 p-[14px] placeholder:text-gray-400 transition-all;
+  }
+
+  /* 스크롤바 숨기기 */
+  .scrollbar-hidden {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE10+ */
+  }
+  .scrollbar-hidden::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Edge */
+  }
+
+  /* Picker 컨테이너 스타일 */
+  .picker-container {
+    @apply absolute right-0 top-full z-10 mt-2 flex max-h-[148px] w-full flex-col gap-5 overflow-auto rounded-md border border-gray-100 bg-gray-50 px-6 py-[14px] text-left text-lg text-black-100 pc:max-h-[164px] pc:text-xl;
+  }
+
+  /* PC 화면 전용 스타일 */
+  @media (min-width: 1200px) {
+    .modal-image-container {
+      @apply h-[120px] w-[120px];
+    }
+    .modal-title {
+      @apply mt-[32px] text-2xl;
+    }
+    .modal-sub-title {
+      @apply mt-[16px] text-xl;
+    }
+  }
+
+  /* Toast 애니메이션 */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes fadeOut {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+  }
+  .animate-toast-in {
+    animation: fadeIn 0.3s ease-in;
+  }
+  .animate-toast-out {
+    animation: fadeOut 0.4s ease-out;
+  }
+}
+
+/* Base Layer */
+@layer base {
+  /* Input 태그 포커스 스타일 */
+  input:focus {
+    @apply caret-orange-300 outline-none;
+  }
+  textarea:focus {
+    @apply caret-orange-300 outline-none;
+  }
+
+  /* input type="number" 기본 스타일링 제거 */
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* 파이어폭스 */
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+
+  /* 기본적으로 모든 브라우저에서 동일한 스타일로 */
+  input[type="number"] {
+    appearance: textfield; /* 표준 속성 */
+  }
+}
