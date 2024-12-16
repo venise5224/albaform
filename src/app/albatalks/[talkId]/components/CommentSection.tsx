@@ -86,8 +86,9 @@ const CommentSection = ({ id, userId }: { id: number; userId: number }) => {
   const observerRef = useInfinityScroll({ fetchMoreData: fetchComments });
 
   useEffect(() => {
+    if (!id) return;
     fetchComments();
-  }, [fetchComments]);
+  }, [id]);
 
   return (
     <section>

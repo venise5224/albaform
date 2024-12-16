@@ -8,12 +8,11 @@ import heartIcon from "@/../public/icon/heart-md.svg";
 import hrartFillIcon from "@/../public/icon/heart-fill-md.svg";
 import ProfileImage from "./ProfileImage";
 import formatYearMonthDay from "@/utils/formatYearMonthDay";
-import { useEffect, useState } from "react";
-import postLike from "../actions/postLike";
-import postLikeCancel from "../actions/postLikeCancel";
+import { useState } from "react";
 import deletePosts from "../actions/deletePosts";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/useToast";
+import postDeleteLike from "../actions/postDeleteLike";
 
 interface props {
   info: {
@@ -66,10 +65,10 @@ const Header = ({ info, userId }: props) => {
       let response;
       if (isLiked) {
         // 좋아요 취소 요청
-        response = await postLikeCancel(info.id);
+        response = await postDeleteLike(info.id, "DELETE");
       } else {
         // 좋아요 요청
-        response = await postLike(info.id);
+        response = await postDeleteLike(info.id, "POST");
       }
 
       if (response.status !== 200) {
