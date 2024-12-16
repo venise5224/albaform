@@ -20,11 +20,11 @@ const Page = () => {
       <div>
         <button onClick={() => openModal("ChangePasswordModal")}>
           비밀번호 수정 모달
+        </button>
       </div>
       <div>
         <button onClick={() => openModal("ChangeMyInfoModal")}>
           나의 정보 수정 모달
-      </div>
         </button>
       </div>
     </div>
