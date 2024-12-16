@@ -8,7 +8,7 @@ import { useModal } from "@/hooks/useModal";
 import { useToast } from "@/hooks/useToast";
 import { selectProgressAction } from "../modalActions/selectProgressAction";
 import { useAtomValue } from "jotai";
-import { applicationIdAtom } from "@/atoms/modalAtom";
+import { applicationIdAtom } from "@/atoms/modalAtomStore";
 
 export type ProgressValue =
   | "REJECTED"
