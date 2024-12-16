@@ -1,6 +1,6 @@
 "use client";
 
-import { addFormStepAtom } from "@/atoms/addFormAtom";
+import { addFormStepAtom } from "@/atoms/addFormAtomStore";
 import { dropdownTriggerAtom } from "@/atoms/dropdownAtomStore";
 import {
   DropdownMenu,

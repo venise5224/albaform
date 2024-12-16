@@ -33,6 +33,7 @@ const ImageInput = ({
     medium: "h-[116px] w-[116px]",
     large: "h-[240px] w-[240px]",
   };
+
   // 임시저장 이미지가 있을 시 이를 감지하여 미리보기 이미지 표출
   useEffect(() => {
     if (initialImage?.length) {
