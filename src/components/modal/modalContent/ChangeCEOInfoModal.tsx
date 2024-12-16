@@ -16,11 +16,13 @@ import { profileImgAtom } from "@/atoms/signupAtomStore";
 import { profileImgActions } from "@/app/(auth)/signup/actions/profileImgActions";
 import { useToast } from "@/hooks/useToast";
 import ProfileImg from "@/app/(auth)/signup/components/ProfileImg";
+import { addressAtom } from "@/atoms/addressAtom";
 
 const ChangeCEOInfoModal = () => {
-  const { closeModal } = useModal();
+  const { openModal, closeModal } = useModal();
   const profileImg = useAtomValue(profileImgAtom);
   const { addToast } = useToast();
+  const address = useAtomValue(addressAtom);
   const {
     register,
     handleSubmit,
@@ -85,7 +87,7 @@ const ChangeCEOInfoModal = () => {
       label: "가게 위치",
       name: "location",
       type: "text",
-      placeholder: "위치를 입력해주세요.",
+      placeholder: address ? address : "위치를 입력해주세요.",
       error: errors.location,
       register: register("location"),
       required: true,
