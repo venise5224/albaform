@@ -7,6 +7,7 @@ import {
   temporaryDataByStepAtom,
 } from "@/atoms/addFormAtomStore";
 import SolidButton from "@/components/button/SolidButton";
+import { useToast } from "@/hooks/useToast";
 import { useAtomValue, useSetAtom } from "jotai";
 
 const MainButton = () => {
@@ -14,6 +15,8 @@ const MainButton = () => {
   const isDisabled = useAtomValue(addFormSubmitDisabledAtom);
   const isSubmitting = useAtomValue(addFormIsSubmittingAtom);
   const setAddFormSubmitTrigger = useSetAtom(addFromSubmitTriggerAtom);
+  const { addToast } = useToast();
+
   const temporaryDataArr = [
     { step: "stepOne", data: temporaryDataByStep.stepOne },
     { step: "stepTwo", data: temporaryDataByStep.stepTwo },
@@ -27,6 +30,7 @@ const MainButton = () => {
         localStorage.setItem(item.step, JSON.stringify(item.data));
       }
     });
+    addToast("입력한 내용이 임시 저장되었습니다.", "success");
   };
 
   return (

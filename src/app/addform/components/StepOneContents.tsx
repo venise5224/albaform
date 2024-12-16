@@ -71,14 +71,17 @@ const StepOneContents = () => {
 
   // 임시 데이터 atom 업데이트
   useEffect(() => {
+    const title = getValues("title");
+    const description = getValues("description");
+
     const updateTemporaryData = async () => {
       const base64Images = await Promise.all(
         currentImageList.map((img) => fileToBase64(img))
       );
 
       const temporaryStepOneData = {
-        title: getValues("title"),
-        description: getValues("description"),
+        title: title,
+        description: description,
         recruitmentStartDate: temporaryDateRange[0],
         recruitmentEndDate: temporaryDateRange[1],
         tempImage: base64Images, // 임시저장을 위해 서버 업로드 전 이미지를 저장
