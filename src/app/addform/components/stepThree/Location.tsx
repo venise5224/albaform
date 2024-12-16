@@ -4,24 +4,32 @@ import ErrorText from "@/components/errorText/ErrorText";
 import { useFormContext } from "react-hook-form";
 import { addFormSchema } from "@/schema/addForm/addFormSchema";
 import { z } from "zod";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { addressAtom } from "@/atoms/addressAtom";
+import { useAtomValue } from "jotai";
 
 const Location = () => {
   const {
     setValue,
-    watch,
     formState: { errors },
+    watch,
   } = useFormContext<z.infer<typeof addFormSchema>>();
-  const [location, setLocation] = useState<string>(watch("location") || "");
-  // Location은 위치 설정 후에는 LocationPicker로 보내서 initialLocation으로 설정해야 함.
+  const address = useAtomValue(addressAtom);
+  const currentAddress = watch("location");
 
   useEffect(() => {
-    setValue("location", location);
-  }, [location, setValue]);
+    if (address) {
+      setValue("location", address);
+    }
+  }, [address, setValue]);
+
+  const handleLocationChange = (newLocation: string) => {
+    setValue("location", newLocation);
+  };
 
   return (
     <div className="relative flex flex-col space-y-4">
-      <LocationPicker initialLocation={location} />
+      <LocationPicker initialLocation={currentAddress || ""} />
       <ErrorText error={errors.location}>{errors.location?.message}</ErrorText>
     </div>
   );

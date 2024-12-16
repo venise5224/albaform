@@ -29,7 +29,15 @@ const RequirementPicker = ({
   setStepTwoData,
   initialValue,
 }: labelType) => {
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState(() => {
+    const key = matchLabelToStepTwoData(label);
+    const initialVal = initialValue[key];
+
+    if (key === "numberOfPositions" && initialVal === 0) {
+      return "인원미정";
+    }
+    return initialValue[key].toString() || "";
+  });
   const [isTextMode, setIsTextMode] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -42,23 +50,6 @@ const RequirementPicker = ({
       setIsTextMode(false);
       setValue(value);
       setStepTwoData((prev) => ({ ...prev, preferred: value }));
-    }
-  };
-
-  const matchLabelToStepTwoData = (
-    label: "모집인원" | "성별" | "학력" | "연령" | "우대사항"
-  ) => {
-    switch (label) {
-      case "모집인원":
-        return "numberOfPositions";
-      case "성별":
-        return "gender";
-      case "학력":
-        return "education";
-      case "연령":
-        return "age";
-      case "우대사항":
-        return "preferred";
     }
   };
 
@@ -108,3 +99,20 @@ const RequirementPicker = ({
 };
 
 export default RequirementPicker;
+
+const matchLabelToStepTwoData = (
+  label: "모집인원" | "성별" | "학력" | "연령" | "우대사항"
+) => {
+  switch (label) {
+    case "모집인원":
+      return "numberOfPositions";
+    case "성별":
+      return "gender";
+    case "학력":
+      return "education";
+    case "연령":
+      return "age";
+    case "우대사항":
+      return "preferred";
+  }
+};
