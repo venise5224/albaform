@@ -3,7 +3,7 @@
 import { cls } from "@/utils/dynamicTailwinds";
 import { useEffect } from "react";
 import WritingTag from "./WritingTag";
-import { addFormStepAtom } from "@/atoms/addFormAtom";
+import { addFormStepAtom } from "@/atoms/addFormAtomStore";
 import { useAtom } from "jotai";
 import { useSearchParamsCustom } from "@/hooks/useSearchParamsCustom";
 
