@@ -61,6 +61,13 @@ const instance = async (url: string, options: RequestInit = {}) => {
     }
   }
 
+  if (response.status === 204) {
+    return {
+      status: response.status,
+      data: null, // 응답 본문이 없을 때 null 반환합니다.
+    };
+  }
+
   if (!response.ok) {
     console.error("요청 실패", response.statusText, response.status);
     return {
