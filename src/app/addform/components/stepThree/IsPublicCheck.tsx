@@ -28,7 +28,7 @@ const IsPublicCheck = () => {
         <span className="text-orange-300"> *</span>
       </label>
       <CheckBoxButton
-        name="공개"
+        name="비공개"
         onChange={() => handleCheckBoxToggle("isPublic")}
         checked={!checked.isPublic}
       />
