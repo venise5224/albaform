@@ -1,6 +1,6 @@
 "use client";
 
-import { modalAtom } from "@/atoms/modalAtom";
+import { modalAtom } from "@/atoms/modalAtomStore";
 import { ModalType } from "@/types/modal";
 import { useSetAtom } from "jotai";
 
