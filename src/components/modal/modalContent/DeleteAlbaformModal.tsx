@@ -13,7 +13,7 @@ const DeleteAlbaformModal = () => {
   const { addToast } = useToast();
   const router = useRouter();
   const params = useParams();
-  const id = params.id as string;
+  const id = params.formId as string;
 
   const handleDeleteAlbaform = async () => {
     if (!id) return;

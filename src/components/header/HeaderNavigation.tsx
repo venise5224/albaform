@@ -28,7 +28,7 @@ const HeaderNavigation = ({ isAuthPage }: { isAuthPage: boolean }) => {
 
   return (
     <nav className="m-[16px] flex-grow">
-      <ul className="flex gap-[16px] text-gray-300">
+      <ul className="flex gap-[28px] text-gray-300">
         {navList.map((list) => (
           <Link
             key={list.id}
