@@ -1,5 +1,6 @@
 import { AddFormStepProps } from "@/types/addform";
 import { atom } from "jotai";
+import { atomFamily } from "jotai/utils";
 
 interface AlbaformCreateStep {
   title?: string;
@@ -25,3 +26,6 @@ export const addFormSubmitDisabledAtom = atom<boolean>(false);
 
 // 등록 중 여부
 export const addFormIsSubmittingAtom = atom<boolean>(false);
+
+// 2단계 메뉴 안겹치도록 관리
+export const stepTwoMenuOpenAtom = atom<string | null>(null);
