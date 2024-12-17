@@ -77,12 +77,12 @@ const AlbaList = ({ list, nextCursor, role, params }: AlbaListProps) => {
                 {item.isPublic ? (
                   <Link href={`/alba/${item.id}`} className="block">
                     <BlurWrapper isPublic={item.isPublic}>
-                      <AlbarPreview info={item} />
+                      <AlbarPreview info={item} role={role} />
                     </BlurWrapper>
                   </Link>
                 ) : (
                   <BlurWrapper isPublic={item.isPublic}>
-                    <AlbarPreview info={item} />
+                    <AlbarPreview info={item} role={role} />
                   </BlurWrapper>
                 )}
               </li>
