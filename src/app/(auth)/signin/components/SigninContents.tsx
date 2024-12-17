@@ -40,6 +40,7 @@ const SigninContents = () => {
       const response = await signinAction(formData);
 
       if (response.status === 200) {
+        localStorage.setItem("isLogin", "true");
         router.push("/");
       } else {
         addToast(response.error as string, "warning");

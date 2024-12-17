@@ -121,6 +121,8 @@ const SignupContents = ({
         }
 
         addToast("회원가입이 완료되었습니다.", "info");
+        localStorage.setItem("isLogin", "true");
+
         reset();
         router.push("/");
       } else {
