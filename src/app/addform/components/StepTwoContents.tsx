@@ -3,7 +3,10 @@ import { addFormSchema } from "@/schema/addForm/addFormSchema";
 import { z } from "zod";
 import { useEffect, useState } from "react";
 import RequirementPicker from "@/components/picker/RequirementPicker";
-import { temporaryDataByStepAtom } from "@/atoms/addFormAtomStore";
+import {
+  stepActiveAtomFamily,
+  temporaryDataByStepAtom,
+} from "@/atoms/addFormAtomStore";
 import { useSetAtom } from "jotai";
 import ErrorText from "@/components/errorText/ErrorText";
 import LoadingSkeleton from "./LoadingSkeleton";
@@ -12,9 +15,11 @@ const StepTwoContents = () => {
   const {
     setValue,
     getValues,
+    watch,
     formState: { errors },
   } = useFormContext<z.infer<typeof addFormSchema>>();
   const setTemporaryDataByStep = useSetAtom(temporaryDataByStepAtom);
+  const setStepActive = useSetAtom(stepActiveAtomFamily("stepTwo"));
   const [loading, setLoading] = useState(true);
   const [stepTwoData, setStepTwoData] = useState(() => {
     const currentValues = getValues();
@@ -27,6 +32,7 @@ const StepTwoContents = () => {
     };
   });
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const fields = [
     "numberOfPositions",
     "gender",
@@ -46,6 +52,20 @@ const StepTwoContents = () => {
     { label: "연령", name: "age", errors: errors.age },
     { label: "우대사항", name: "preferred", errors: errors.preferred },
   ];
+
+  // 2단계 '작성중' 태그 여부
+  useEffect(() => {
+    const subscription = watch((value, { name }) => {
+      if (name && fields.includes(name as (typeof fields)[number])) {
+        const currentValue = value[name as keyof typeof value];
+        if (currentValue && String(currentValue).trim() !== "") {
+          setStepActive(true);
+        }
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [watch, fields]);
 
   // 추출한 필수값을 폼에 적용
   useEffect(() => {
