@@ -35,6 +35,13 @@ export const middleware = async (request: NextRequest) => {
     }
   }
 
+  // 비회원이 전용페이지 접근하는 것을 차단
+  if (!role && !accessToken) {
+    if (ownerPath.includes(path) || applicantPath.includes(path)) {
+      return NextResponse.redirect(new URL("/signin/applicant", request.url));
+    }
+  }
+
   // 로그인되어 있으면 로그인페이지로 못가도록 막음
   if (path.startsWith("/signin")) {
     if (accessToken) {
