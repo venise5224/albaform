@@ -3,22 +3,17 @@
 import Image from "next/image";
 import ModalContainer from "../modalContainer/ModalContainer";
 import SolidButton from "@/components/button/SolidButton";
-import useViewPort from "@/hooks/useViewport";
-import { useRouter } from "next/navigation";
 import { useModal } from "@/hooks/useModal";
-import { useToast } from "@/hooks/useToast";
-import { useAddForm } from "@/hooks/useAddForm";
+import { useSetAtom } from "jotai";
+import { continueAtom } from "@/atoms/continueAtom";
 
 const PatchAlbaformModal = () => {
-  const router = useRouter();
   const { closeModal } = useModal();
-  const { addToast } = useToast();
-  const { loadAllTempData } = useAddForm();
+  const setContinue = useSetAtom(continueAtom);
 
-  const handleClick = () => {
-    loadAllTempData();
+  const handleNewWriteClick = () => {
+    setContinue(false);
     closeModal();
-    addToast("임시저장 데이터를 불러왔습니다.", "info");
   };
 
   return (
@@ -34,9 +29,20 @@ const PatchAlbaformModal = () => {
         </div>
         <h2 className="modal-title">작성 중인 알바폼이 있어요!</h2>
         <p className="modal-sub-title">이어서 작성하시겠어요?</p>
-        <div className="mt-6 h-[56px] w-[327px] pc:h-[72px] pc:w-[360px]">
-          <SolidButton style="orange300" type="button" onClick={handleClick}>
+        <div className="mt-6 flex w-[327px] flex-col gap-2 pc:w-[360px]">
+          <SolidButton
+            style="orange300"
+            type="button"
+            onClick={() => closeModal()}
+          >
             이어쓰기
+          </SolidButton>
+          <SolidButton
+            style="outOrange300"
+            type="button"
+            onClick={handleNewWriteClick}
+          >
+            새로쓰기
           </SolidButton>
         </div>
       </div>

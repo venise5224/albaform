@@ -6,6 +6,7 @@ import RequirementPicker from "@/components/picker/RequirementPicker";
 import { temporaryDataByStepAtom } from "@/atoms/addFormAtomStore";
 import { useSetAtom } from "jotai";
 import ErrorText from "@/components/errorText/ErrorText";
+import LoadingSkeleton from "./LoadingSkeleton";
 
 const StepTwoContents = () => {
   const {
@@ -14,6 +15,7 @@ const StepTwoContents = () => {
     formState: { errors },
   } = useFormContext<z.infer<typeof addFormSchema>>();
   const setTemporaryDataByStep = useSetAtom(temporaryDataByStepAtom);
+  const [loading, setLoading] = useState(true);
   const [stepTwoData, setStepTwoData] = useState(() => {
     const currentValues = getValues();
     return {
@@ -81,8 +83,13 @@ const StepTwoContents = () => {
       });
       setStepTwoData(parsedData);
     }
+    setLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [setValue, setStepTwoData]);
+
+  if (loading) {
+    return <LoadingSkeleton count={5} />;
+  }
 
   return (
     <div className="flex flex-col space-y-8 pc:w-[640px]">
