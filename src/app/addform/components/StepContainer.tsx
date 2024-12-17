@@ -18,7 +18,6 @@ import { useToast } from "@/hooks/useToast";
 import { addFormSubmit } from "../actions/addFormSubmit";
 import { useAddForm } from "@/hooks/useAddForm";
 import StepContent from "./StepContent";
-import { useModal } from "@/hooks/useModal";
 import { formatDate } from "@/utils/formatDate";
 import { base64ToFile } from "@/utils/imageFileConvert";
 
@@ -44,11 +43,6 @@ const StepContainer = ({ albaForm, formId }: StepContainerProps) => {
   const router = useRouter();
   const isEdit = albaForm && !("status" in albaForm);
   const isInitialized = useRef(false);
-  const { openModal } = useModal();
-
-  useEffect(() => {
-    openModal("PatchAlbaformModal");
-  }, []);
 
   useEffect(() => {
     if (albaForm && !isInitialized.current) {
