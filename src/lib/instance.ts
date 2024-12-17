@@ -1,65 +1,24 @@
 "use server";
 
-import { cookies } from "next/headers";
-import { deleteCookie } from "./cookie";
+import { cookies, headers } from "next/headers";
 
-// 요청 시 사용하여 토큰 확인 및 갱신, 재요청까지 처리할 수 있는 함수입니다.
 // 토큰이 필요한 요청을 할 때 fetch 대신 instance를 사용합니다.
 const instance = async (url: string, options: RequestInit = {}) => {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get("accessToken")?.value;
-
+  const instanceHeader = new Headers(options.headers || {});
+  instanceHeader.set("x-instance-request", "true");
+  console.log(instanceHeader);
   if (accessToken) {
-    options.headers = {
-      ...options.headers,
-      Authorization: `Bearer ${accessToken}`,
-    };
-  } else {
-    return {
-      status: 401,
-      error: "로그인이 필요한 서비스입니다.",
-    };
+    instanceHeader.set("Authorization", `Bearer ${accessToken}`);
   }
 
-  let response = await fetch(url, { ...options });
+  const headerOptions = {
+    ...options,
+    headers: instanceHeader,
+  };
 
-  if (response.status === 401) {
-    const refreshToken = cookieStore.get("refreshToken")?.value;
-
-    if (refreshToken) {
-      const refreshResponse = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`,
-        {
-          method: "POST",
-          body: JSON.stringify({ refreshToken }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (refreshResponse.ok) {
-        const tokenData = await refreshResponse.json();
-        const { accessToken: newAccessToken } = tokenData;
-
-        cookieStore.set("accessToken", newAccessToken);
-
-        options.headers = {
-          ...options.headers,
-          Authorization: `Bearer ${newAccessToken}`,
-        };
-
-        response = await fetch(url, { ...options });
-      } else {
-        console.error("토큰갱신 실패");
-        await deleteCookie(true);
-        return {
-          status: 401,
-          error: "장시간 미활동으로 인해 로그인이 해제되었습니다.",
-        };
-      }
-    }
-  }
+  let response = await fetch(url, headerOptions);
 
   if (response.status === 204) {
     return {
