@@ -91,6 +91,7 @@ const SigninContents = () => {
               width={24}
               height={24}
               priority={true}
+              className="cursor-pointer"
             />
             <ErrorText error={errors.password}>
               {errors.password?.message}

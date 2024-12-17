@@ -199,6 +199,8 @@ const SignupContents = ({
                   alt="비밀번호 보이기 버튼"
                   width={24}
                   height={24}
+                  priority={true}
+                  className="cursor-pointer"
                 />
               </div>
               <ErrorText error={item.error}>{item.error}</ErrorText>
