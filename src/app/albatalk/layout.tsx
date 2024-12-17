@@ -1,6 +1,7 @@
 import AddtalkButton from "@/components/button/AddtalkButton";
 import AlbatalkSmartSearch from "./components/AlbatalkSmartSearch";
 import { Suspense } from "react";
+import FloatingButton from "@/components/button/FloatingButton";
 
 const AlbaTalkLayout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -9,9 +10,10 @@ const AlbaTalkLayout = ({ children }: { children: React.ReactNode }) => {
         <AlbatalkSmartSearch />
       </Suspense>
       <div className="mt-[50px] pc:mt-10 tablet:mt-10">{children}</div>
-      <div className="fixed bottom-[134px] right-6 pc:bottom-[170px] pc:right-[220px] tablet:bottom-[97px] tablet:right-[72px]">
+      <div className="fixed bottom-20 right-10">
         <AddtalkButton />
       </div>
+      <FloatingButton icon="/icon/writing-fill.svg" href="/addtalk" />
     </div>
   );
 };
