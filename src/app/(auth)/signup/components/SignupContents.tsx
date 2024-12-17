@@ -5,7 +5,7 @@ import Link from "next/link";
 import SignupSecondContents from "./SignupSecondContents";
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -21,6 +21,7 @@ import ErrorText from "@/components/errorText/ErrorText";
 import SolidButton from "@/components/button/SolidButton";
 import { cls } from "@/utils/dynamicTailwinds";
 import { useToast } from "@/hooks/useToast";
+import { addressAtom } from "@/atoms/addressAtom";
 
 export type FormSchema =
   | z.infer<typeof applicantSchema>
@@ -40,15 +41,10 @@ const SignupContents = ({
   const [confirmMsg, setConfirmMsg] = useState("");
   const currentParams = new URLSearchParams(searchParams.toString());
   const profileImg = useAtomValue(profileImgAtom);
-
+  const address = useAtomValue(addressAtom);
   const { addToast } = useToast();
-  const {
-    register,
-    handleSubmit,
-    reset,
-    watch,
-    formState: { errors, isSubmitting, isValid },
-  } = useForm<FormSchema>({
+
+  const methods = useForm<FormSchema>({
     resolver: zodResolver(
       userType === "applicant" ? applicantSchema : ownerSchema
     ),
@@ -68,19 +64,19 @@ const SignupContents = ({
   });
 
   const isValidFirstStep =
-    !watch("email") ||
-    !watch("password") ||
-    !watch("passwordConfirm") ||
-    watch("password") !== watch("passwordConfirm");
+    !methods.watch("email") ||
+    !methods.watch("password") ||
+    !methods.watch("passwordConfirm") ||
+    methods.watch("password") !== methods.watch("passwordConfirm");
 
   useEffect(() => {
-    if (watch("password") !== watch("passwordConfirm")) {
+    if (methods.watch("password") !== methods.watch("passwordConfirm")) {
       setConfirmMsg("비밀번호가 일치하지 않습니다.");
     } else {
       setConfirmMsg("");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [watch("passwordConfirm")]);
+  }, [methods.watch("passwordConfirm")]);
 
   const handleNextStep = () => {
     currentParams.set("stepOneDone", "true");
@@ -123,7 +119,7 @@ const SignupContents = ({
         addToast("회원가입이 완료되었습니다.", "info");
         localStorage.setItem("isLogin", "true");
 
-        reset();
+        methods.reset();
         router.push("/");
       } else {
         console.error(response.message, response.status);
@@ -142,8 +138,8 @@ const SignupContents = ({
       placeholder: "비밀번호를 입력해주세요.",
       visible: visiblePassword,
       visibleFn: setVisiblePassword,
-      register: { ...register("password") },
-      error: errors.password?.message,
+      register: { ...methods.register("password") },
+      error: methods.formState.errors.password?.message,
     },
     {
       name: "passwordConfirm",
@@ -151,93 +147,93 @@ const SignupContents = ({
       placeholder: "비밀번호를 한번 더 입력해주세요.",
       visible: visiblePasswordConfirm,
       visibleFn: setVisiblePasswordConfirm,
-      register: { ...register("passwordConfirm") },
+      register: { ...methods.register("passwordConfirm") },
       error: confirmMsg,
     },
   ];
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      {!stepOneDone ? (
-        <div className="flex flex-col space-y-10">
-          <div className="relative flex flex-col space-y-2">
-            <label htmlFor="email" className="text-md text-black-400">
-              이메일
-            </label>
-            <FormInput
-              id="email"
-              type="email"
-              placeholder="이메일을 입력해주세요."
-              register={register}
-              error={errors.email}
-              name="email"
-            />
-            <ErrorText error={errors.email}>{errors.email?.message}</ErrorText>
-          </div>
-          {passwordArr.map((item) => (
-            <div key={item.name} className="relative flex flex-col space-y-2">
-              <label htmlFor={item.name} className="text-md text-black-400">
-                {item.title}
+    <FormProvider {...methods}>
+      <form onSubmit={methods.handleSubmit(onSubmit)}>
+        {!stepOneDone ? (
+          <div className="flex flex-col space-y-10">
+            <div className="relative flex flex-col space-y-2">
+              <label htmlFor="email" className="text-md text-black-400">
+                이메일
               </label>
-              <div
-                className={cls(
-                  "form-input-base flex items-center justify-between focus-within:border-orange-300",
-                  item.error ? "border-red" : ""
-                )}
-              >
-                <input
-                  id={item.name}
-                  {...item.register}
-                  type={item.visible ? "text" : "password"}
-                  name={item.name}
-                  placeholder={item.placeholder}
-                  className="w-full"
-                />
-                <Image
-                  onClick={() => item.visibleFn(!item.visible)}
-                  src={
-                    item.visible ? "/icon/visible.svg" : "/icon/non-visible.svg"
-                  }
-                  alt="비밀번호 보이기 버튼"
-                  width={24}
-                  height={24}
-                  priority={true}
-                  className="cursor-pointer"
-                />
-              </div>
-              <ErrorText error={item.error}>{item.error}</ErrorText>
+              <FormInput
+                id="email"
+                type="email"
+                placeholder="이메일을 입력해주세요."
+                register={methods.register}
+                error={methods.formState.errors.email}
+                name="email"
+              />
+              <ErrorText error={methods.formState.errors.email}>
+                {methods.formState.errors.email?.message}
+              </ErrorText>
             </div>
-          ))}
-          <SolidButton
-            disabled={isValidFirstStep}
-            type="button"
-            onClick={handleNextStep}
-            style="orange300"
-            size="large"
-          >
-            다음
-          </SolidButton>
-          <p className="text-center text-xs text-black-100 pc:text-lg">
-            가입 시
-            <Link
-              href="/terms"
-              className="ml-1 font-semibold text-orange-300 underline"
+            {passwordArr.map((item) => (
+              <div key={item.name} className="relative flex flex-col space-y-2">
+                <label htmlFor={item.name} className="text-md text-black-400">
+                  {item.title}
+                </label>
+                <div
+                  className={cls(
+                    "form-input-base flex items-center justify-between focus-within:border-orange-300",
+                    item.error ? "border-red" : ""
+                  )}
+                >
+                  <input
+                    id={item.name}
+                    {...item.register}
+                    type={item.visible ? "text" : "password"}
+                    name={item.name}
+                    placeholder={item.placeholder}
+                    className="w-full"
+                  />
+                  <Image
+                    onClick={() => item.visibleFn(!item.visible)}
+                    src={
+                      item.visible
+                        ? "/icon/visible.svg"
+                        : "/icon/non-visible.svg"
+                    }
+                    alt="비밀번호 보이기 버튼"
+                    width={24}
+                    height={24}
+                    priority={true}
+                    className="cursor-pointer"
+                  />
+                </div>
+                <ErrorText error={item.error}>{item.error}</ErrorText>
+              </div>
+            ))}
+            <SolidButton
+              disabled={isValidFirstStep}
+              type="button"
+              onClick={handleNextStep}
+              style="orange300"
+              size="large"
             >
-              이용약관
-            </Link>
-            에 동의한 것으로 간주됩니다.
-          </p>
-        </div>
-      ) : (
-        <SignupSecondContents
-          userType={userType}
-          isValid={isValid}
-          register={register}
-          errors={errors}
-          isSubmitting={isSubmitting}
-        />
-      )}
-    </form>
+              다음
+            </SolidButton>
+            <p className="text-center text-xs text-black-100 pc:text-lg">
+              가입 시
+              <Link
+                href="/terms"
+                className="ml-1 font-semibold text-orange-300 underline"
+              >
+                이용약관
+              </Link>
+              에 동의한 것으로 간주됩니다.
+            </p>
+          </div>
+        ) : (
+          <SignupSecondContents userType={userType} address={address} />
+        )}
+      </form>
+    </FormProvider>
   );
 };
 
