@@ -1,3 +1,4 @@
+import LandingButton from "@/components/button/LandingButton";
 import Image from "next/image";
 
 const HomePage = () => {
@@ -25,7 +26,7 @@ const HomePage = () => {
   ];
 
   return (
-    <main>
+    <main className="pb-32">
       <section className="relative h-[609px] w-full bg-black-400 pc:h-[1080px] tablet:h-[633px]">
         <div className="flex flex-col items-center py-[136px] pc:pt-[160px] tablet:pt-[160px]">
           <div className="relative h-[24px] w-[124px] pc:h-[48px] pc:w-[248px]">
@@ -34,9 +35,9 @@ const HomePage = () => {
           <span className="mt-[24px] text-xl text-white pc:mt-[32px] pc:text-[56px]">
             한 곳에서 관리하는 알바 구인 플랫폼{" "}
           </span>
-          <button className="mt-[48px] rounded-[100px] bg-blue-300 px-[24px] py-[16px] text-lg text-white pc:mt-[60px] pc:px-[36px] pc:py-[24px] pc:text-2xl">
-            알바폼 시작하기
-          </button>
+          <div className="mt-[48px] rounded-[100px] bg-blue-300 px-[24px] py-[16px] text-lg text-white pc:mt-[60px] pc:px-[36px] pc:py-[24px] pc:text-2xl">
+            <LandingButton>알바폼 시작하기</LandingButton>
+          </div>
           <div className="absolute bottom-0 h-[244px] w-[386px] pc:h-[610px] pc:w-[964px]">
             <Image src="/image/landing/landing-0-md.png" fill alt="alabaform" />
           </div>
@@ -70,9 +71,9 @@ const HomePage = () => {
             <br />
             알바 구인 플랫폼
           </span>
-          <button className="mt-[56px] max-w-[223px] rounded-[100px] bg-blue-300 px-[24px] py-[16px] text-lg text-white pc:mt-[80px] pc:px-[36px] pc:py-[24px] pc:text-xl">
-            알바폼 시작하기
-          </button>
+          <div className="mt-[56px] max-w-[223px] rounded-[100px] bg-blue-300 px-[24px] py-[16px] text-lg text-white pc:mt-[80px] pc:px-[36px] pc:py-[24px] pc:text-xl">
+            <LandingButton>알바폼 시작하기</LandingButton>
+          </div>
         </div>
       </section>
     </main>
