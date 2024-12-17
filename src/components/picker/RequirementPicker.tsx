@@ -3,6 +3,9 @@
 import { KeyboardEvent, useEffect, useState } from "react";
 import Image from "next/image";
 import PickableList from "./PickableList";
+import { cls } from "@/utils/dynamicTailwinds";
+import { stepTwoMenuOpenAtom } from "@/atoms/addFormAtomStore";
+import { useAtom } from "jotai";
 
 type labelType = {
   label: "모집인원" | "성별" | "학력" | "연령" | "우대사항";
@@ -39,7 +42,16 @@ const RequirementPicker = ({
     return initialValue[key].toString() || "";
   });
   const [isTextMode, setIsTextMode] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
+  const [currentOpen, setCurrentOpen] = useAtom(stepTwoMenuOpenAtom);
+  const isOpen = currentOpen === label;
+
+  const handleToggle = () => {
+    if (isOpen) {
+      setCurrentOpen(null);
+    } else {
+      setCurrentOpen(label);
+    }
+  };
 
   useEffect(() => {
     if (value === "직접입력") setIsTextMode(true);
@@ -70,10 +82,15 @@ const RequirementPicker = ({
       ) : (
         <button
           type="button"
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={handleToggle}
           className="mt-2 flex h-[54px] w-[327px] items-center rounded-lg bg-background-200 p-[14px] px-6 text-lg text-black-400 pc:h-[64px] pc:w-[640px] pc:px-8 pc:text-xl"
         >
-          <span className="flex-grow text-left text-gray-400">
+          <span
+            className={cls(
+              "flex-grow text-left",
+              value ? "text-black-400" : "text-gray-400"
+            )}
+          >
             {initialValue[matchLabelToStepTwoData(label)]
               ? initialValue[matchLabelToStepTwoData(label)]
               : value || "선택"}
@@ -89,7 +106,7 @@ const RequirementPicker = ({
       {label && isOpen && (
         <PickableList
           setValue={setValue}
-          setIsOpen={setIsOpen}
+          setIsOpen={handleToggle}
           label={label}
           setStepTwoData={setStepTwoData}
         />
