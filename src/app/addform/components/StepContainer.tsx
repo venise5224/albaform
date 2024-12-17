@@ -81,7 +81,7 @@ const StepContainer = () => {
     if (hasTempData) {
       openModal("PatchAlbaformModal");
     }
-  }, [openModal]);
+  }, []);
 
   const onSubmit = async (data: z.infer<typeof addFormSchema>) => {
     try {
