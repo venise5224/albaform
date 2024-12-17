@@ -32,9 +32,10 @@ interface props {
     isLiked: boolean;
   };
   userId: number;
+  isLogin: string | undefined;
 }
 
-const Header = ({ info, userId }: props) => {
+const Header = ({ info, userId, isLogin }: props) => {
   const [isLiked, setIsLiked] = useState(info.isLiked);
   const [likeCount, setLikeCount] = useState(info.likeCount);
   const router = useRouter();
@@ -58,6 +59,11 @@ const Header = ({ info, userId }: props) => {
   };
 
   const handleLikeToggle = async () => {
+    if (!isLogin) {
+      addToast("로그인이 필요한 서비스입니다.", "info");
+      return;
+    }
+
     setIsLiked(!isLiked);
     setLikeCount((prev) => (isLiked ? prev - 1 : prev + 1));
 

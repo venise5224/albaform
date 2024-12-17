@@ -16,13 +16,23 @@ import postComment from "../actions/postComment";
 import useInfinityScroll from "@/hooks/useInfinityScroll";
 import SkeletonCommentList from "./SkeletonCommentList";
 import LoadingSpinner from "@/components/spinner/LoadingSpinner";
+import { useToast } from "@/hooks/useToast";
 
-const CommentSection = ({ id, userId }: { id: number; userId: number }) => {
+const CommentSection = ({
+  id,
+  userId,
+  isLogin,
+}: {
+  id: number;
+  userId: number;
+  isLogin: string | undefined;
+}) => {
   const [list, setList] = useState<Comment[]>([]);
   const [totalItemCount, setTotalItemCount] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
+  const { addToast } = useToast();
   const {
     register,
     handleSubmit,
@@ -51,7 +61,7 @@ const CommentSection = ({ id, userId }: { id: number; userId: number }) => {
   };
 
   const fetchComments = useCallback(async () => {
-    if (isLoading || currentPage > totalPages) return;
+    if (!isLogin || isLoading || currentPage > totalPages) return;
     setIsLoading(true);
 
     try {
@@ -71,11 +81,17 @@ const CommentSection = ({ id, userId }: { id: number; userId: number }) => {
   }, [id, currentPage, totalPages, isLoading]);
 
   const onSubmit = async (formData: z.infer<typeof albaTalkCommentSchema>) => {
+    if (!isLogin) {
+      addToast("로그인이 필요한 서비스입니다.", "info");
+      return;
+    }
+
     try {
       const response = await postComment({ id, formData });
 
       if (response.status === 201) {
         setList((prev) => [response.data, ...prev]);
+        setTotalItemCount((prev) => prev + 1);
         reset();
       }
     } catch (error) {
