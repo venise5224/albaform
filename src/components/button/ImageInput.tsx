@@ -7,6 +7,7 @@ import uploadLargeIcon from "@/../public/icon/upload-lg.svg";
 import xCircleIcon from "@/../public/icon/Xcircle-md.svg";
 import xCircleLargeIcon from "@/../public/icon/Xcircle-lg.svg";
 import ErrorText from "../errorText/ErrorText";
+import checkImageSize from "@/utils/checkImageSize";
 
 interface ImageInputProps {
   size?: "small" | "medium" | "large";
@@ -53,7 +54,7 @@ const ImageInput = ({
     };
   }, [selectedImages]);
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const files = Array.from(e.target.files);
       const newImages: string[] = [];
@@ -66,6 +67,7 @@ const ImageInput = ({
       }
 
       const updatedFiles: File[] = [...newFiles];
+
       for (const file of files) {
         // 파일 크기 제한 확인
         if (file.size > MAX_FILE_SIZE_MB * 1024 * 1024) {
@@ -73,14 +75,25 @@ const ImageInput = ({
           continue;
         }
 
+        // 이미지 크기 확인
+        const imageCheck = await checkImageSize(file);
+        if (!imageCheck) {
+          isError = true;
+          setError("이미지 크기는 최소 1560px X 560px이어야 합니다.");
+          continue;
+        }
+
         const imageUrl = URL.createObjectURL(file);
         newImages.push(imageUrl);
-
         updatedFiles.push(file);
       }
 
       if (isError) {
-        setError(`파일 크기는 ${MAX_FILE_SIZE_MB}MB 이하로 선택해주세요.`);
+        setError(
+          (prevError) =>
+            prevError ||
+            `파일 크기는 ${MAX_FILE_SIZE_MB}MB 이하로 선택해주세요.`
+        );
       } else {
         setError(null);
       }
