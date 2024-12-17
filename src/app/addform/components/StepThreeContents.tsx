@@ -11,6 +11,7 @@ import HourlyWage from "./stepThree/HourlyWage";
 import IsPublicCheck from "./stepThree/IsPublicCheck";
 import { useEffect, useMemo, useState } from "react";
 import { AddFormStepProps } from "@/types/addform";
+import LoadingSkeleton from "./LoadingSkeleton";
 
 const StepThreeContents = () => {
   const { watch, setValue } = useFormContext<z.infer<typeof addFormSchema>>();
@@ -62,11 +63,7 @@ const StepThreeContents = () => {
   }, [setValue]);
 
   if (loading) {
-    return (
-      <div className="flex h-screen items-center justify-center">
-        잠시만 기다려주세요...
-      </div>
-    );
+    return <LoadingSkeleton count={5} />;
   }
 
   return (

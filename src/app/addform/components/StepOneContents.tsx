@@ -15,6 +15,7 @@ import ImageInput from "@/components/button/ImageInput";
 import useViewPort from "@/hooks/useViewport";
 import { base64ToFile, fileToBase64 } from "@/utils/imageFileConvert";
 import { AddFormStepProps } from "@/types/addform";
+import LoadingSkeleton from "./LoadingSkeleton";
 
 const StepOneContents = () => {
   const viewPort = useViewPort();
@@ -34,6 +35,7 @@ const StepOneContents = () => {
     const endDate = watch("recruitmentEndDate");
     return [startDate || "", endDate || ""];
   });
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const fields = [
     "title",
@@ -68,6 +70,17 @@ const StepOneContents = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stepOneData, setValue]);
+
+  // 서버에서 가져온 폼이 있을 경우 마운트 시에 데이터 업데이트 (값이 사용자에게 안보이는 경우를 해결함)
+  useEffect(() => {
+    const startDate = watch("recruitmentStartDate");
+    const endDate = watch("recruitmentEndDate");
+    if (startDate && endDate) {
+      setTemporaryDateRange([startDate, endDate]);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [watch("recruitmentStartDate"), watch("recruitmentEndDate")]);
 
   // 임시 데이터 atom 업데이트
   useEffect(() => {
@@ -127,11 +140,7 @@ const StepOneContents = () => {
   }, [setValue, setCurrentImageList]);
 
   if (loading) {
-    return (
-      <div className="flex w-full items-center justify-center">
-        잠시만 기다려주세요...
-      </div>
-    );
+    return <LoadingSkeleton isImage={true} />;
   }
 
   return (

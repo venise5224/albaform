@@ -9,12 +9,15 @@ import {
 import SolidButton from "@/components/button/SolidButton";
 import { useToast } from "@/hooks/useToast";
 import { useAtomValue, useSetAtom } from "jotai";
+import { useParams } from "next/navigation";
 
 const MainButton = () => {
   const temporaryDataByStep = useAtomValue(temporaryDataByStepAtom);
   const isDisabled = useAtomValue(addFormSubmitDisabledAtom);
   const isSubmitting = useAtomValue(addFormIsSubmittingAtom);
   const setAddFormSubmitTrigger = useSetAtom(addFromSubmitTriggerAtom);
+  const params = useParams();
+
   const { addToast } = useToast();
 
   const temporaryDataArr = [
@@ -35,17 +38,30 @@ const MainButton = () => {
 
   return (
     <div className="flex flex-col space-y-2 p-6">
-      <SolidButton style="outOrange300" onClick={handleTemporarySave}>
-        임시 저장
-      </SolidButton>
-      <SolidButton
-        type="submit"
-        style="orange300"
-        onClick={() => setAddFormSubmitTrigger(true)}
-        disabled={isDisabled || isSubmitting}
-      >
-        {isSubmitting ? "등록중..." : "등록하기"}
-      </SolidButton>
+      {!params.id ? (
+        <>
+          <SolidButton style="outOrange300" onClick={handleTemporarySave}>
+            임시 저장
+          </SolidButton>
+          <SolidButton
+            type="submit"
+            style="orange300"
+            onClick={() => setAddFormSubmitTrigger(true)}
+            disabled={isDisabled || isSubmitting}
+          >
+            {isSubmitting ? "등록중..." : "등록하기"}
+          </SolidButton>
+        </>
+      ) : (
+        <SolidButton
+          type="submit"
+          style="orange300"
+          onClick={() => setAddFormSubmitTrigger(true)}
+          disabled={isDisabled || isSubmitting}
+        >
+          {isSubmitting ? "수정중..." : "수정하기"}
+        </SolidButton>
+      )}
     </div>
   );
 };

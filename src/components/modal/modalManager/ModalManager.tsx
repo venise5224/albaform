@@ -1,7 +1,7 @@
 "use client";
 
 import { useAtomValue } from "jotai";
-import { modalAtom } from "@/atoms/modalAtom";
+import { modalAtom } from "@/atoms/modalAtomStore";
 import CloseAlbaformModal from "../modalContent/ClosedAlbaformModal";
 import DeleteAlbaformModal from "../modalContent/DeleteAlbaformModal";
 import PatchAlbaformModal from "../modalContent/PatchAlbaformModal";
