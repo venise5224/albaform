@@ -18,6 +18,7 @@ import { useToast } from "@/hooks/useToast";
 import { addFormSubmit } from "../actions/addFormSubmit";
 import { useAddForm } from "@/hooks/useAddForm";
 import StepContent from "./StepContent";
+import { useModal } from "@/hooks/useModal";
 
 const StepContainer = () => {
   const searchParams = useSearchParams();
@@ -29,6 +30,7 @@ const StepContainer = () => {
   const { addToast } = useToast();
   const router = useRouter();
   const { methods, loadAllTempData } = useAddForm();
+  const { openModal } = useModal();
 
   // 등록 버튼 활성화 여부 (선택값이 많아서 isValid 미동작으로 값들이 모두 채워지면 활성화)
   useEffect(() => {
@@ -68,9 +70,18 @@ const StepContainer = () => {
   }, [methods.formState.isSubmitting, setAddFormIsSubmitting]);
 
   // 마운트 시 전체 임시저장 데이터 가져오기
+  // useEffect(() => {
+  //   loadAllTempData();
+  // }, [loadAllTempData]);
+
   useEffect(() => {
-    loadAllTempData();
-  }, [loadAllTempData]);
+    const tempKeys = ["stepOne", "stepTwo", "stepThree"];
+    const hasTempData = tempKeys.some((key) => localStorage.getItem(key));
+
+    if (hasTempData) {
+      openModal("PatchAlbaformModal");
+    }
+  }, [openModal]);
 
   const onSubmit = async (data: z.infer<typeof addFormSchema>) => {
     try {
