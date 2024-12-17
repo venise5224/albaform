@@ -44,11 +44,6 @@ const StepContainer = ({ albaForm, formId }: StepContainerProps) => {
   const router = useRouter();
   const isEdit = albaForm && !("status" in albaForm);
   const isInitialized = useRef(false);
-  const { openModal } = useModal();
-
-  useEffect(() => {
-    openModal("PatchAlbaformModal");
-  }, []);
 
   useEffect(() => {
     if (albaForm && !isInitialized.current) {
