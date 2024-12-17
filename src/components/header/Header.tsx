@@ -10,18 +10,14 @@ import HeaderMenu from "./HeaderMenu";
 import LoginButton from "../button/LoginButton";
 
 const Header = () => {
-  const [isLogIn, setIsLogIn] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
   const { isOpen, setIsOpen } = useSidebarState();
   const currentPath = usePathname();
   const isAuthPage =
     currentPath.includes("/signin") || currentPath.includes("/signup");
 
   useEffect(() => {
-    const userInfo = localStorage.getItem("userInfo");
-    if (userInfo) {
-      const parsedUserInfo = JSON.parse(userInfo);
-      setIsLogIn(parsedUserInfo.isLoggedIn);
-    }
+    setIsLogin(Boolean(localStorage.getItem("isLogin")));
   }, []);
 
   const tabletStyle =
@@ -38,7 +34,7 @@ const Header = () => {
         <HeaderNavigation isAuthPage={isAuthPage} />
         {isAuthPage ? (
           <AuthPageNavigation />
-        ) : isLogIn ? (
+        ) : isLogin ? (
           <button onClick={() => setIsOpen(!isOpen)}>
             <HeaderMenu />
           </button>
