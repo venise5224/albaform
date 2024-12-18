@@ -8,7 +8,6 @@ import {
   temporaryDataByStepAtom,
 } from "@/atoms/addFormAtomStore";
 import { useSetAtom } from "jotai";
-import ErrorText from "@/components/errorText/ErrorText";
 import LoadingSkeleton from "./LoadingSkeleton";
 
 const StepTwoContents = () => {
@@ -127,8 +126,8 @@ const StepTwoContents = () => {
               }
               setStepTwoData={setStepTwoData}
               initialValue={stepTwoData}
+              errors={errors}
             />
-            <ErrorText error={input.errors}>{input.errors?.message}</ErrorText>
           </div>
         ))}
       </div>

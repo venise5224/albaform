@@ -34,7 +34,7 @@ export const addFormImgUpload = async (imgFormData: FormData) => {
             ],
         };
       }
-      uploadResults.push(response.data.url);
+      uploadResults.push(response.url);
     }
 
     return {
