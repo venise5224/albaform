@@ -39,13 +39,16 @@ export const generateMetadata = async ({ params }: PageProps) => {
 };
 
 const AlbarformDetailPage = async ({ params }: PageProps) => {
-  const { formId } = await params;
+  let data: AlbaformDetailData;
+  let isMyAlbarform: boolean;
   const cookie = await cookies();
   const role = cookie.get("role")?.value || "defaultRole";
-  let data: AlbaformDetailData;
+  const ownerId = cookie.get("userId")?.value;
+  const { formId } = await params;
 
   try {
     data = await fetchData(formId);
+    isMyAlbarform = Number(ownerId) === data.ownerId;
   } catch (error) {
     console.error(error);
 
@@ -60,7 +63,7 @@ const AlbarformDetailPage = async ({ params }: PageProps) => {
   return (
     <>
       {data.imageUrls && <Carousel imageUrls={data.imageUrls} />}
-      <div className="mt-8 grid gap-[32px] pc:mt-[80px] pc:grid-cols-[770px_640px] pc:grid-rows-[432px_336px_152px_562px] pc:justify-items-center pc:gap-0 pc:gap-x-[150px] pc:gap-y-[40px] pc:grid-areas-layout tablet:w-[327px] tablet:grid-cols-1 tablet:grid-rows-[270px_116px_156px_396px_302px_340px_158px] mobile:w-[327px] mobile:grid-cols-1 mobile:grid-rows-[270px_116px_156px_396px_302px_340px_158px]">
+      <div className="mt-8 grid gap-[32px] pc:mt-[80px] pc:grid-cols-[770px_640px] pc:grid-rows-[432px_336px_228px_562px] pc:justify-items-center pc:gap-0 pc:gap-x-[150px] pc:gap-y-[40px] pc:grid-areas-layout tablet:w-[327px] tablet:grid-cols-1 tablet:grid-rows-[270px_116px_156px_396px_302px_340px_158px] mobile:w-[327px] mobile:grid-cols-1 mobile:grid-rows-[270px_116px_156px_396px_302px_340px_158px]">
         <section className="pc:grid-in-box1">
           <Title info={data} />
         </section>
@@ -86,7 +89,7 @@ const AlbarformDetailPage = async ({ params }: PageProps) => {
               recruitmentEndDate={data.recruitmentEndDate}
             />
           ) : (
-            <OwnerActionButtons formId={formId} />
+            <OwnerActionButtons formId={formId} isMyAlbarform={isMyAlbarform} />
           )}
         </section>
       </div>
