@@ -14,6 +14,7 @@ const NavMenu = () => {
     { name: "scrap", label: "스크랩" },
   ];
 
+  // 초기 tab 쿼리스트링을 보여주는 로직 (사용시 드랍다운 쿼리스트링을 덮어버림)
   // useEffect(() => {
   //   const tabFromUrl = searchParams.get("tab");
   //   if (!tabFromUrl) {
