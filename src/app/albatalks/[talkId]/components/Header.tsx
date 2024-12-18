@@ -8,12 +8,11 @@ import heartIcon from "@/../public/icon/heart-md.svg";
 import hrartFillIcon from "@/../public/icon/heart-fill-md.svg";
 import ProfileImage from "./ProfileImage";
 import formatYearMonthDay from "@/utils/formatYearMonthDay";
-import { useEffect, useState } from "react";
-import postLike from "../actions/postLike";
-import postLikeCancel from "../actions/postLikeCancel";
+import { useState } from "react";
 import deletePosts from "../actions/deletePosts";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/useToast";
+import postDeleteLike from "../actions/postDeleteLike";
 
 interface props {
   info: {
@@ -33,10 +32,10 @@ interface props {
     isLiked: boolean;
   };
   userId: number;
-  accessToken: string | undefined;
+  isLogin: string | undefined;
 }
 
-const Header = ({ info, userId, accessToken }: props) => {
+const Header = ({ info, userId, isLogin }: props) => {
   const [isLiked, setIsLiked] = useState(info.isLiked);
   const [likeCount, setLikeCount] = useState(info.likeCount);
   const router = useRouter();
@@ -60,6 +59,11 @@ const Header = ({ info, userId, accessToken }: props) => {
   };
 
   const handleLikeToggle = async () => {
+    if (!isLogin) {
+      addToast("로그인이 필요한 서비스입니다.", "info");
+      return;
+    }
+
     setIsLiked(!isLiked);
     setLikeCount((prev) => (isLiked ? prev - 1 : prev + 1));
 
@@ -67,10 +71,10 @@ const Header = ({ info, userId, accessToken }: props) => {
       let response;
       if (isLiked) {
         // 좋아요 취소 요청
-        response = await postLikeCancel(info.id);
+        response = await postDeleteLike(info.id, "DELETE");
       } else {
         // 좋아요 요청
-        response = await postLike(info.id);
+        response = await postDeleteLike(info.id, "POST");
       }
 
       if (response.status !== 200) {
@@ -83,13 +87,6 @@ const Header = ({ info, userId, accessToken }: props) => {
       setLikeCount((prev) => prev + (isLiked ? -1 : 1));
     }
   };
-
-  useEffect(() => {
-    if (!accessToken) {
-      addToast("로그인이 필요한 페이지입니다.", "warning");
-      router.push("/signin/applicant");
-    }
-  });
 
   return (
     <div>
