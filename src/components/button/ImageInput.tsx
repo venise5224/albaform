@@ -79,7 +79,7 @@ const ImageInput = ({
         const imageCheck = await checkImageSize(file);
         if (!imageCheck) {
           isError = true;
-          setError("이미지 크기는 최소 1560px X 560px이어야 합니다.");
+          setError("이미지 크기는 최소 1560 x 560이어야 합니다.");
           continue;
         }
 
