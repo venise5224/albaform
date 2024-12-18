@@ -47,7 +47,8 @@ const GetMyApplicationModal = () => {
 
       if (response.status === 200) {
         const applicationId = response.data.id;
-        router.push(`/application/${applicationId}`); //지원 상세 조회 페이지로 이동해야함
+
+        router.push(`/myapply/${applicationId}`); //지원 상세 조회 페이지로 이동해야함
 
         closeModal();
       } else {
@@ -66,22 +67,6 @@ const GetMyApplicationModal = () => {
         <h2 className="text-2lg font-semibold text-black-400 pc:text-[32px] pc:leading-[46px]">
           내 지원 내역
         </h2>
-        <div className="mt-6 text-md font-medium text-gray-400 pc:mt-8 pc:text-lg">
-          <p>
-            {/* 초기 데이터를 불러올 수가 없음 */}
-            지원일시{" "}
-            <span className="ml-2 text-md font-medium text-black-200 pc:ml-6 pc:text-lg">
-              {"2024년 05월 29일 10:15"}
-            </span>
-          </p>
-          <p className="mt-[6px] pc:mt-[14px]">
-            {/* 초기 데이터를 불러올 수가 없음 */}
-            진행 상태
-            <span className="ml-2 rounded-[4px] bg-orange-500 px-2 py-1 text-[12px] font-semibold leading-[20px] text-orange-300 pc:ml-6 pc:px-3 pc:py-[6px] pc:text-lg">
-              {"면접대기"}
-            </span>
-          </p>
-        </div>
 
         <form
           onSubmit={handleSubmit(onSubmit)}
