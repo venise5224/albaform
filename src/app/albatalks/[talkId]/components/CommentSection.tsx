@@ -78,7 +78,7 @@ const CommentSection = ({
     } finally {
       setIsLoading(false);
     }
-  }, [id, currentPage, totalPages, isLoading]);
+  }, [id, currentPage, totalPages, isLoading, isLogin]);
 
   const onSubmit = async (formData: z.infer<typeof albaTalkCommentSchema>) => {
     if (!isLogin) {
@@ -104,7 +104,7 @@ const CommentSection = ({
   useEffect(() => {
     if (!id) return;
     fetchComments();
-  }, [id]);
+  }, [id, fetchComments]);
 
   return (
     <section>
