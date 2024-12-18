@@ -14,13 +14,15 @@ const NavMenu = () => {
     { name: "scrap", label: "스크랩" },
   ];
 
-  // 초기 tab 쿼리스트링을 보여주는 로직 (사용시 드랍다운 쿼리스트링을 덮어버림)
-  // useEffect(() => {
-  //   const tabFromUrl = searchParams.get("tab");
-  //   if (!tabFromUrl) {
-  //     router.push(`/mypage?tab=post`);
-  //   }
-  // }, [searchParams, router]);
+  useEffect(() => {
+    const tabFromUrl = searchParams.get("tab");
+    if (tabFromUrl && tabs.some((tab) => tab.name === tabFromUrl)) {
+      setActiveTab(tabFromUrl);
+    } else {
+      router.push(`/mypage?tab=post`);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams, router]);
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);

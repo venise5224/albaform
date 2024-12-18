@@ -19,8 +19,6 @@ export const getMyComments = async (query: getMyCommentsProps) => {
     `${process.env.NEXT_PUBLIC_API_URL}/users/me/comments?${queryString}`
   );
 
-  console.log("코멘트 패치 데이터 : ", response);
-
   if (response.status !== 200) {
     return {
       status: response.status,

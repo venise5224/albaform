@@ -1,14 +1,12 @@
 "use client";
 
-import Empty from "@/app/albatalk/components/Empty";
 import PostCardListSkeleton from "@/app/albatalk/components/PostCardSkeleton";
-
 import useInfinityScroll from "@/hooks/useInfinityScroll";
 import { useState } from "react";
-import { getMyPosts } from "../getMyPosts";
 import { MyComment } from "@/types/comment";
 import { getMyComments } from "../getMyComments";
 import CommentCard from "@/components/card/CommentCard";
+import EmptyComment from "@/app/albatalks/[talkId]/components/EmptyComments";
 
 interface MyCommentResponseType {
   data?: MyComment[];
@@ -38,7 +36,7 @@ const MyCommentList = ({
     setIsLoading(true);
     try {
       const response: MyCommentResponseType = await getMyComments({
-        page: 1,
+        page: currentPage + 1,
         pageSize: 6,
       });
 
@@ -72,9 +70,9 @@ const MyCommentList = ({
           ))}
         </div>
       ) : (
-        <Empty />
+        <EmptyComment />
       )}
-      {totalPages - currentPage > 0 && (
+      {totalPages > currentPage && (
         <div ref={observerRef} style={{ height: "1px" }} />
       )}
       {isLoading && <PostCardListSkeleton count={3} />}
