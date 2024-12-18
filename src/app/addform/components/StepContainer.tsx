@@ -4,23 +4,18 @@ import { addFormSchema } from "@/schema/addForm/addFormSchema";
 import { z } from "zod";
 import { FormProvider } from "react-hook-form";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import {
   currentImageListAtom,
-  addFormSubmitDisabledAtom,
-  addFormIsSubmittingAtom,
   addFromSubmitTriggerAtom,
-  stepActiveAtomFamily,
 } from "@/atoms/addFormAtomStore";
-import { useAtom, useSetAtom } from "jotai";
+import { useAtom } from "jotai";
 import { handleDateRangeFormat } from "@/utils/formatAddFormDate";
 import { addFormImgUpload } from "../actions/addFormImgUpload";
 import { useToast } from "@/hooks/useToast";
 import { addFormSubmit } from "../actions/addFormSubmit";
-import { useAddForm } from "@/hooks/useAddForm";
+import { useAddForm, useAddFormInit } from "@/hooks/useAddForm";
 import StepContent from "./StepContent";
-import { formatDate } from "@/utils/formatDate";
-import { base64ToFile } from "@/utils/imageFileConvert";
 
 interface StepContainerProps {
   albaForm?:
@@ -36,99 +31,17 @@ const StepContainer = ({ albaForm, formId }: StepContainerProps) => {
   const searchParams = useSearchParams();
   const step = searchParams.get("step") || "stepOne";
   const [currentImageList, setCurrentImageList] = useAtom(currentImageListAtom);
-  const setAddFormSubmitDisabled = useSetAtom(addFormSubmitDisabledAtom);
-  const setAddFormIsSubmitting = useSetAtom(addFormIsSubmittingAtom);
   const [submitTrigger, setSubmitTrigger] = useAtom(addFromSubmitTriggerAtom);
   const { addToast } = useToast();
   const { methods, loadAllTempData } = useAddForm();
   const router = useRouter();
   const isEdit = albaForm && !("status" in albaForm);
-  const isInitialized = useRef(false);
-  const setStepOneActive = useSetAtom(stepActiveAtomFamily("stepOne"));
-  const setStepTwoActive = useSetAtom(stepActiveAtomFamily("stepTwo"));
-  const setStepThreeActive = useSetAtom(stepActiveAtomFamily("stepThree"));
+  const { initializeAddForm } = useAddFormInit({ albaForm });
 
+  // 마운트 시 초기화
   useEffect(() => {
-    if (albaForm && !isInitialized.current) {
-      if ("status" in albaForm) {
-        addToast(albaForm.message, "warning");
-        return;
-      } else {
-        const workDates = formatDate(
-          albaForm.workStartDate,
-          albaForm.workEndDate,
-          true
-        );
-
-        const recruitmentDates = formatDate(
-          albaForm.recruitmentStartDate,
-          albaForm.recruitmentEndDate,
-          true
-        );
-
-        methods.reset({
-          ...albaForm,
-          workStartDate: workDates[0],
-          workEndDate: workDates[1],
-          recruitmentStartDate: recruitmentDates[0],
-          recruitmentEndDate: recruitmentDates[1],
-        });
-
-        setStepOneActive(true);
-        setStepTwoActive(true);
-        setStepThreeActive(true);
-
-        if (albaForm.imageUrls && albaForm.imageUrls.length > 0) {
-          const convertToFile = async () => {
-            const files = await Promise.all(
-              albaForm.imageUrls!.map((url) => base64ToFile(url, "serverImage"))
-            );
-            setCurrentImageList(files);
-          };
-          convertToFile();
-        }
-        isInitialized.current = true;
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [albaForm]);
-
-  // 등록 버튼 활성화 여부 (선택값이 많아서 isValid 미동작으로 값들이 모두 채워지면 활성화)
-  useEffect(() => {
-    const values = methods.getValues();
-    const hourlyWage = values.hourlyWage;
-    const workDays = values.workDays;
-
-    const isComplete = Object.values(values).every((value) => {
-      if (value === hourlyWage) {
-        return value > 0;
-      }
-
-      if (value === workDays) {
-        return workDays.length > 0;
-      }
-
-      if (typeof value === "number") {
-        return value !== undefined;
-      }
-
-      const result = value !== undefined && value !== "";
-
-      return result;
-    });
-
-    setAddFormSubmitDisabled(!isComplete);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [step, methods.watch(), setAddFormSubmitDisabled]);
-
-  // 등록 중 여부
-  useEffect(() => {
-    if (methods.formState.isSubmitting) {
-      setAddFormIsSubmitting(true);
-    } else {
-      setAddFormIsSubmitting(false);
-    }
-  }, [methods.formState.isSubmitting, setAddFormIsSubmitting]);
+    initializeAddForm(methods, setCurrentImageList);
+  }, [initializeAddForm, methods, setCurrentImageList]);
 
   // 마운트 시 전체 임시저장 데이터 가져오기
   useEffect(() => {
