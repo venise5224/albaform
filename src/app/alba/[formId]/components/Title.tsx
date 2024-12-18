@@ -43,7 +43,7 @@ const Title = ({ info }: { info: titleData }) => {
         <h2 className="text-xl font-semibold text-black-500">{info.title}</h2>
       </div>
 
-      <div className="mt-auto">
+      <div className="mt-[30px]">
         <ApplicantStats
           info={{ scrapCount: info.scrapCount, applyCount: info.applyCount }}
         />
