@@ -7,6 +7,11 @@ const EazyLogin = () => {
   const pathname = usePathname();
   const isSigninPage = pathname.includes("/signin");
   const loginOrSignup = isSigninPage ? "로그인" : "회원가입";
+  const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}&redirect_uri=${process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URL}&response_type=code`;
+
+  const handleEazyLogin = (sns: string) => {
+    if (sns === "kakao") window.location.href = kakaoURL;
+  };
 
   return (
     <section className="flex h-[96px] w-full flex-col gap-6 text-md">
@@ -25,7 +30,7 @@ const EazyLogin = () => {
             alt="google logo"
           />
         </button>
-        <button>
+        <button onClick={() => handleEazyLogin("kakao")}>
           <Image
             src={"/logo/logo-kakao.svg"}
             width={48}
