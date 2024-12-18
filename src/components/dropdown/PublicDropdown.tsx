@@ -33,6 +33,7 @@ const PublicDropdown = () => {
       <DropdownMenuTrigger
         checkedValue={valueArr.find((item) => item.status === isPublic)?.value}
         id="public"
+        className="mb-1"
       />
       <DropdownMenuContent id="public" className="pc:w-[126px]">
         {valueArr.map((item) => (
