@@ -20,7 +20,7 @@ const SignupPage = async ({ params, searchParams }: SignupPageProps) => {
     <>
       <SignupTitle userType={userType} stepOneDone={stepOneDone} />
       <SignupContents userType={userType} stepOneDone={stepOneDone} />
-      <EazyLogin />
+      {!stepOneDone && <EazyLogin />}
     </>
   );
 };

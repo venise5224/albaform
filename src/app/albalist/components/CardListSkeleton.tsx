@@ -15,7 +15,7 @@ export const CardSkeleton = () => {
 const CardListSkeleton = ({ count }: { count: number }) => {
   return (
     <div className="flex justify-center">
-      <div className="grid grid-cols-1 gap-y-8 pc:grid-cols-3 pc:gap-6 pc:gap-y-16 tablet:grid-cols-1 tablet:gap-y-12">
+      <div className="grid grid-cols-1 gap-y-8 pc:grid-cols-3 pc:gap-x-6 pc:gap-y-16 tablet:grid-cols-2 tablet:gap-x-4 tablet:gap-y-12">
         {new Array(count).fill(0).map((_, idx) => (
           <CardSkeleton key={idx} />
         ))}
