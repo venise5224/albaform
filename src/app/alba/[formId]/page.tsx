@@ -39,13 +39,16 @@ export const generateMetadata = async ({ params }: PageProps) => {
 };
 
 const AlbarformDetailPage = async ({ params }: PageProps) => {
-  const { formId } = await params;
+  let data: AlbaformDetailData;
+  let isMyAlbarform: boolean;
   const cookie = await cookies();
   const role = cookie.get("role")?.value || "defaultRole";
-  let data: AlbaformDetailData;
+  const ownerId = cookie.get("userId")?.value;
+  const { formId } = await params;
 
   try {
     data = await fetchData(formId);
+    isMyAlbarform = Number(ownerId) === data.ownerId;
   } catch (error) {
     console.error(error);
 
@@ -86,7 +89,7 @@ const AlbarformDetailPage = async ({ params }: PageProps) => {
               recruitmentEndDate={data.recruitmentEndDate}
             />
           ) : (
-            <OwnerActionButtons formId={formId} />
+            <OwnerActionButtons formId={formId} isMyAlbarform={isMyAlbarform} />
           )}
         </section>
       </div>

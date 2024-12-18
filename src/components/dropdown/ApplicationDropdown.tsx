@@ -37,6 +37,7 @@ const ApplicationDropdown = () => {
           valueArr.find((item) => item.status === isRecruiting)?.value
         }
         id="application"
+        className="mb-1"
       />
       <DropdownMenuContent id="application" className="pc:w-[126px]">
         {valueArr.map((item) => (

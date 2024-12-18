@@ -1,24 +1,38 @@
 "use client";
 
 import { cls } from "@/utils/dynamicTailwinds";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import WritingTag from "./WritingTag";
-import { addFormStepAtom } from "@/atoms/addFormAtomStore";
-import { useAtom } from "jotai";
+import {
+  addFormStepAtom,
+  stepActiveAtomFamily,
+} from "@/atoms/addFormAtomStore";
+import { useAtom, useAtomValue } from "jotai";
 import { useSearchParamsCustom } from "@/hooks/useSearchParamsCustom";
 
 const StepButton = () => {
   const [currentStep, setCurrentStep] = useAtom(addFormStepAtom);
+  const stepOneActive = useAtomValue(stepActiveAtomFamily("stepOne"));
+  const stepTwoActive = useAtomValue(stepActiveAtomFamily("stepTwo"));
+  const stepThreeActive = useAtomValue(stepActiveAtomFamily("stepThree"));
   const { updateURL } = useSearchParamsCustom({
     key: "step",
     value: currentStep.value,
   });
 
-  const stepArr = [
-    { title: "모집 내용", step: 1, value: "stepOne" },
-    { title: "모집 조건", step: 2, value: "stepTwo" },
-    { title: "근무 조건", step: 3, value: "stepThree" },
-  ];
+  const stepArr = useMemo(
+    () => [
+      { title: "모집 내용", step: 1, value: "stepOne", active: stepOneActive },
+      { title: "모집 조건", step: 2, value: "stepTwo", active: stepTwoActive },
+      {
+        title: "근무 조건",
+        step: 3,
+        value: "stepThree",
+        active: stepThreeActive,
+      },
+    ],
+    [stepOneActive, stepTwoActive, stepThreeActive]
+  );
 
   const handleClickStep = (value: string) => {
     setCurrentStep({
@@ -62,7 +76,9 @@ const StepButton = () => {
           {item.title}
         </h2>
       </div>
-      <WritingTag currentStep={currentStep.value} value={item.value} />
+      {item.active && (
+        <WritingTag currentStep={currentStep.value} value={item.value} />
+      )}
     </button>
   ));
 };

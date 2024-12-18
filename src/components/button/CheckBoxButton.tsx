@@ -5,7 +5,7 @@ interface CheckBoxButtonProps {
   name: string;
   checked?: boolean;
   disabled?: boolean;
-  onChange?: (value: string) => void;
+  onChange?: () => void;
 }
 
 const CheckBoxButton = ({
@@ -15,9 +15,9 @@ const CheckBoxButton = ({
   disabled = false,
   onChange,
 }: CheckBoxButtonProps) => {
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = () => {
     if (!disabled && onChange) {
-      onChange(e.target.value);
+      onChange();
     }
   };
 

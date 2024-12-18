@@ -67,7 +67,7 @@ const DropdownMenuTrigger = ({
     return (
       <button
         ref={triggerRef}
-        className="relative mb-1 w-full cursor-pointer"
+        className="relative w-full cursor-pointer"
         onClick={handleClick}
       >
         {children}
@@ -80,7 +80,7 @@ const DropdownMenuTrigger = ({
       ref={triggerRef}
       onClick={handleClick}
       className={cls(
-        "relative mb-1 flex w-full items-center justify-between rounded border-[1px] bg-white py-1.5 pl-2.5 pr-2 text-start text-xs text-black-100 pc:py-2 pc:pl-4 pc:pr-3 pc:text-2lg",
+        "relative flex w-full items-center justify-between rounded border-[1px] bg-white py-1.5 pl-2.5 pr-2 text-start text-xs text-black-100 pc:py-2 pc:pl-4 pc:pr-3 pc:text-2lg",
         className ? className : ""
       )}
     >
@@ -140,7 +140,7 @@ const DropdownMenuItem = ({
     <button
       onClick={handleClick}
       className={cls(
-        "w-full border-gray-100 bg-white text-xs transition-all hover:bg-orange-500",
+        "w-full border-gray-100 bg-white text-xs transition-all hover:bg-orange-50",
         className ? className : ""
       )}
     >

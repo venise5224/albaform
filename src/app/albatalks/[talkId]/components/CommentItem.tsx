@@ -7,6 +7,7 @@ import Image from "next/image";
 import { useState } from "react";
 import patchComment from "../actions/patchComment";
 import deleteComment from "../actions/deleteComment";
+import { useToast } from "@/hooks/useToast";
 
 const CommentItem = ({
   item,
@@ -21,6 +22,7 @@ const CommentItem = ({
 }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(item.content);
+  const { addToast } = useToast();
 
   const handleEdit = () => {
     setIsEditing(true);
@@ -37,9 +39,11 @@ const CommentItem = ({
       if (response.status === 204) {
         onDeleteComment(item.id);
         setIsEditing(false);
+        addToast("댓글을 삭제하였습니다.", "success");
       }
     } catch (error) {
-      console.error("댓글 삭제에 실패했습니다.", error);
+      addToast("댓글 삭제에 실패했습니다.", "warning");
+      console.error("댓글 삭제에 실패했습니다:", error);
     }
   };
 

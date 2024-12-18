@@ -16,14 +16,14 @@ const SimpleRequirements = ({ info }: { info: SimpleRequirementsProps }) => {
     info.workEndDate
   );
 
-  const workdays = info.workDays.join(",");
+  const workdays = info.workDays.join(", ");
 
   const infoList = [
     {
       id: 0,
       href: "/icon/database-md.svg",
       title: "시급",
-      content: info.hourlyWage,
+      content: `${info.hourlyWage}원`,
     },
     {
       id: 1,
@@ -58,7 +58,7 @@ const SimpleRequirements = ({ info }: { info: SimpleRequirementsProps }) => {
           </div>
         </div>
       ))}
-      <div className="border-line-100idden absolute bottom-[168px] left-6 w-[592px] border tablet:bottom-[105px] tablet:w-[490px] mobile:hidden" />
+      <div className="absolute bottom-[168px] left-6 w-[592px] border border-line-100 tablet:bottom-[105px] tablet:w-[490px] mobile:hidden" />
       <div className="absolute left-[320px] top-[39px] h-[258px] border border-line-100 tablet:left-[270px] tablet:top-[24px] tablet:h-[180px] mobile:hidden" />
     </div>
   );
