@@ -49,6 +49,7 @@ const ApplyForm = ({ id }: { id: string }) => {
       }
 
       addToast("지원서 제출에 성공하였습니다", "success");
+      router.push(`/alba/${id}`);
     } catch (error) {
       console.error("지원서 제출 오류:", error);
       addToast("서버 오류로 인해 지원서 제출에 실패하였습니다", "warning");
@@ -72,7 +73,6 @@ const ApplyForm = ({ id }: { id: string }) => {
       setValue("resumeId", response.data.resumeId.toString());
 
       addToast("이력서 업로드에 성공하였습니다", "success");
-      router.push(`/alba/${id}`);
     } catch (error) {
       console.error("이력서 업로드 오류:", error);
       addToast(

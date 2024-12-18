@@ -1,7 +1,10 @@
 import { useFormContext } from "react-hook-form";
 import { addFormSchema } from "@/schema/addForm/addFormSchema";
 import { z } from "zod";
-import { temporaryDataByStepAtom } from "@/atoms/addFormAtomStore";
+import {
+  stepActiveAtomFamily,
+  temporaryDataByStepAtom,
+} from "@/atoms/addFormAtomStore";
 import { useSetAtom } from "jotai";
 import Location from "./stepThree/Location";
 import RecruitmentDate from "./stepThree/RecruitmentDate";
@@ -11,10 +14,12 @@ import HourlyWage from "./stepThree/HourlyWage";
 import IsPublicCheck from "./stepThree/IsPublicCheck";
 import { useEffect, useMemo, useState } from "react";
 import { AddFormStepProps } from "@/types/addform";
+import LoadingSkeleton from "./LoadingSkeleton";
 
 const StepThreeContents = () => {
   const { watch, setValue } = useFormContext<z.infer<typeof addFormSchema>>();
   const setTemporaryDataByStep = useSetAtom(temporaryDataByStepAtom);
+  const setStepActive = useSetAtom(stepActiveAtomFamily("stepThree"));
   const [loading, setLoading] = useState(true);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -40,6 +45,20 @@ const StepThreeContents = () => {
     );
   }, [watch, fields]);
 
+  // 3단계 '작성중' 태그 여부
+  useEffect(() => {
+    const subscription = watch((value, { name }) => {
+      if (name && fields.includes(name as (typeof fields)[number])) {
+        const currentValue = value[name as keyof typeof value];
+        if (currentValue && String(currentValue).trim() !== "") {
+          setStepActive(true);
+        }
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [watch, fields, setStepActive]);
+
   // 임시 데이터 atom 업데이트
   useEffect(() => {
     setTemporaryDataByStep((prev) => ({
@@ -62,11 +81,7 @@ const StepThreeContents = () => {
   }, [setValue]);
 
   if (loading) {
-    return (
-      <div className="flex h-screen items-center justify-center">
-        잠시만 기다려주세요...
-      </div>
-    );
+    return <LoadingSkeleton count={5} />;
   }
 
   return (

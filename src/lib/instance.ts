@@ -3,7 +3,6 @@
 import { cookies } from "next/headers";
 import { deleteCookie } from "./cookie";
 
-// 요청 시 사용하여 토큰 확인 및 갱신, 재요청까지 처리할 수 있는 함수입니다.
 // 토큰이 필요한 요청을 할 때 fetch 대신 instance를 사용합니다.
 const instance = async (url: string, options: RequestInit = {}) => {
   const cookieStore = await cookies();
@@ -13,11 +12,6 @@ const instance = async (url: string, options: RequestInit = {}) => {
     options.headers = {
       ...options.headers,
       Authorization: `Bearer ${accessToken}`,
-    };
-  } else {
-    return {
-      status: 401,
-      error: "로그인이 필요한 서비스입니다.",
     };
   }
 
@@ -76,9 +70,11 @@ const instance = async (url: string, options: RequestInit = {}) => {
     };
   }
 
+  const responseData = await response.json();
+
   return {
     status: response.status,
-    data: await response.json(),
+    ...responseData,
   }; // 각 요청의 응답을 json으로 반환합니다.
 };
 

@@ -10,9 +10,7 @@ export const getMyApplicationSchema = z.object({
   }),
   password: z
     .string()
+    .min(8, { message: "비밀번호 8자 이상 입력해주세요." })
     .max(12, { message: "비밀번호는 12자 이내여야합니다." })
-    .regex(passwordRegex, {
-      message: "특수문자, 문자, 숫자 포함 7자 이상 입력해주세요.",
-    })
     .trim(),
 });
