@@ -11,7 +11,7 @@ const AlbaTalkLayout = ({ children }: { children: React.ReactNode }) => {
       </Suspense>
       <div className="mt-[50px] pc:mt-10 tablet:mt-10">{children}</div>
       <div className="fixed bottom-20 right-10">
-        <FloatingButton icon="/icon/writing-fill.svg" href="/addtalk" />
+        <FloatingButton icon="/icon/writing.svg" href="/addtalk" />
       </div>
     </div>
   );
