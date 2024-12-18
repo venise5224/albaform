@@ -1,5 +1,6 @@
 import {
   currentImageListAtom,
+  stepActiveAtomFamily,
   temporaryDataByStepAtom,
 } from "@/atoms/addFormAtomStore";
 import ErrorText from "@/components/errorText/ErrorText";
@@ -28,6 +29,7 @@ const StepOneContents = () => {
   } = useFormContext<z.infer<typeof addFormSchema>>();
   const [currentImageList, setCurrentImageList] = useAtom(currentImageListAtom);
   const setTemporaryDataByStep = useSetAtom(temporaryDataByStepAtom);
+  const setStepOneActive = useSetAtom(stepActiveAtomFamily("stepOne"));
   const [temporaryDateRange, setTemporaryDateRange] = useState<
     [string, string]
   >(() => {
@@ -44,6 +46,20 @@ const StepOneContents = () => {
     "recruitmentEndDate",
   ] as const;
   const [loading, setLoading] = useState(true);
+
+  // 1단계 '작성중' 태그 여부
+  useEffect(() => {
+    const subscription = watch((value, { name }) => {
+      if (name && fields.includes(name as (typeof fields)[number])) {
+        const currentValue = value[name as keyof typeof value];
+        if (currentValue && String(currentValue).trim() !== "") {
+          setStepOneActive(true);
+        }
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [watch, fields, setStepOneActive]);
 
   const stepOneData = useMemo(() => {
     return fields.reduce(
@@ -84,14 +100,17 @@ const StepOneContents = () => {
 
   // 임시 데이터 atom 업데이트
   useEffect(() => {
+    const title = getValues("title");
+    const description = getValues("description");
+
     const updateTemporaryData = async () => {
       const base64Images = await Promise.all(
         currentImageList.map((img) => fileToBase64(img))
       );
 
       const temporaryStepOneData = {
-        title: getValues("title"),
-        description: getValues("description"),
+        title: title,
+        description: description,
         recruitmentStartDate: temporaryDateRange[0],
         recruitmentEndDate: temporaryDateRange[1],
         tempImage: base64Images, // 임시저장을 위해 서버 업로드 전 이미지를 저장

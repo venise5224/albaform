@@ -10,6 +10,7 @@ import {
   addFormSubmitDisabledAtom,
   addFormIsSubmittingAtom,
   addFromSubmitTriggerAtom,
+  stepActiveAtomFamily,
 } from "@/atoms/addFormAtomStore";
 import { useAtom, useSetAtom } from "jotai";
 import { handleDateRangeFormat } from "@/utils/formatAddFormDate";
@@ -43,6 +44,9 @@ const StepContainer = ({ albaForm, formId }: StepContainerProps) => {
   const router = useRouter();
   const isEdit = albaForm && !("status" in albaForm);
   const isInitialized = useRef(false);
+  const setStepOneActive = useSetAtom(stepActiveAtomFamily("stepOne"));
+  const setStepTwoActive = useSetAtom(stepActiveAtomFamily("stepTwo"));
+  const setStepThreeActive = useSetAtom(stepActiveAtomFamily("stepThree"));
 
   useEffect(() => {
     if (albaForm && !isInitialized.current) {
@@ -69,6 +73,10 @@ const StepContainer = ({ albaForm, formId }: StepContainerProps) => {
           recruitmentStartDate: recruitmentDates[0],
           recruitmentEndDate: recruitmentDates[1],
         });
+
+        setStepOneActive(true);
+        setStepTwoActive(true);
+        setStepThreeActive(true);
 
         if (albaForm.imageUrls && albaForm.imageUrls.length > 0) {
           const convertToFile = async () => {

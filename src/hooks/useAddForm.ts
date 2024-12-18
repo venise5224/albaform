@@ -28,7 +28,7 @@ export const useAddForm = () => {
       workDays: [],
       isNegotiableWorkDays: false,
       hourlyWage: 0,
-      isPublic: false,
+      isPublic: true,
     },
   });
 

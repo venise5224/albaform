@@ -9,6 +9,12 @@ const SignupTitle = ({
   stepOneDone: string;
 }) => {
   const userTypeText = userType === "applicant" ? "사장님" : "지원자";
+  const title =
+    stepOneDone === "true"
+      ? userType === "applicant"
+        ? "지원자 정보 입력"
+        : "사장님 정보 입력"
+      : "회원가입";
 
   return (
     <div className="flex flex-col space-y-10">
@@ -17,7 +23,7 @@ const SignupTitle = ({
       )}
       <div className="flex flex-col items-center space-y-4">
         <h1 className="text-2xl font-semibold text-black-500 pc:text-3xl">
-          {stepOneDone === "true" ? "지원자 정보 입력" : "회원가입"}
+          {title}
         </h1>
         {stepOneDone !== "true" ? (
           <div className="flex flex-col items-center space-y-[2px]">
