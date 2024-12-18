@@ -1,9 +1,12 @@
 "use client";
 
 import { cls } from "@/utils/dynamicTailwinds";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import WritingTag from "./WritingTag";
-import { addFormStepAtom, stepActiveAtomFamily } from "@/atoms/addFormAtomStore";
+import {
+  addFormStepAtom,
+  stepActiveAtomFamily,
+} from "@/atoms/addFormAtomStore";
 import { useAtom, useAtomValue } from "jotai";
 import { useSearchParamsCustom } from "@/hooks/useSearchParamsCustom";
 
@@ -21,7 +24,12 @@ const StepButton = () => {
     () => [
       { title: "모집 내용", step: 1, value: "stepOne", active: stepOneActive },
       { title: "모집 조건", step: 2, value: "stepTwo", active: stepTwoActive },
-      { title: "근무 조건", step: 3, value: "stepThree", active: stepThreeActive },
+      {
+        title: "근무 조건",
+        step: 3,
+        value: "stepThree",
+        active: stepThreeActive,
+      },
     ],
     [stepOneActive, stepTwoActive, stepThreeActive]
   );

@@ -57,7 +57,7 @@ const StepThreeContents = () => {
     });
 
     return () => subscription.unsubscribe();
-  }, [watch, fields]);
+  }, [watch, fields, setStepActive]);
 
   // 임시 데이터 atom 업데이트
   useEffect(() => {

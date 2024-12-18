@@ -65,7 +65,7 @@ const StepTwoContents = () => {
     });
 
     return () => subscription.unsubscribe();
-  }, [watch, fields]);
+  }, [watch, fields, setStepActive]);
 
   // 추출한 필수값을 폼에 적용
   useEffect(() => {

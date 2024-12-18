@@ -59,7 +59,7 @@ const StepOneContents = () => {
     });
 
     return () => subscription.unsubscribe();
-  }, [watch, fields]);
+  }, [watch, fields, setStepOneActive]);
 
   const stepOneData = useMemo(() => {
     return fields.reduce(
