@@ -28,10 +28,8 @@ export const getMyPosts = async (query: getMyPostsProps) => {
     };
   }
 
-  console.log("패스 후 리스폰스 :", response.data.data);
-
   return {
-    data: response.data.data,
-    nextCursor: response.data.nextCursor,
+    data: response.data,
+    nextCursor: response.nextCursor,
   };
 };
