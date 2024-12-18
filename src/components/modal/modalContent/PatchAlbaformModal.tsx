@@ -13,18 +13,18 @@ const PatchAlbaformModal = () => {
   const { addToast } = useToast();
 
   const handleMoveAddform = () => {
-    router.push("/addform");
     addToast("작성 중인 알바폼을 불러왔습니다.", "info");
     closeModal();
+    router.push("/addform");
   };
 
   const handleNewWriteClick = () => {
     const steps = ["stepOne", "stepTwo", "stepThree"];
     steps.forEach((step) => localStorage.removeItem(step));
 
-    router.push("/addform");
     addToast("알바폼을 새로 작성해주세요.", "info");
     closeModal();
+    router.push("/addform");
   };
 
   return (
