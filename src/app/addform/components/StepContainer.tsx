@@ -4,7 +4,7 @@ import { addFormSchema } from "@/schema/addForm/addFormSchema";
 import { z } from "zod";
 import { FormProvider } from "react-hook-form";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useCallback } from "react";
 import {
   currentImageListAtom,
   addFromSubmitTriggerAtom,
@@ -14,7 +14,11 @@ import { handleDateRangeFormat } from "@/utils/formatAddFormDate";
 import { addFormImgUpload } from "../actions/addFormImgUpload";
 import { useToast } from "@/hooks/useToast";
 import { addFormSubmit } from "../actions/addFormSubmit";
-import { useAddForm, useAddFormInit } from "@/hooks/useAddForm";
+import {
+  useAddForm,
+  useAddFormInit,
+  useValidateForm,
+} from "@/hooks/useAddForm";
 import StepContent from "./StepContent";
 
 interface StepContainerProps {
@@ -38,111 +42,126 @@ const StepContainer = ({ albaForm, formId }: StepContainerProps) => {
   const isEdit = albaForm && !("status" in albaForm);
   const { initializeAddForm } = useAddFormInit({ albaForm });
 
-  // 마운트 시 초기화
+  // 수정하기 마운트 시 초기화
   useEffect(() => {
-    initializeAddForm(methods, setCurrentImageList);
-  }, [initializeAddForm, methods, setCurrentImageList]);
+    if (isEdit) {
+      initializeAddForm(methods, setCurrentImageList);
+    }
+  }, [isEdit, initializeAddForm, methods, setCurrentImageList]);
 
   // 마운트 시 전체 임시저장 데이터 가져오기
   useEffect(() => {
     loadAllTempData();
   }, [loadAllTempData]);
 
-  const onSubmit = async (data: z.infer<typeof addFormSchema>) => {
-    try {
-      const imgFormData = new FormData();
+  useValidateForm(methods);
 
-      const newImageList = currentImageList.filter(
-        (img) => img.name !== "serverImage"
-      );
+  const onSubmit = useCallback(
+    async (data: z.infer<typeof addFormSchema>) => {
+      try {
+        const imgFormData = new FormData();
 
-      let uploadUrls: string[] = [];
+        const newImageList = currentImageList.filter(
+          (img) => img.name !== "serverImage"
+        );
 
-      if (albaForm && !("status" in albaForm)) {
-        const existingUrls = albaForm.imageUrls || [];
-        uploadUrls = [...existingUrls];
-      }
+        let uploadUrls: string[] = [];
 
-      if (newImageList.length > 0) {
-        newImageList.forEach((img) => {
-          imgFormData.append("image", img);
-        });
-      }
-
-      const imgResponse = await addFormImgUpload(imgFormData);
-
-      if (imgResponse.status !== 201) {
-        addToast(imgResponse.message as string, "warning");
-        return;
-      }
-
-      if (imgResponse.data) {
-        uploadUrls = [...uploadUrls, ...imgResponse.data];
-      }
-
-      const dateFields = [
-        "workStartDate",
-        "workEndDate",
-        "recruitmentStartDate",
-        "recruitmentEndDate",
-      ] as const;
-
-      dateFields.forEach((field) => {
-        methods.setValue(field, handleDateRangeFormat(data[field]));
-      });
-
-      methods.setValue("imageUrls", uploadUrls);
-
-      const updatedData = methods.getValues();
-
-      const formData = new FormData();
-      formData.append("imageUrls", JSON.stringify(uploadUrls));
-      formData.append("workDays", JSON.stringify(updatedData.workDays));
-
-      Object.entries(updatedData).forEach(([key, value]) => {
-        if (key !== "imageUrls" && key !== "workDays") {
-          formData.append(key, value as string);
+        if (albaForm && !("status" in albaForm)) {
+          const existingUrls = albaForm.imageUrls || [];
+          uploadUrls = [...existingUrls];
         }
-      });
 
-      const response = await addFormSubmit(formData, isEdit, formId);
+        if (newImageList.length > 0) {
+          newImageList.forEach((img) => {
+            imgFormData.append("image", img);
+          });
+        }
 
-      if (response.status === false) {
-        addToast("입력하신 내용을 확인해주세요.", "warning");
-        return;
-      } else if (response.status !== 201 && response.status !== 200) {
-        addToast(response.message as string, "warning");
-        return;
+        const imgResponse = await addFormImgUpload(imgFormData);
+
+        if (imgResponse.status !== 201) {
+          addToast(imgResponse.message as string, "warning");
+          return;
+        }
+
+        if (imgResponse.data) {
+          uploadUrls = [...uploadUrls, ...imgResponse.data];
+        }
+
+        const dateFields = [
+          "workStartDate",
+          "workEndDate",
+          "recruitmentStartDate",
+          "recruitmentEndDate",
+        ] as const;
+
+        dateFields.forEach((field) => {
+          methods.setValue(field, handleDateRangeFormat(data[field]));
+        });
+
+        methods.setValue("imageUrls", uploadUrls);
+
+        const updatedData = methods.getValues();
+
+        const formData = new FormData();
+        formData.append("imageUrls", JSON.stringify(uploadUrls));
+        formData.append("workDays", JSON.stringify(updatedData.workDays));
+
+        Object.entries(updatedData).forEach(([key, value]) => {
+          if (key !== "imageUrls" && key !== "workDays") {
+            formData.append(key, value as string);
+          }
+        });
+
+        const response = await addFormSubmit(formData, isEdit, formId);
+
+        if (response.status === false) {
+          addToast("입력하신 내용을 확인해주세요.", "warning");
+          return;
+        } else if (response.status !== 201 && response.status !== 200) {
+          addToast(response.message as string, "warning");
+          return;
+        }
+
+        const { id } = response;
+        if (isEdit) {
+          addToast("알바폼 수정이 완료되었습니다.", "success");
+        } else {
+          addToast("알바폼 등록이 완료되었습니다.", "success");
+        }
+
+        ["stepOne", "stepTwo", "stepThree"].forEach((step) => {
+          localStorage.removeItem(step);
+        });
+
+        methods.reset();
+        setCurrentImageList([]);
+
+        router.push(`/alba/${id}`);
+      } catch (error) {
+        console.error("알바폼 등록 중 오류 발생", error);
+        addToast("알바폼 등록 중 오류가 발생했습니다.", "warning");
       }
-
-      const { id } = response;
-      if (isEdit) {
-        addToast("알바폼 수정이 완료되었습니다.", "success");
-      } else {
-        addToast("알바폼 등록이 완료되었습니다.", "success");
-      }
-
-      ["stepOne", "stepTwo", "stepThree"].forEach((step) => {
-        localStorage.removeItem(step);
-      });
-
-      methods.reset();
-      setCurrentImageList([]);
-
-      router.push(`/alba/${id}`);
-    } catch (error) {
-      console.error("알바폼 등록 중 오류 발생", error);
-      addToast("알바폼 등록 중 오류가 발생했습니다.", "warning");
-    }
-  };
+    },
+    [
+      addToast,
+      currentImageList,
+      isEdit,
+      formId,
+      router,
+      albaForm,
+      methods,
+      setCurrentImageList,
+    ]
+  );
 
   useEffect(() => {
     if (submitTrigger) {
       methods.handleSubmit(onSubmit)();
       setSubmitTrigger(false);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [submitTrigger]);
+  }, [submitTrigger, methods, onSubmit, setSubmitTrigger]);
 
   return (
     <FormProvider {...methods}>

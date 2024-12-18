@@ -1,7 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import { addFormSchema } from "@/schema/addForm/addFormSchema";
-import { useForm, useFormContext, UseFormReturn } from "react-hook-form";
+import { useForm, UseFormReturn } from "react-hook-form";
 import { z } from "zod";
 import { useCallback, useEffect, useRef } from "react";
 import { useAtom, useSetAtom } from "jotai";
@@ -79,33 +78,39 @@ export const useValidateForm = (
     addFormIsSubmittingAtom
   );
 
+  const values = methods.getValues();
+
   // 등록 버튼 활성화 여부 (선택값이 많아서 isValid 미동작으로 값들이 모두 채워지면 활성화)
   useEffect(() => {
-    const values = methods.getValues();
-    const hourlyWage = values.hourlyWage;
-    const workDays = values.workDays;
+    const subscription = methods.watch((value) => {
+      if (!value) return;
 
-    const isComplete = Object.values(values).every((value) => {
-      if (value === hourlyWage) {
-        return value > 0;
-      }
+      const hourlyWage = values.hourlyWage;
+      const workDays = values.workDays;
 
-      if (value === workDays) {
-        return workDays.length > 0;
-      }
+      const isComplete = Object.values(values).every((value) => {
+        if (value === hourlyWage) {
+          return value > 0;
+        }
 
-      if (typeof value === "number") {
-        return value !== undefined;
-      }
+        if (value === workDays) {
+          return workDays.length > 0;
+        }
 
-      const result = value !== undefined && value !== "";
+        if (typeof value === "number") {
+          return value !== undefined;
+        }
 
-      return result;
+        const result = value !== undefined && value !== "";
+
+        return result;
+      });
+
+      setSubmitDisabled(!isComplete);
     });
 
-    setSubmitDisabled(!isComplete);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [methods.getValues(), setSubmitDisabled]);
+    return () => subscription.unsubscribe();
+  }, [setSubmitDisabled, values, methods]);
 
   // 등록 중 여부
   useEffect(() => {
@@ -128,6 +133,7 @@ interface UseAddFormInitProps {
       };
 }
 
+// 알바폼 수정하기 초기화
 export const useAddFormInit = ({ albaForm }: UseAddFormInitProps) => {
   const isInitialized = useRef(false);
   const setStepOneActive = useSetAtom(stepActiveAtomFamily("stepOne"));
