@@ -69,9 +69,9 @@ const AlbaList = ({ list, nextCursor, role, params }: AlbaListProps) => {
 
   return (
     <main className="min-h-screen">
-      <section className="mx-auto mt-[9px] w-[327px] pc:mt-14 pc:w-[1479px] tablet:mt-[14px]">
+      <section className="mx-auto mt-[9px] w-[327px] pc:mt-14 pc:w-[1479px] tablet:mt-[14px] tablet:w-[670px]">
         {albaList.length > 0 ? (
-          <ul className="flex flex-col gap-y-8 pc:flex-row pc:flex-wrap pc:gap-x-6 pc:gap-y-16 tablet:gap-y-12">
+          <ul className="flex flex-col gap-y-8 pc:flex-row pc:flex-wrap pc:gap-x-6 pc:gap-y-16 tablet:flex-row tablet:flex-wrap tablet:gap-x-4 tablet:gap-y-12">
             {albaList.map((item: AlbarformData) => (
               <li key={item.id} className="pc:w-[calc(33.333%_-_16px)]">
                 {item.isPublic ? (
@@ -96,7 +96,7 @@ const AlbaList = ({ list, nextCursor, role, params }: AlbaListProps) => {
         <FloatingButton
           icon={plusIcon}
           href="/addform"
-          className="pc:size-large fixed bottom-5 right-5 z-10 pc:bottom-20 pc:right-20 tablet:bottom-10 tablet:right-10"
+          className="pc:size-large fixed bottom-20 right-10 z-10"
         >
           폼 만들기
         </FloatingButton>
