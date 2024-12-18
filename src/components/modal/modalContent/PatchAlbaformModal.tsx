@@ -4,15 +4,26 @@ import Image from "next/image";
 import ModalContainer from "../modalContainer/ModalContainer";
 import SolidButton from "@/components/button/SolidButton";
 import { useModal } from "@/hooks/useModal";
-import { useSetAtom } from "jotai";
-import { continueAtom } from "@/atoms/continueAtom";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/hooks/useToast";
 
 const PatchAlbaformModal = () => {
   const { closeModal } = useModal();
-  const setContinue = useSetAtom(continueAtom);
+  const router = useRouter();
+  const { addToast } = useToast();
+
+  const handleMoveAddform = () => {
+    router.push("/addform");
+    addToast("작성 중인 알바폼을 불러왔습니다.", "info");
+    closeModal();
+  };
 
   const handleNewWriteClick = () => {
-    setContinue(false);
+    const steps = ["stepOne", "stepTwo", "stepThree"];
+    steps.forEach((step) => localStorage.removeItem(step));
+
+    router.push("/addform");
+    addToast("알바폼을 새로 작성해주세요.", "info");
     closeModal();
   };
 
@@ -33,7 +44,7 @@ const PatchAlbaformModal = () => {
           <SolidButton
             style="orange300"
             type="button"
-            onClick={() => closeModal()}
+            onClick={handleMoveAddform}
           >
             이어쓰기
           </SolidButton>
