@@ -3,6 +3,13 @@
 import { KeyboardEvent, useEffect, useState } from "react";
 import Image from "next/image";
 import PickableList from "./PickableList";
+import { cls } from "@/utils/dynamicTailwinds";
+import { stepTwoMenuOpenAtom } from "@/atoms/addFormAtomStore";
+import { useAtom } from "jotai";
+import ErrorText from "../errorText/ErrorText";
+import { FieldErrors } from "react-hook-form";
+import { addFormSchema } from "@/schema/addForm/addFormSchema";
+import { z } from "zod";
 
 type labelType = {
   label: "모집인원" | "성별" | "학력" | "연령" | "우대사항";
@@ -22,12 +29,14 @@ type labelType = {
     age: string;
     preferred: string;
   };
+  errors: FieldErrors<z.infer<typeof addFormSchema>>;
 };
 
 const RequirementPicker = ({
   label,
   setStepTwoData,
   initialValue,
+  errors,
 }: labelType) => {
   const [value, setValue] = useState(() => {
     const key = matchLabelToStepTwoData(label);
@@ -39,7 +48,16 @@ const RequirementPicker = ({
     return initialValue[key].toString() || "";
   });
   const [isTextMode, setIsTextMode] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
+  const [currentOpen, setCurrentOpen] = useAtom(stepTwoMenuOpenAtom);
+  const isOpen = currentOpen === label;
+
+  const handleToggle = () => {
+    if (isOpen) {
+      setCurrentOpen(null);
+    } else {
+      setCurrentOpen(label);
+    }
+  };
 
   useEffect(() => {
     if (value === "직접입력") setIsTextMode(true);
@@ -53,6 +71,13 @@ const RequirementPicker = ({
     }
   };
 
+  const errorArr = [
+    { label: "성별", errors: errors.gender },
+    { label: "학력", errors: errors.education },
+    { label: "연령", errors: errors.age },
+    { label: "우대사항", errors: errors.preferred },
+  ];
+
   return (
     <section className="relative h-[92px] w-[327px] pc:h-[112px] pc:w-[640px]">
       <h3 className="text-md text-black-400 pc:text-xl">
@@ -60,36 +85,53 @@ const RequirementPicker = ({
         <span className="text-orange-300"> *</span>
       </h3>
       {isTextMode ? (
-        <input
-          type="text"
-          value={value}
-          onKeyDown={handleKeyDown}
-          onChange={(e) => setValue(e.target.value)} // 텍스트 입력 핸들링
-          className="mt-2 h-[54px] w-[327px] rounded-lg bg-background-200 p-[14px] px-6 text-lg text-black-400 pc:h-[64px] pc:w-[640px] pc:px-8 pc:text-xl"
-        />
-      ) : (
-        <button
-          type="button"
-          onClick={() => setIsOpen(!isOpen)}
-          className="mt-2 flex h-[54px] w-[327px] items-center rounded-lg bg-background-200 p-[14px] px-6 text-lg text-black-400 pc:h-[64px] pc:w-[640px] pc:px-8 pc:text-xl"
-        >
-          <span className="flex-grow text-left text-gray-400">
-            {initialValue[matchLabelToStepTwoData(label)]
-              ? initialValue[matchLabelToStepTwoData(label)]
-              : value || "선택"}
-          </span>
-          <Image
-            src="/icon/arrow-fill-bottom.svg"
-            width={28}
-            height={28}
-            alt=""
+        <div className="relative">
+          <input
+            type="text"
+            value={value}
+            onKeyDown={handleKeyDown}
+            onChange={(e) => setValue(e.target.value)} // 텍스트 입력 핸들링
+            className="mt-2 h-[54px] w-[327px] rounded-lg bg-background-200 p-[14px] px-6 text-lg text-black-400 pc:h-[64px] pc:w-[640px] pc:px-8 pc:text-xl"
           />
-        </button>
+          <ErrorText error={errors.preferred}>
+            {errors.preferred?.message}
+          </ErrorText>
+        </div>
+      ) : (
+        <div className="relative">
+          <button
+            type="button"
+            onClick={handleToggle}
+            className="mt-2 flex h-[54px] w-[327px] items-center rounded-lg bg-background-200 p-[14px] px-6 text-lg text-black-400 pc:h-[64px] pc:w-[640px] pc:px-8 pc:text-xl"
+          >
+            <span
+              className={cls(
+                "flex-grow text-left",
+                value ? "text-black-400" : "text-gray-400"
+              )}
+            >
+              {initialValue[matchLabelToStepTwoData(label)]
+                ? initialValue[matchLabelToStepTwoData(label)]
+                : value || "선택"}
+            </span>
+            <Image
+              src="/icon/arrow-fill-bottom.svg"
+              width={28}
+              height={28}
+              alt=""
+            />
+          </button>
+          <ErrorText
+            error={errorArr.find((error) => error.label === label)?.errors}
+          >
+            {errorArr.find((error) => error.label === label)?.errors?.message}
+          </ErrorText>
+        </div>
       )}
       {label && isOpen && (
         <PickableList
           setValue={setValue}
-          setIsOpen={setIsOpen}
+          setIsOpen={handleToggle}
           label={label}
           setStepTwoData={setStepTwoData}
         />

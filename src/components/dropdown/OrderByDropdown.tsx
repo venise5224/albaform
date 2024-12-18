@@ -49,7 +49,7 @@ const OrderByDropdown = () => {
         asChild
         checkedValue={orderBy.value}
         id="orderBy"
-        className="rounded-lg"
+        className="mb-1 rounded-lg"
       >
         <div className="flex items-center space-x-1">
           <span className="text-xs pc:text-base">{orderBy.title}</span>

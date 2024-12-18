@@ -23,10 +23,6 @@ const Location = () => {
     }
   }, [address, setValue]);
 
-  const handleLocationChange = (newLocation: string) => {
-    setValue("location", newLocation);
-  };
-
   return (
     <div className="relative flex flex-col space-y-4">
       <LocationPicker initialLocation={currentAddress || ""} />

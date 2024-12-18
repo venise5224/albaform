@@ -13,10 +13,26 @@ import { albaTalkCommentSchema } from "@/schema/albaTalkComment/albaTalkCommentS
 import ErrorText from "@/components/errorText/ErrorText";
 import { cls } from "@/utils/dynamicTailwinds";
 import postComment from "../actions/postComment";
+import useInfinityScroll from "@/hooks/useInfinityScroll";
+import SkeletonCommentList from "./SkeletonCommentList";
+import LoadingSpinner from "@/components/spinner/LoadingSpinner";
+import { useToast } from "@/hooks/useToast";
 
-const CommentSection = ({ id, userId }: { id: number; userId: number }) => {
-  const [totalCount, setTotalCount] = useState(0);
+const CommentSection = ({
+  id,
+  userId,
+  isLogin,
+}: {
+  id: number;
+  userId: number;
+  isLogin: string | undefined;
+}) => {
   const [list, setList] = useState<Comment[]>([]);
+  const [totalItemCount, setTotalItemCount] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const { addToast } = useToast();
   const {
     register,
     handleSubmit,
@@ -42,26 +58,40 @@ const CommentSection = ({ id, userId }: { id: number; userId: number }) => {
     setList((prevList) =>
       prevList.filter((comment) => comment.id !== commentId)
     );
-    setTotalCount((prevCount) => prevCount - 1);
   };
 
   const fetchComments = useCallback(async () => {
+    if (!isLogin || isLoading || currentPage > totalPages) return;
+    setIsLoading(true);
+
     try {
-      const response = await getComments(id);
-      setTotalCount(response.totalItemCount);
-      setList(response.data);
+      const response = await getComments(id, currentPage, 6);
+
+      if (response?.data) {
+        setList((prev) => [...prev, ...response.data]);
+        setTotalItemCount(response.totalItemCount);
+        setTotalPages(response.totalPages);
+        setCurrentPage((prev) => prev + 1);
+      }
     } catch (error) {
       console.error("댓글 목록을 가져오는데 실패했습니다.", error);
+    } finally {
+      setIsLoading(false);
     }
-  }, [id]);
+  }, [id, currentPage, totalPages, isLoading, isLogin]);
 
   const onSubmit = async (formData: z.infer<typeof albaTalkCommentSchema>) => {
+    if (!isLogin) {
+      addToast("로그인이 필요한 서비스입니다.", "info");
+      return;
+    }
+
     try {
       const response = await postComment({ id, formData });
 
       if (response.status === 201) {
         setList((prev) => [response.data, ...prev]);
-        setTotalCount((prev) => prev + 1);
+        setTotalItemCount((prev) => prev + 1);
         reset();
       }
     } catch (error) {
@@ -69,14 +99,17 @@ const CommentSection = ({ id, userId }: { id: number; userId: number }) => {
     }
   };
 
+  const observerRef = useInfinityScroll({ fetchMoreData: fetchComments });
+
   useEffect(() => {
+    if (!id) return;
     fetchComments();
-  }, [fetchComments]);
+  }, [id, fetchComments]);
 
   return (
     <section>
       <h3 className="mt-[104px] border-b border-line-200 pb-4 text-lg font-semibold text-black-400 pc:mt-[100px] pc:text-2xl tablet:text-xl">
-        댓글({totalCount})
+        댓글({totalItemCount})
       </h3>
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -105,21 +138,30 @@ const CommentSection = ({ id, userId }: { id: number; userId: number }) => {
           <SolidButton style="orange300">등록하기</SolidButton>
         </div>
       </form>
-      <ul className="mt-6 flex flex-col gap-y-4 pc:mt-14 pc:gap-y-6 tablet:mt-10">
-        {list?.length > 0 ? (
-          list?.map((item) => (
-            <CommentItem
-              key={item.id}
-              userId={userId}
-              item={item}
-              onUpdatedComment={handleUpdatedComment}
-              onDeleteComment={handleDeleteComment}
-            />
-          ))
-        ) : (
-          <EmptyComment />
-        )}
-      </ul>
+
+      {isLoading && currentPage === 1 ? (
+        <SkeletonCommentList count={6} />
+      ) : (
+        <ul className="mt-6 flex flex-col gap-y-4 pc:mt-14 pc:gap-y-6 tablet:mt-10">
+          {list?.length > 0
+            ? list?.map((item) => (
+                <CommentItem
+                  key={item.id}
+                  userId={userId}
+                  item={item}
+                  onUpdatedComment={handleUpdatedComment}
+                  onDeleteComment={handleDeleteComment}
+                />
+              ))
+            : !isLoading && <EmptyComment />}
+          <div ref={observerRef} className="h-[10px] w-full" />
+        </ul>
+      )}
+      {isLoading && currentPage > 1 && (
+        <div className="flex h-full w-full items-center justify-center">
+          <LoadingSpinner />
+        </div>
+      )}
     </section>
   );
 };

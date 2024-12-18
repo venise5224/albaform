@@ -12,7 +12,9 @@ const EazyLogin = () => {
     <section className="flex h-[96px] w-full flex-col gap-6 text-md">
       <div className="flex items-center gap-[13px] text-gray-300">
         <div className="h-0 w-full border border-gray-100" />
-        <span className="w-[500px]">SNS 계정으로 {loginOrSignup} 하기</span>
+        <span className="w-[500px] break-keep text-center">
+          SNS 계정으로 {loginOrSignup} 하기
+        </span>
         <div className="h-0 w-full border border-gray-100" />
       </div>
 

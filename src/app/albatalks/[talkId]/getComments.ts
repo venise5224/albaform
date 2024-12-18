@@ -1,9 +1,12 @@
 import instance from "@/lib/instance";
 
-const getComments = async (id: number) => {
+const getComments = async (id: number, page: number, pageSize: number) => {
   const url = new URL(
     `${process.env.NEXT_PUBLIC_API_URL}/posts/${id}/comments`
   );
+
+  url.searchParams.append("page", page.toString());
+  url.searchParams.append("pageSize", pageSize.toString());
 
   try {
     const response = await instance(url.toString());
@@ -15,10 +18,22 @@ const getComments = async (id: number) => {
       };
     }
 
-    return response.data;
+    const { data, totalItemCount, currentPage, totalPages } = response.data;
+
+    return {
+      data, // 댓글 리스트
+      totalItemCount, // 전체 댓글 수
+      currentPage, // 현재 페이지
+      totalPages, // 전체 페이지 수
+    };
   } catch (error) {
     console.error("댓글 목록을 조회하는데 실패했습니다.", error);
-    return [];
+    return {
+      data: [],
+      totalItemCount: 0,
+      currentPage: 0,
+      totalPages: 0,
+    };
   }
 };
 

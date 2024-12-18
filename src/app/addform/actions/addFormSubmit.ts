@@ -3,7 +3,11 @@
 import instance from "@/lib/instance";
 import { addFormSchema } from "@/schema/addForm/addFormSchema";
 
-export const addFormSubmit = async (formData: FormData) => {
+export const addFormSubmit = async (
+  formData: FormData,
+  isEdit: boolean | undefined = false,
+  formId?: string
+) => {
   const imageUrlsString = formData.get("imageUrls")?.toString() ?? "[]";
   const workDaysString = formData.get("workDays")?.toString() ?? "[]";
 
@@ -39,23 +43,24 @@ export const addFormSubmit = async (formData: FormData) => {
   }
 
   try {
-    const response = await instance(
-      `${process.env.NEXT_PUBLIC_API_URL}/forms`,
-      {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const responseUrl = isEdit
+      ? `${process.env.NEXT_PUBLIC_API_URL}/forms/${formId}`
+      : `${process.env.NEXT_PUBLIC_API_URL}/forms`;
+
+    const response = await instance(responseUrl, {
+      method: isEdit ? "PATCH" : "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
     const responseErrorText = {
       401: "로그인이 필요한 서비스입니다.",
       400: "입력하신 내용을 확인해주세요.",
     };
 
-    if (response.status !== 201) {
+    if (response.status !== 201 && response.status !== 200) {
       console.error("addFormSubmit에서 오류 발생", response.status);
       return {
         status: response.status,
@@ -64,8 +69,7 @@ export const addFormSubmit = async (formData: FormData) => {
       };
     }
 
-    const resData = response.data;
-    const { id } = resData;
+    const { id } = response;
 
     return {
       status: response.status,

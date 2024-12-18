@@ -12,5 +12,8 @@ export const fileToBase64 = (file: File): Promise<string> => {
 export const base64ToFile = async (base64: string, fileName: string) => {
   const response = await fetch(base64);
   const blob = await response.blob();
-  return new File([blob], fileName, { type: blob.type });
+
+  const decodedFileName = decodeURIComponent(fileName);
+  const encodedFileName = encodeURIComponent(decodedFileName);
+  return new File([blob], encodedFileName, { type: blob.type });
 };

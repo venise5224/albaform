@@ -1,4 +1,4 @@
-import { FieldErrors, Path, UseFormRegister } from "react-hook-form";
+import { FieldErrors, Path, useFormContext } from "react-hook-form";
 import { z } from "zod";
 import {
   applicantSchema,
@@ -11,28 +11,33 @@ import FormInput from "@/components/input/FormInput";
 import ErrorText from "@/components/errorText/ErrorText";
 import SolidButton from "@/components/button/SolidButton";
 import { cls } from "@/utils/dynamicTailwinds";
+import { useModal } from "@/hooks/useModal";
+import { useEffect } from "react";
+import { FormSchema } from "./SignupContents";
 
 interface SignupSecondContentsProps {
-  register: UseFormRegister<
-    z.infer<typeof applicantSchema> | z.infer<typeof ownerSchema>
-  >;
-  errors: FieldErrors<
-    z.infer<typeof applicantSchema> | z.infer<typeof ownerSchema>
-  >;
-  isSubmitting: boolean;
   userType: string;
-  isValid: boolean;
+  address: string;
 }
 
 const SignupSecondContents = ({
-  register,
-  errors,
-  isSubmitting,
   userType,
-  isValid,
+  address,
 }: SignupSecondContentsProps) => {
+  const {
+    register,
+    setValue,
+    formState: { errors, isValid, isSubmitting },
+  } = useFormContext<FormSchema>();
   const inputArr = StepTwoInput({ userType, register, errors });
   const ownerErrors = errors as FieldErrors<z.infer<typeof ownerSchema>>;
+  const { openModal } = useModal();
+
+  useEffect(() => {
+    if (address) {
+      setValue("location", address);
+    }
+  }, [address, setValue]);
 
   return (
     <div className="flex flex-col items-center space-y-10">
@@ -70,11 +75,13 @@ const SignupSecondContents = ({
           <label htmlFor="storeLocation" className="text-md text-black-400">
             가게 위치
           </label>
-          <div
+          <button
+            type="button"
             className={cls(
               "form-input-base flex items-center space-x-2 focus-within:border-orange-300",
               ownerErrors.location ? "border-red" : ""
             )}
+            onClick={() => openModal("SelectLocationModal")}
           >
             <Image
               src="/icon/pin-fill-lg.svg"
@@ -82,18 +89,13 @@ const SignupSecondContents = ({
               width={36}
               height={36}
             />
-            <input
-              id="storeLocation"
-              {...register("location")}
-              type="text"
-              name="location"
-              className="w-full"
-              placeholder="위치를 입력해주세요."
-            />
+            <span className="text-lg text-gray-400">
+              {address || "위치를 입력해주세요."}
+            </span>
             <ErrorText error={ownerErrors.location}>
               {ownerErrors.location?.message}
             </ErrorText>
-          </div>
+          </button>
         </div>
       )}
       <SolidButton

@@ -1,5 +1,6 @@
 import {
   currentImageListAtom,
+  stepActiveAtomFamily,
   temporaryDataByStepAtom,
 } from "@/atoms/addFormAtomStore";
 import ErrorText from "@/components/errorText/ErrorText";
@@ -15,6 +16,7 @@ import ImageInput from "@/components/button/ImageInput";
 import useViewPort from "@/hooks/useViewport";
 import { base64ToFile, fileToBase64 } from "@/utils/imageFileConvert";
 import { AddFormStepProps } from "@/types/addform";
+import LoadingSkeleton from "./LoadingSkeleton";
 
 const StepOneContents = () => {
   const viewPort = useViewPort();
@@ -27,6 +29,7 @@ const StepOneContents = () => {
   } = useFormContext<z.infer<typeof addFormSchema>>();
   const [currentImageList, setCurrentImageList] = useAtom(currentImageListAtom);
   const setTemporaryDataByStep = useSetAtom(temporaryDataByStepAtom);
+  const setStepOneActive = useSetAtom(stepActiveAtomFamily("stepOne"));
   const [temporaryDateRange, setTemporaryDateRange] = useState<
     [string, string]
   >(() => {
@@ -34,6 +37,7 @@ const StepOneContents = () => {
     const endDate = watch("recruitmentEndDate");
     return [startDate || "", endDate || ""];
   });
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const fields = [
     "title",
@@ -42,6 +46,20 @@ const StepOneContents = () => {
     "recruitmentEndDate",
   ] as const;
   const [loading, setLoading] = useState(true);
+
+  // 1단계 '작성중' 태그 여부
+  useEffect(() => {
+    const subscription = watch((value, { name }) => {
+      if (name && fields.includes(name as (typeof fields)[number])) {
+        const currentValue = value[name as keyof typeof value];
+        if (currentValue && String(currentValue).trim() !== "") {
+          setStepOneActive(true);
+        }
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [watch, fields, setStepOneActive]);
 
   const stepOneData = useMemo(() => {
     return fields.reduce(
@@ -69,16 +87,30 @@ const StepOneContents = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stepOneData, setValue]);
 
+  // 서버에서 가져온 폼이 있을 경우 마운트 시에 데이터 업데이트 (값이 사용자에게 안보이는 경우를 해결함)
+  useEffect(() => {
+    const startDate = watch("recruitmentStartDate");
+    const endDate = watch("recruitmentEndDate");
+    if (startDate && endDate) {
+      setTemporaryDateRange([startDate, endDate]);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [watch("recruitmentStartDate"), watch("recruitmentEndDate")]);
+
   // 임시 데이터 atom 업데이트
   useEffect(() => {
+    const title = getValues("title");
+    const description = getValues("description");
+
     const updateTemporaryData = async () => {
       const base64Images = await Promise.all(
         currentImageList.map((img) => fileToBase64(img))
       );
 
       const temporaryStepOneData = {
-        title: getValues("title"),
-        description: getValues("description"),
+        title: title,
+        description: description,
         recruitmentStartDate: temporaryDateRange[0],
         recruitmentEndDate: temporaryDateRange[1],
         tempImage: base64Images, // 임시저장을 위해 서버 업로드 전 이미지를 저장
@@ -124,11 +156,7 @@ const StepOneContents = () => {
   }, [setValue, setCurrentImageList]);
 
   if (loading) {
-    return (
-      <div className="flex w-full items-center justify-center">
-        잠시만 기다려주세요...
-      </div>
-    );
+    return <LoadingSkeleton isImage={true} />;
   }
 
   return (
