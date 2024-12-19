@@ -48,6 +48,7 @@ export const createCookie = async (data: CookieData) => {
     value: data.value,
     secure: true,
     httpOnly: true,
+    sameSite: "lax",
     maxAge: data.maxAge,
   });
 };
