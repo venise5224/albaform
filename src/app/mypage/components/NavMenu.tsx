@@ -14,12 +14,15 @@ const NavMenu = () => {
     { name: "scrap", label: "스크랩" },
   ];
 
-  // useEffect(() => {
-  //   const tabFromUrl = searchParams.get("tab");
-  //   if (!tabFromUrl) {
-  //     router.push(`/mypage?tab=post`);
-  //   }
-  // }, [searchParams, router]);
+  useEffect(() => {
+    const tabFromUrl = searchParams.get("tab");
+    if (tabFromUrl && tabs.some((tab) => tab.name === tabFromUrl)) {
+      setActiveTab(tabFromUrl);
+    } else {
+      router.push(`/mypage?tab=post`);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchParams, router]);
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
