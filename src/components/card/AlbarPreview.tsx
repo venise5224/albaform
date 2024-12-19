@@ -1,20 +1,23 @@
-import { AlbarformData } from "@/types/alba";
-import { formatDate } from "@/utils/formatDate";
-import { getDday } from "@/utils/getDday";
-import isPast from "@/utils/isPast";
+"use client";
+
 import Image from "next/image";
+import isPast from "@/utils/isPast";
+import instance from "@/lib/instance";
 import AlbaPreviewDropdown from "../dropdown/AlbaPreviewDropdown";
 import { useRouter } from "next/navigation";
-import instance from "@/lib/instance";
+import { getDday } from "@/utils/getDday";
+import { formatDate } from "@/utils/formatDate";
+import { AlbarformData } from "@/types/alba";
 import { useToast } from "@/hooks/useToast";
 
 interface AlbarPreviewProps {
   info: AlbarformData;
+  role: string;
 }
 
-const AlbarPreview = ({ info }: AlbarPreviewProps) => {
+const AlbarPreview = ({ info, role }: AlbarPreviewProps) => {
   const router = useRouter();
-  const isRecruiting = isPast(info.recruitmentEndDate);
+  const isRecruiting = !isPast(info.recruitmentEndDate);
   const dday = getDday(info.recruitmentEndDate);
   const imageStyle = info.imageUrls[0] ? "object-cover" : "p-10 object-contain";
   const { addToast } = useToast();
@@ -66,19 +69,21 @@ const AlbarPreview = ({ info }: AlbarPreviewProps) => {
         <div className="flex-grow text-black-100">
           {formattedStartDate} ~ {formattedEndDate}
         </div>
-        <AlbaPreviewDropdown
-          id={info.id}
-          goToApply={goToApply}
-          onScrap={onScrap}
-        >
-          <Image
-            src={"/icon/kebab-md.svg"}
-            width={24}
-            height={24}
-            alt="kebab icon"
-            className="pc:size-9"
-          />
-        </AlbaPreviewDropdown>
+        {role === "APPLICANT" && (
+          <AlbaPreviewDropdown
+            id={info.id}
+            goToApply={goToApply}
+            onScrap={onScrap}
+          >
+            <Image
+              src={"/icon/kebab-md.svg"}
+              width={24}
+              height={24}
+              alt="kebab icon"
+              className="pc:size-9"
+            />
+          </AlbaPreviewDropdown>
+        )}
       </time>
       <div className="mt-[16px] h-[52px] pc:mt-[24px] pc:h-[64px]">
         <h2 className="w-[80%] text-2lg font-semibold pc:text-xl">

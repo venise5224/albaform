@@ -30,7 +30,7 @@ const EditFormPage = async ({ params }: EditFormPageProps) => {
         };
       }
 
-      const formData = response.data;
+      const { status, ...formData } = response;
 
       return formData;
     } catch (error) {

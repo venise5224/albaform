@@ -1,6 +1,5 @@
 import NavMenu from "./components/NavMenu";
 import MyInfoEditContainer from "./components/InfoEditContainer";
-import AlbatalkFilterDropdown from "@/components/dropdown/AlbatalkFilterDropdown";
 import { Suspense } from "react";
 import TabDropdown from "./components/TabDropdown";
 
