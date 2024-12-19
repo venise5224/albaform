@@ -1,11 +1,11 @@
-const fetchData = async (formId: string) => {
+const fetchApplicationData = async (applicationId: string) => {
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
   if (!API_URL) {
     throw new Error("API URL이 env파일에 정의되어 있지 않습니다.");
   }
 
-  const response = await fetch(`${API_URL}/forms/${formId}`);
+  const response = await fetch(`${API_URL}/applications/${applicationId}`);
   if (!response.ok) {
     throw new Error(`데이터 요청에 실패했습니다.: ${response.statusText}`);
   }
@@ -14,4 +14,4 @@ const fetchData = async (formId: string) => {
   return data;
 };
 
-export default fetchData;
+export default fetchApplicationData;
