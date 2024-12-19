@@ -37,9 +37,6 @@ const GetMyApplicationModal = () => {
     },
   });
 
-  console.log("params:", params);
-  console.log("formId:", formId);
-
   const onSubmit = async (data: z.infer<typeof getMyApplicationSchema>) => {
     setLoading(true);
     try {
