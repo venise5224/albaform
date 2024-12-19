@@ -3,14 +3,20 @@
 import Image from "next/image";
 import ModalContainer from "../modalContainer/ModalContainer";
 import SolidButton from "@/components/button/SolidButton";
-import useViewPort from "@/hooks/useViewport";
 import { useRouter } from "next/navigation";
 import { useModal } from "@/hooks/useModal";
+import { useSetAtom } from "jotai";
+import { continueApplyAtom } from "@/atoms/continueApply";
 
 const PatchAlbaformModal = () => {
   const router = useRouter();
   const { closeModal } = useModal();
-  const viewPort = useViewPort();
+  const setContinueApply = useSetAtom(continueApplyAtom);
+
+  const handleClickContinue = () => {
+    setContinueApply(true);
+    closeModal();
+  };
 
   return (
     <ModalContainer>
@@ -27,13 +33,9 @@ const PatchAlbaformModal = () => {
         <p className="modal-sub-title">이어서 작성하시겠어요?</p>
         <div className="mt-6 h-[56px] w-[327px] pc:h-[72px] pc:w-[360px]">
           <SolidButton
-            size={viewPort === "pc" ? "large" : "small"}
             style="orange300"
             type="button"
-            onClick={() => {
-              closeModal();
-              router.push("/addform");
-            }}
+            onClick={handleClickContinue}
           >
             이어쓰기
           </SolidButton>

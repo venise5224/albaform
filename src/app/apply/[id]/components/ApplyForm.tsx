@@ -10,10 +10,18 @@ import { useToast } from "@/hooks/useToast";
 import { applyFormActions } from "../actions/applyFormAction";
 import { uploadResumeAction } from "../actions/uploadResumeAction";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import LoadingSpinner from "@/components/spinner/LoadingSpinner";
+import { useModal } from "@/hooks/useModal";
+import { continueApplyAtom } from "@/atoms/continueApply";
+import { useAtom } from "jotai";
 
 const ApplyForm = ({ id }: { id: string }) => {
   const { addToast } = useToast();
+  const { openModal } = useModal();
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [continueApply, setContinueApply] = useAtom(continueApplyAtom);
   const {
     register,
     handleSubmit,
@@ -34,6 +42,30 @@ const ApplyForm = ({ id }: { id: string }) => {
     },
   });
 
+  // useEffect(() => {
+  //   const applyFormData = localStorage.getItem("ApplyFormData");
+
+  //   if (applyFormData) {
+  //     openModal("PatchAlbaformModal");
+  //   }
+
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
+
+  // useEffect(() => {
+  //   const savedData = localStorage.getItem("ApplyFormData");
+
+  //   if (savedData) {
+  //     if (continueApply) {
+  //       const parsedData = JSON.parse(savedData);
+
+  //       for (const key in parsedData) {
+  //         setValue(key, parsedData[key]);
+  //       }
+  //     }
+  //   }
+  // }, [setValue]);
+
   //폼 제출 기능
   const onSubmit = async (data: z.infer<typeof applySchema>) => {
     const formData = new FormData();
@@ -41,18 +73,22 @@ const ApplyForm = ({ id }: { id: string }) => {
       formData.append(key, value || "");
     });
 
+    setLoading(true);
     try {
       const response = await applyFormActions(formData, id);
 
-      if (response.status !== 200) {
+      if (response.status === 404) {
         return addToast(response.message as string, "warning");
       }
 
       addToast("지원서 제출에 성공하였습니다", "success");
-      router.push(`/alba/${id}`);
+      localStorage.removeItem("ApplyFormData");
+      router.push(`/myapply/${id}`);
     } catch (error) {
       console.error("지원서 제출 오류:", error);
       addToast("서버 오류로 인해 지원서 제출에 실패하였습니다", "warning");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -62,6 +98,7 @@ const ApplyForm = ({ id }: { id: string }) => {
     if (!file) return;
 
     try {
+      setLoading(true);
       const response = await uploadResumeAction(file);
 
       if (response.status !== 201) {
@@ -79,6 +116,8 @@ const ApplyForm = ({ id }: { id: string }) => {
         "서버 오류로 인해 이력서 업로드 중 오류가 발생했습니다.",
         "warning"
       );
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -91,21 +130,33 @@ const ApplyForm = ({ id }: { id: string }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="mt-[23px] pc:mt-[36px]">
-      <ApplyFormInputList
-        register={register}
-        errors={errors}
-        watch={watch}
-        setValue={setValue}
-        handleUploadResume={handleUploadResume}
-      />
+    <>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="mt-[23px] pc:mt-[36px]"
+      >
+        <ApplyFormInputList
+          register={register}
+          errors={errors}
+          watch={watch}
+          setValue={setValue}
+          handleUploadResume={handleUploadResume}
+          loading={loading}
+        />
 
-      <ApplyFormButton
-        onSave={handleSave}
-        isSubmitting={isSubmitting}
-        isValid={isValid}
-      />
-    </form>
+        <ApplyFormButton
+          onSave={handleSave}
+          isSubmitting={isSubmitting}
+          isValid={isValid}
+        />
+      </form>
+
+      {loading && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <LoadingSpinner />
+        </div>
+      )}
+    </>
   );
 };
 
