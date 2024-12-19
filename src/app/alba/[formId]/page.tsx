@@ -43,12 +43,12 @@ const AlbarformDetailPage = async ({ params }: PageProps) => {
   let isMyAlbarform: boolean;
   const cookie = await cookies();
   const role = cookie.get("role")?.value || "defaultRole";
-  const ownerId = cookie.get("userId")?.value;
+  const userId = cookie.get("id")?.value;
   const { formId } = await params;
 
   try {
     data = await fetchData(formId);
-    isMyAlbarform = Number(ownerId) === data.ownerId;
+    isMyAlbarform = Number(userId) === data.ownerId;
   } catch (error) {
     console.error(error);
 
@@ -88,9 +88,9 @@ const AlbarformDetailPage = async ({ params }: PageProps) => {
               formId={formId}
               recruitmentEndDate={data.recruitmentEndDate}
             />
-          ) : (
-            <OwnerActionButtons formId={formId} isMyAlbarform={isMyAlbarform} />
-          )}
+          ) : isMyAlbarform ? (
+            <OwnerActionButtons formId={formId} />
+          ) : null}
         </section>
       </div>
       <NoticeApplicant count={data.applyCount} />
