@@ -16,6 +16,7 @@ const Sidebar = () => {
     await deleteCookie(true);
     addToast("로그아웃 되었습니다.", "info");
     localStorage.removeItem("isLogin");
+    setIsOpen(false);
     router.push("/");
   };
 

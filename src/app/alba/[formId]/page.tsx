@@ -24,6 +24,7 @@ export const generateMetadata = async ({ params }: PageProps) => {
   const data: AlbaformDetailData = await fetchData(formId);
 
   return {
+    title: "알바폼 상세페이지",
     openGraph: {
       title: data.title,
       description: data.description,
