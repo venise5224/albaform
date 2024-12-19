@@ -1,6 +1,7 @@
 import NavMenu from "./components/NavMenu";
 import MyInfoEditContainer from "./components/InfoEditContainer";
-import OrderByDropdown from "@/components/dropdown/OrderByDropdown";
+import { Suspense } from "react";
+import TabDropdown from "./components/TabDropdown";
 
 const MyPageLayout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -13,10 +14,14 @@ const MyPageLayout = ({ children }: { children: React.ReactNode }) => {
       </div>
       <div className="pc:mt-[46px] pc:flex pc:items-center pc:justify-between">
         <div className="mt-6 flex justify-start pc:mt-0 tablet:mt-[30px]">
-          <NavMenu />
+          <Suspense>
+            <NavMenu />
+          </Suspense>
         </div>
         <div className="mt-4 flex justify-end pc:mt-0">
-          <OrderByDropdown />
+          <Suspense>
+            <TabDropdown />
+          </Suspense>
         </div>
       </div>
       <div className="mt-[30px] pc:mt-10 tablet:mt-[14px]">{children}</div>
