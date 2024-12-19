@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import PickableList from "./PickableList";
+import { cls } from "@/utils/dynamicTailwinds";
 
 interface TimePickerProps {
   setTime: (data: [string, string]) => void;
@@ -11,11 +12,11 @@ interface TimePickerProps {
 
 const TimePicker = ({ setTime, initialTime }: TimePickerProps) => {
   const [startTime, setStartTime] = useState({
-    time: initialTime[0] || "00:00",
+    time: initialTime[0] || "시작시간",
     updated: false,
   });
   const [endTime, setEndTime] = useState({
-    time: initialTime[1] || "24:00",
+    time: initialTime[1] || "종료시간",
     updated: false,
   });
   const [isStartButtonOpen, setIsStartButtonOpen] = useState(false);
@@ -44,11 +45,14 @@ const TimePicker = ({ setTime, initialTime }: TimePickerProps) => {
         <button
           type="button"
           onClick={() => setIsStartButtonOpen(!isStartButtonOpen)}
-          className={
+          className={cls(
+            "relative flex w-[150px] items-center justify-between rounded-[8px] bg-background-200 p-[14px] pc:w-[210px]",
             startTime.updated
-              ? "relative flex w-[150px] items-center justify-between rounded-[8px] bg-background-200 p-[14px] text-black-400 pc:w-[210px]"
-              : "relative flex w-[150px] items-center justify-between rounded-[8px] bg-background-200 p-[14px] text-gray-400 pc:w-[210px]"
-          }
+              ? startTime.time !== "시작시간"
+                ? "text-black-400"
+                : "text-gray-400"
+              : "text-gray-400"
+          )}
         >
           <Image src="/icon/clock-blank.svg" width={24} height={24} alt="" />
           <span className="flex-grow">{startTime.time}</span>
@@ -75,11 +79,14 @@ const TimePicker = ({ setTime, initialTime }: TimePickerProps) => {
         <button
           type="button"
           onClick={() => setIsEndButtonOpen(!isEndButtonOpen)}
-          className={
+          className={cls(
+            "relative flex w-[150px] items-center justify-between rounded-[8px] bg-background-200 p-[14px] pc:w-[210px]",
             endTime.updated
-              ? "relative flex w-[150px] items-center justify-between rounded-[8px] bg-background-200 p-[14px] text-black-400 pc:w-[210px]"
-              : "relative flex w-[150px] items-center justify-between rounded-[8px] bg-background-200 p-[14px] text-gray-400 pc:w-[210px]"
-          }
+              ? endTime.time !== "종료시간"
+                ? "text-black-400"
+                : "text-gray-400"
+              : "text-gray-400"
+          )}
         >
           <Image src="/icon/clock-blank.svg" width={24} height={24} alt="" />
           <span className="flex-grow">{endTime.time}</span>

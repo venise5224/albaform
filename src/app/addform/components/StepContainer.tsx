@@ -55,7 +55,7 @@ const StepContainer = ({ albaForm, formId }: StepContainerProps) => {
   }, [loadAllTempData]);
 
   useValidateForm(methods);
-
+  console.log(methods.watch());
   const onSubmit = useCallback(
     async (data: z.infer<typeof addFormSchema>) => {
       try {
