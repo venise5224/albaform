@@ -1,33 +1,21 @@
 "use server";
 
-import Empty from "@/app/albatalk/components/Empty";
-import PostCard from "@/components/card/PostCard";
-import instance from "@/lib/instance";
 import { PostCardProps } from "@/types/post";
+import { getMyPosts } from "../getMyPosts";
+import MyPostList from "./MyPostList";
 
-const MyPost = async () => {
-  const response = await instance(
-    `${process.env.NEXT_PUBLIC_API_URL}/users/me/posts?limit=6`
-  );
+const MyPost = async ({ orderBy }: { orderBy: string }) => {
+  const response = await getMyPosts({
+    limit: 9,
+    cursor: 0,
+    orderBy,
+  });
 
-  if (response.status !== 200) {
-    return <div>오류 발생</div>;
-  }
-
-  const myPosts: PostCardProps[] = response.data.data;
+  const nextCursor: number | null = response.nextCursor;
+  const myPosts: PostCardProps[] = response.data;
 
   return (
-    <div>
-      {myPosts.length > 0 ? (
-        <div className="grid grid-cols-1 gap-4 pc:grid-cols-3 pc:gap-x-[25px] pc:gap-y-[48px]">
-          {myPosts.map((myPost) => (
-            <PostCard key={myPost.id} info={myPost} />
-          ))}
-        </div>
-      ) : (
-        <Empty />
-      )}
-    </div>
+    <MyPostList myPosts={myPosts} nextCursor={nextCursor} orderBy={orderBy} />
   );
 };
 

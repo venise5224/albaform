@@ -1,54 +1,54 @@
 "use client";
 
+import Empty from "@/app/albatalk/components/Empty";
+import PostCardListSkeleton from "@/app/albatalk/components/PostCardSkeleton";
 import PostCard from "@/components/card/PostCard";
-import { PostCardProps } from "@/types/post";
 import useInfinityScroll from "@/hooks/useInfinityScroll";
-import Empty from "./Empty";
-import PostCardListSkeleton from "./PostCardSkeleton";
+import { PostCardProps } from "@/types/post";
 import { useState } from "react";
-import { getArticles } from "../getArticles";
-import FloatingButton from "@/components/button/FloatingButton";
+import { getMyPosts } from "../getMyPosts";
 
-interface AlbatalkResponse {
-  data: PostCardProps[];
-  nextCursor: number | null;
+interface ResponseType {
+  data?: PostCardProps[];
+  nextCursor?: number | null;
+  status?: number;
+  message?: string;
 }
 
-const AlbatalkList = ({
-  posts: initialPosts,
+const MyPostList = ({
+  myPosts: initialPosts,
   nextCursor: initialCursor,
   orderBy,
-  keyword,
 }: {
-  posts: PostCardProps[];
+  myPosts: PostCardProps[];
   nextCursor: number | null;
   orderBy: string;
-  keyword: string;
 }) => {
-  const [posts, setPosts] = useState(initialPosts);
+  const [myPosts, setMyPosts] = useState(initialPosts);
   const [cursor, setCursor] = useState(initialCursor);
   const [isLoading, setIsLoading] = useState(false);
-  const isLogin = localStorage.getItem("isLogin");
 
   const fetchMoreData = async () => {
     if (isLoading) return;
 
     setIsLoading(true);
     try {
-      const response: AlbatalkResponse = await getArticles({
+      const response: ResponseType = await getMyPosts({
         limit: 6,
         cursor,
-        keyword,
         orderBy,
       });
 
-      setPosts((prevList) => [
+      const newPosts = response.data ?? [];
+      const newCursor = response.nextCursor ?? null;
+
+      setMyPosts((prevList) => [
         ...prevList,
-        ...response.data.filter(
+        ...newPosts.filter(
           (newPost) => !prevList.some((post) => post.id === newPost.id)
         ),
       ]);
-      setCursor(response.nextCursor);
+      setCursor(newCursor);
     } catch (error) {
       console.error("데이터를 불러오는데 실패했습니다.", error);
     } finally {
@@ -62,10 +62,10 @@ const AlbatalkList = ({
 
   return (
     <div>
-      {posts.length > 0 ? (
+      {myPosts?.length > 0 ? (
         <div className="grid grid-cols-1 gap-4 pc:grid-cols-3 pc:gap-x-[25px] pc:gap-y-[48px]">
-          {posts.map((post) => (
-            <PostCard key={post.id} info={post} />
+          {myPosts.map((myPost) => (
+            <PostCard key={myPost.id} info={myPost} />
           ))}
         </div>
       ) : (
@@ -75,14 +75,8 @@ const AlbatalkList = ({
       {cursor && <div ref={observerRef} style={{ height: "1px" }} />}
 
       {isLoading && <PostCardListSkeleton count={3} />}
-
-      {isLogin && (
-        <div className="fixed bottom-20 right-10">
-          <FloatingButton icon="/icon/writing.svg" href="/addtalk" />
-        </div>
-      )}
     </div>
   );
 };
 
-export default AlbatalkList;
+export default MyPostList;
