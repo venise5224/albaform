@@ -19,9 +19,10 @@ const GetMyApplicationModal = () => {
   const { closeModal } = useModal();
   const { addToast } = useToast();
   const [visible, setVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
   const params = useParams();
-  const id = params.formId as string;
+  const formId = params.formId as string;
   const {
     register,
     handleSubmit,
@@ -36,21 +37,23 @@ const GetMyApplicationModal = () => {
     },
   });
 
+  console.log("params:", params);
+  console.log("formId:", formId);
+
   const onSubmit = async (data: z.infer<typeof getMyApplicationSchema>) => {
+    setLoading(true);
     try {
       const formData = new FormData();
       Object.entries(data).forEach(([key, value]) => {
         formData.append(key, value || "");
       });
 
-      const response = await getMyApplicationAction(formData, id);
+      const response = await getMyApplicationAction(formData, formId);
 
       if (response.status === 200) {
-        const applicationId = response.data.id;
-
-        router.push(`/myapply/${applicationId}`); //지원 상세 조회 페이지로 이동해야함
-
         closeModal();
+
+        router.push(`/myapply/${formId}`); //지원 상세 조회 페이지로 이동
       } else {
         console.error(response.message, response.status);
         addToast(response.message as string, "warning");
@@ -58,6 +61,8 @@ const GetMyApplicationModal = () => {
     } catch (error) {
       console.error("지원 내역 조회 에러 발생", error);
       addToast("지원 내역 조회 중 오류가 발생했습니다.", "warning");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -137,7 +142,7 @@ const GetMyApplicationModal = () => {
               style="orange300"
               type="submit"
             >
-              지원 내역 상세 보기
+              {loading ? "로딩 중..." : "지원 내역 상세 보기"}
             </SolidButton>
           </div>
         </form>
