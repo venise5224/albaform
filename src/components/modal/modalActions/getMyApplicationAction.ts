@@ -21,9 +21,6 @@ export const getMyApplicationAction = async (
     };
   }
 
-  console.log("id :", id);
-  console.log("data :", data);
-
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/forms/${id}/my-application/verify`,
     {
@@ -34,8 +31,6 @@ export const getMyApplicationAction = async (
       },
     }
   );
-
-  console.log("지원 내역 상세 :", response);
 
   if (!response.ok) {
     return {

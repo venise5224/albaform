@@ -69,8 +69,7 @@ export const addFormSubmit = async (
       };
     }
 
-    const resData = response.data;
-    const { id } = resData;
+    const { id } = response;
 
     return {
       status: response.status,
