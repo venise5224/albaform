@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useSidebarState } from "@/hooks/useSidebarState";
 import HeaderNavigation from "./HeaderNavigation";
@@ -10,15 +9,11 @@ import HeaderMenu from "./HeaderMenu";
 import LoginButton from "../button/LoginButton";
 
 const Header = () => {
-  const [isLogin, setIsLogin] = useState(false);
   const { isOpen, setIsOpen } = useSidebarState();
   const currentPath = usePathname();
   const isAuthPage =
     currentPath.includes("/signin") || currentPath.includes("/signup");
-
-  useEffect(() => {
-    setIsLogin(Boolean(localStorage.getItem("isLogin")));
-  }, []);
+  const isLogin = localStorage.getItem("isLogin");
 
   const tabletStyle =
     "tablet:h-[60px] tablet:gap-[24px] tablet:px-[72px] tablet:py-[15px] tablet:text-lg";
