@@ -7,7 +7,7 @@ import {
 } from "@/atoms/addFormAtomStore";
 import { useSetAtom } from "jotai";
 import Location from "./stepThree/Location";
-import RecruitmentDate from "./stepThree/RecruitmentDate";
+import RecruitmentDate from "./stepThree/WorkDay";
 import WorkingTime from "./stepThree/WorkingTime";
 import WorkDate from "./stepThree/WorkDate";
 import HourlyWage from "./stepThree/HourlyWage";

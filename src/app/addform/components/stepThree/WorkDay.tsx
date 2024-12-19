@@ -6,7 +6,7 @@ import { useFormContext } from "react-hook-form";
 import { z } from "zod";
 
 // stepThree에서는 포맷없이 임시저장 후 서버전달 직전 포맷 변환
-const RecruitmentDate = () => {
+const WorkDay = () => {
   const {
     setValue,
     formState: { errors },
@@ -28,7 +28,7 @@ const RecruitmentDate = () => {
   return (
     <div className="relative flex flex-col space-y-4">
       <label
-        htmlFor="recruitmentDate"
+        htmlFor="workDay"
         className="text-md font-medium text-black-400 pc:text-xl"
       >
         근무 기간
@@ -45,4 +45,4 @@ const RecruitmentDate = () => {
   );
 };
 
-export default RecruitmentDate;
+export default WorkDay;
