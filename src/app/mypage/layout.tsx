@@ -1,7 +1,6 @@
-import NavMenu from "./components/NavMenu";
-import MyInfoEditContainer from "./components/InfoEditContainer";
 import { Suspense } from "react";
-import TabDropdown from "./components/TabDropdown";
+import MyInfoEditContainer from "./components/InfoEditContainer";
+import NavContainer from "./components/NavContainer";
 
 const MyPageLayout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -12,18 +11,9 @@ const MyPageLayout = ({ children }: { children: React.ReactNode }) => {
         </h2>
         <MyInfoEditContainer />
       </div>
-      <div className="pc:mt-[46px] pc:flex pc:items-center pc:justify-between">
-        <div className="mt-6 flex justify-start pc:mt-0 tablet:mt-[30px]">
-          <Suspense>
-            <NavMenu />
-          </Suspense>
-        </div>
-        <div className="mt-4 flex justify-end pc:mt-0">
-          <Suspense>
-            <TabDropdown />
-          </Suspense>
-        </div>
-      </div>
+      <Suspense>
+        <NavContainer />
+      </Suspense>
       <div className="mt-[30px] pc:mt-10 tablet:mt-[14px]">{children}</div>
     </div>
   );

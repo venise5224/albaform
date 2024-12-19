@@ -5,7 +5,7 @@ import MyCommentList from "./MyCommentList";
 const MyComment = async () => {
   const response = await getMyComments({
     page: 1,
-    pageSize: 9,
+    pageSize: 12,
   });
 
   const myComments: MyComment[] = response.data;

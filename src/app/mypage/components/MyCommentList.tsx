@@ -64,7 +64,7 @@ const MyCommentList = ({
   return (
     <div>
       {myComments?.length > 0 ? (
-        <div className="grid grid-cols-1 gap-4 pc:grid-cols-3 pc:gap-x-[25px] pc:gap-y-[48px]">
+        <div className="grid grid-cols-1 gap-4 pc:grid-cols-3 pc:gap-x-[25px] pc:gap-y-[48px] tablet:grid-cols-2">
           {myComments.map((myComment) => (
             <CommentCard key={myComment.id} info={myComment} />
           ))}
