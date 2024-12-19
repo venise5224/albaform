@@ -1,6 +1,7 @@
 "use client";
 
 import { useSidebarState } from "@/hooks/useSidebarState";
+import { deleteCookie } from "@/lib/cookie";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -46,14 +47,18 @@ const Sidebar = () => {
             </Link>
           </li>
           <li className="flex h-[100px] w-full items-center gap-[16px] px-[16px] py-[24px]">
-            <Image
-              src="/icon/logout-orange.svg"
-              width={36}
-              height={36}
-              alt="로그아웃"
-              className="text-orange-100"
-            />
-            <span className="text-lg text-black-400 pc:text-xl">로그아웃</span>
+            <button onClick={async () => await deleteCookie(true)}>
+              <Image
+                src="/icon/logout-orange.svg"
+                width={36}
+                height={36}
+                alt="로그아웃"
+                className="text-orange-100"
+              />
+              <span className="text-lg text-black-400 pc:text-xl">
+                로그아웃
+              </span>
+            </button>
           </li>
         </ul>
       </nav>
