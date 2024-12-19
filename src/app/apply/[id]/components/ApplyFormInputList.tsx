@@ -7,7 +7,6 @@ import { z } from "zod";
 import { applySchema } from "@/schema/apply/applySchema";
 import { ApplyFormInputListProps } from "@/types/apply";
 import { useState } from "react";
-import LoadingSpinner from "@/components/spinner/LoadingSpinner";
 
 const ApplyFormInputList = ({
   register,
@@ -118,7 +117,11 @@ const ApplyFormInputList = ({
               )}
             >
               <div className="inline-block overflow-hidden text-ellipsis whitespace-nowrap">
-                {resumeName ? resumeName : input.placeholder}
+                {loading
+                  ? "로딩 중..."
+                  : resumeName
+                    ? resumeName
+                    : input.placeholder}
               </div>
               <input
                 type="file"
@@ -173,12 +176,6 @@ const ApplyFormInputList = ({
           )}
         </div>
       ))}
-
-      {loading && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <LoadingSpinner />
-        </div>
-      )}
     </>
   );
 };

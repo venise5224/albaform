@@ -11,7 +11,6 @@ import { applyFormActions } from "../actions/applyFormAction";
 import { uploadResumeAction } from "../actions/uploadResumeAction";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import LoadingSpinner from "@/components/spinner/LoadingSpinner";
 import { useModal } from "@/hooks/useModal";
 import { continueApplyAtom } from "@/atoms/continueApply";
 import { useAtom } from "jotai";
@@ -22,11 +21,14 @@ const ApplyForm = ({ id }: { id: string }) => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [continueApply, setContinueApply] = useAtom(continueApplyAtom);
+  const applyFormData = localStorage.getItem("ApplyFormData");
   const {
     register,
     handleSubmit,
     setValue,
+    getValues,
     watch,
+    reset,
     formState: { errors, isValid, isSubmitting },
   } = useForm<z.infer<typeof applySchema>>({
     resolver: zodResolver(applySchema),
@@ -42,29 +44,23 @@ const ApplyForm = ({ id }: { id: string }) => {
     },
   });
 
-  // useEffect(() => {
-  //   const applyFormData = localStorage.getItem("ApplyFormData");
+  //지원하기 폼 들어왔을 때 임시저장 사용할지 결정하는 로직
+  useEffect(() => {
+    if (applyFormData) {
+      openModal("ContinueApplyFormModal");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  //   if (applyFormData) {
-  //     openModal("PatchAlbaformModal");
-  //   }
+  useEffect(() => {
+    if (continueApply && applyFormData) {
+      const parsedData = JSON.parse(applyFormData);
+      reset(parsedData); // Use reset to populate form data
+      setContinueApply(false);
+    }
 
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
-
-  // useEffect(() => {
-  //   const savedData = localStorage.getItem("ApplyFormData");
-
-  //   if (savedData) {
-  //     if (continueApply) {
-  //       const parsedData = JSON.parse(savedData);
-
-  //       for (const key in parsedData) {
-  //         setValue(key, parsedData[key]);
-  //       }
-  //     }
-  //   }
-  // }, [setValue]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [continueApply]);
 
   //폼 제출 기능
   const onSubmit = async (data: z.infer<typeof applySchema>) => {
@@ -123,9 +119,8 @@ const ApplyForm = ({ id }: { id: string }) => {
 
   //임시 저장 기능 (현 상태 그대로 로컬스토리지에 저장)
   const handleSave = () => {
-    const ApplyFormData = watch();
-
-    localStorage.setItem("ApplyFormData", JSON.stringify(ApplyFormData));
+    const formData = getValues();
+    localStorage.setItem("ApplyFormData", JSON.stringify(formData));
     addToast("임시 저장 완료", "success");
   };
 
@@ -148,14 +143,9 @@ const ApplyForm = ({ id }: { id: string }) => {
           onSave={handleSave}
           isSubmitting={isSubmitting}
           isValid={isValid}
+          loading={loading}
         />
       </form>
-
-      {loading && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <LoadingSpinner />
-        </div>
-      )}
     </>
   );
 };
