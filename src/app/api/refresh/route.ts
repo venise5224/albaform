@@ -1,8 +1,6 @@
-import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (req: NextRequest) => {
-  const cookieStore = await cookies();
   const refreshToken = await req.json();
 
   if (!refreshToken) {
@@ -26,17 +24,17 @@ export const POST = async (req: NextRequest) => {
     }
 
     const { accessToken } = await response.json();
+    const res = NextResponse.json({ accessToken });
 
-    cookieStore.set({
+    res.cookies.set({
       name: "accessToken",
       value: accessToken,
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: true,
       maxAge: 60 * 60,
-      sameSite: "lax",
     });
 
-    return NextResponse.json({ accessToken });
+    return res;
   } catch (error) {
     console.error("새 액세스토큰 발급에서 오류 발생", error);
     return new NextResponse(null, { status: 500 });
