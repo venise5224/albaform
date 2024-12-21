@@ -51,7 +51,7 @@ const StepButton = () => {
     <button
       key={item.value}
       className={cls(
-        "group flex items-center justify-between rounded-2xl bg-background-200 px-8 py-5 transition-all hover:bg-orange-300",
+        "group flex h-20 items-center justify-between rounded-2xl bg-background-200 px-8 py-5 transition-all hover:bg-orange-300",
         currentStep.value === item.value ? "bg-orange-300" : ""
       )}
       onClick={() => handleClickStep(item.value)}
