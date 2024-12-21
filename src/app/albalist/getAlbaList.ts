@@ -25,7 +25,6 @@ export const getAlbaList = async ({
   try {
     const response = await fetch(url.toString(), {
       cache: "force-cache",
-      next: { revalidate: 60 },
     });
 
     if (!response.ok) {
