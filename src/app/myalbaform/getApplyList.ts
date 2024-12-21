@@ -21,7 +21,10 @@ export const getApplyList = async ({
   url.searchParams.append("keyword", keyword || "");
 
   try {
-    const response = await instance(url.toString());
+    const response = await instance(url.toString(), {
+      cache: "force-cache",
+      next: { revalidate: 60 },
+    });
 
     if (response.status !== 200) {
       return {

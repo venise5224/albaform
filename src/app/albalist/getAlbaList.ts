@@ -23,7 +23,10 @@ export const getAlbaList = async ({
     url.searchParams.append("isRecruiting", String(isRecruiting));
 
   try {
-    const response = await fetch(url.toString());
+    const response = await fetch(url.toString(), {
+      cache: "force-cache",
+      next: { revalidate: 60 },
+    });
 
     if (!response.ok) {
       return {

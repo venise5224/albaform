@@ -29,7 +29,10 @@ export const getAlbaFormList = async ({
     url.searchParams.append("isRecruiting", String(isRecruiting));
 
   try {
-    const response = await instance(url.toString());
+    const response = await instance(url.toString(), {
+      cache: "force-cache",
+      next: { revalidate: 60 },
+    });
 
     if (response.status !== 200) {
       return {
