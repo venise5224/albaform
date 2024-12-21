@@ -42,6 +42,8 @@ const RequirementPicker = ({
     const key = matchLabelToStepTwoData(label);
     const initialVal = initialValue[key];
 
+    if (!initialVal) return "";
+
     if (key === "numberOfPositions" && initialVal === 0) {
       return "인원미정";
     }

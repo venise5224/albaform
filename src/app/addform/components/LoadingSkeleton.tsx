@@ -6,7 +6,7 @@ const LoadingSkeleton = ({
   isImage?: boolean;
 }) => {
   return (
-    <div className="m-auto mt-6 flex animate-pulse flex-col space-y-8 pc:m-0 pc:ml-4 pc:mt-0 pc:w-[640px]">
+    <div className="m-auto mt-10 flex animate-pulse flex-col space-y-10 pc:m-0 pc:ml-4 pc:mt-12 pc:w-[640px] pc:space-y-12">
       {Array(count)
         .fill(null)
         .map((_, i) => (
@@ -16,7 +16,7 @@ const LoadingSkeleton = ({
           />
         ))}
       {isImage && (
-        <div className="size-[116px] rounded-lg bg-background-200 pc:size-20" />
+        <div className="size-20 rounded-lg bg-background-200 pc:size-[116px]" />
       )}
     </div>
   );
