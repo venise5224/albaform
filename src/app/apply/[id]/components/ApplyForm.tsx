@@ -12,16 +12,16 @@ import { uploadResumeAction } from "../actions/uploadResumeAction";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useModal } from "@/hooks/useModal";
-import { continueApplyAtom } from "@/atoms/continueApply";
 import { useAtom } from "jotai";
+import { newWriteAtom } from "@/atoms/newWrite";
 
 const ApplyForm = ({ id }: { id: string }) => {
   const { addToast } = useToast();
   const { openModal } = useModal();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [continueApply, setContinueApply] = useAtom(continueApplyAtom);
-  const applyFormData = localStorage.getItem("ApplyFormData");
+  const applyFormData = localStorage.getItem("applyFormData");
+  const [newWrite, setNewWrite] = useAtom(newWriteAtom);
   const {
     register,
     handleSubmit,
@@ -47,20 +47,24 @@ const ApplyForm = ({ id }: { id: string }) => {
   //지원하기 폼 들어왔을 때 임시저장 사용할지 결정하는 로직
   useEffect(() => {
     if (applyFormData) {
-      openModal("ContinueApplyFormModal");
+      openModal("PatchAlbaformModal");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    if (continueApply && applyFormData) {
+    if (!newWrite && applyFormData) {
       const parsedData = JSON.parse(applyFormData);
-      reset(parsedData); // Use reset to populate form data
-      setContinueApply(false);
+      reset(parsedData);
+    }
+
+    if (newWrite) {
+      reset({});
+      setNewWrite(false);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [continueApply]);
+  }, [newWrite]);
 
   //폼 제출 기능
   const onSubmit = async (data: z.infer<typeof applySchema>) => {
@@ -120,7 +124,7 @@ const ApplyForm = ({ id }: { id: string }) => {
   //임시 저장 기능 (현 상태 그대로 로컬스토리지에 저장)
   const handleSave = () => {
     const formData = getValues();
-    localStorage.setItem("ApplyFormData", JSON.stringify(formData));
+    localStorage.setItem("applyFormData", JSON.stringify(formData));
     addToast("임시 저장 완료", "success");
   };
 

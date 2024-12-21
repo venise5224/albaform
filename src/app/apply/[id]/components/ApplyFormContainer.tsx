@@ -8,8 +8,9 @@ const ApplyFormContainer = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
 
   const handleClickBack = () => {
-    alert("작성을 취소하시겠습니까?");
-    router.back();
+    if (confirm("작성을 취소하시겠습니까?")) {
+      router.back();
+    }
   };
 
   return (
