@@ -4,7 +4,7 @@ import NavContainer from "./components/NavContainer";
 
 const MyPageLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="mx-auto mt-4 box-content max-w-[327px] px-6 pb-[80px] pc:max-w-[1480px] tablet:max-w-[600px]">
+    <div className="mx-auto mt-4 box-content max-w-[327px] px-6 pb-[80px] pc:max-w-[1480px] tablet:max-w-[680px]">
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold text-black-500 pc:text-3xl">
           마이페이지
