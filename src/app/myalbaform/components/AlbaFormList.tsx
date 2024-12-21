@@ -3,8 +3,6 @@
 import AlbarPreview from "@/components/card/AlbarPreview";
 import { AlbarformData } from "@/types/alba";
 import EmptyState from "./EmptyState";
-import BlurWrapper from "./BlurWrapper";
-import Link from "next/link";
 import FloatingButton from "@/components/button/FloatingButton";
 import plusIcon from "@/../public/icon/plus-md.svg";
 import useInfinityScroll from "@/hooks/useInfinityScroll";
@@ -12,7 +10,6 @@ import SkeletonCardList from "./SkeletonCardList";
 import { useCallback, useState } from "react";
 import { getAlbaFormList } from "../getAlbaFormList";
 import { AlbaFormListParams } from "../page";
-import { useRouter } from "next/navigation";
 
 interface Props {
   list: AlbarformData[];
@@ -29,11 +26,6 @@ const AlbaFormList = ({ list, nextCursor, role, params }: Props) => {
   const keyword = params?.keyword ?? "";
   const isPublic = params?.isPublic ?? undefined;
   const isRecruiting = params?.isRecruiting ?? undefined;
-  const router = useRouter();
-
-  const goToAddForm = () => {
-    router.push("/addform");
-  };
 
   const fetchMoreData = useCallback(async () => {
     if (!cursor || formList.length === 0) return;
@@ -74,17 +66,7 @@ const AlbaFormList = ({ list, nextCursor, role, params }: Props) => {
           <ul className="flex flex-col gap-y-8 pc:flex-row pc:flex-wrap pc:gap-x-6 pc:gap-y-16 tablet:flex-row tablet:flex-wrap tablet:gap-x-4 tablet:gap-y-12">
             {formList.map((item: AlbarformData) => (
               <li key={item.id} className="pc:w-[calc(33.333%_-_16px)]">
-                {item.isPublic ? (
-                  <Link href={`/alba/${item.id}`} className="block">
-                    <BlurWrapper isPublic={item.isPublic}>
-                      <AlbarPreview info={item} role={role} />
-                    </BlurWrapper>
-                  </Link>
-                ) : (
-                  <BlurWrapper isPublic={item.isPublic}>
-                    <AlbarPreview info={item} role={role} />
-                  </BlurWrapper>
-                )}
+                <AlbarPreview info={item} role={role} />
               </li>
             ))}
           </ul>
@@ -94,7 +76,7 @@ const AlbaFormList = ({ list, nextCursor, role, params }: Props) => {
       </section>
       <FloatingButton
         icon={plusIcon}
-        onClick={goToAddForm}
+        href="/addform"
         className="pc:size-large fixed bottom-20 right-10 z-10"
       >
         폼 만들기
