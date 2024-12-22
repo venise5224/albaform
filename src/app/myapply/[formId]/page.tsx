@@ -5,6 +5,7 @@ import MyApplication from "@/app/alba/components/MyApplication";
 import fetchAlbarformDetailData from "@/app/alba/[formId]/fetchAlbarformDetailData";
 import Carousel from "@/components/Carousel/Carousel";
 import ApplicationStatus from "@/components/card/ApplicationStatus";
+import { cookies } from "next/headers";
 import { AlbaformDetailData, MyApplicationData } from "@/types/alba";
 
 export const metadata = {
@@ -19,13 +20,14 @@ interface MyApplyPageProps {
 const MyApplyPage = async ({ params }: MyApplyPageProps) => {
   let albarformData: AlbaformDetailData;
   let myApplicationData: MyApplicationData;
-
+  const cookie = await cookies();
+  const userId = cookie.get("id")?.value;
   const { formId } = await params;
 
   try {
     [albarformData, myApplicationData] = await Promise.all([
       fetchAlbarformDetailData(formId),
-      fetchApplicationData(formId),
+      fetchApplicationData(formId, userId),
     ]);
   } catch (error) {
     console.error(error);
