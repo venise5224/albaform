@@ -21,13 +21,13 @@ const MyApplyPage = async ({ params }: MyApplyPageProps) => {
   let albarformData: AlbaformDetailData;
   let myApplicationData: MyApplicationData;
   const cookie = await cookies();
-  const userId = cookie.get("id")?.value;
+  const role = cookie.get("role")?.value;
   const { formId } = await params;
 
   try {
     [albarformData, myApplicationData] = await Promise.all([
       fetchAlbarformDetailData(formId),
-      fetchApplicationData(formId, userId),
+      fetchApplicationData(formId, role),
     ]);
   } catch (error) {
     console.error(error);
@@ -57,6 +57,7 @@ const MyApplyPage = async ({ params }: MyApplyPageProps) => {
             recruitmentEndDate={albarformData.recruitmentEndDate}
             createdAt={myApplicationData.createdAt}
             status={myApplicationData.status}
+            role={role as string}
           />
         </section>
         <section className="mt-8 pc:col-start-2 pc:row-start-2 pc:-mt-48">

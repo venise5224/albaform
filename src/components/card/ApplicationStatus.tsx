@@ -1,21 +1,26 @@
+import Image from "next/image";
 import getCurrentTime from "@/utils/getCurrentTime";
-import { getDday } from "@/utils/getDday";
 import translateStatus from "@/utils/translateStatus";
+import { getDday } from "@/utils/getDday";
+import { useModal } from "@/hooks/useModal";
 
 type ApplicationStatusProps = {
   createdAt: string;
   recruitmentEndDate: string;
   status: "REJECTED" | "INTERVIEW_PENDING" | "INTERVIEW_COMPLETED" | "HIRED";
+  role: string;
 };
 
 const ApplicationStatus = ({
   createdAt,
   recruitmentEndDate,
   status,
+  role,
 }: ApplicationStatusProps) => {
-  const formattedCreatedTime = getCurrentTime(createdAt);
   const Dday = getDday(recruitmentEndDate);
+  const formattedCreatedTime = getCurrentTime(createdAt);
   const translatedStatus = translateStatus(status);
+  const { openModal } = useModal();
 
   return (
     <div className="w-full pc:rounded-lg pc:border pc:border-line-100 pc:bg-background-100 pc:p-6">
@@ -27,6 +32,11 @@ const ApplicationStatus = ({
       </div>
       <div className="flex justify-between border-b border-b-line-100 py-4 text-md text-black-400 pc:border-none">
         <span className="text-black-100">진행 상태</span>
+        {role === "OWNER" && (
+          <button onClick={() => openModal("SelectProgressModal")}>
+            <Image src="/icon/write-black.svg" width={36} height={36} alt="" />
+          </button>
+        )}
         <span>{translatedStatus}</span>
       </div>
     </div>
