@@ -18,7 +18,7 @@ const ApplicationStatus = ({
   const translatedStatus = translateStatus(status);
 
   return (
-    <div className="max-w-[375px] pc:max-w-[640px] pc:rounded-lg pc:border pc:border-line-100 pc:bg-background-100 pc:p-6">
+    <div className="w-full pc:rounded-lg pc:border pc:border-line-100 pc:bg-background-100 pc:p-6">
       <div className="flex justify-between border-b border-b-line-100 py-4 text-md text-black-400">
         <span className="text-black-100">
           지원일시 <span className="ml-2 text-orange-300">{Dday}</span>
