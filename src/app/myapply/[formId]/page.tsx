@@ -1,10 +1,10 @@
 import fetchApplicationData from "./fetchApplicationData";
 import Title from "@/app/alba/components/Title";
 import Content from "@/app/alba/components/Content";
-import ApplicantInfo from "@/app/alba/components/ApplicantInfo";
 import MyApplication from "@/app/alba/components/MyApplication";
 import fetchAlbarformDetailData from "@/app/alba/[formId]/fetchAlbarformDetailData";
 import Carousel from "@/components/Carousel/Carousel";
+import ApplicationStatus from "@/components/card/ApplicationStatus";
 import { AlbaformDetailData, MyApplicationData } from "@/types/alba";
 
 export const metadata = {
@@ -19,12 +19,13 @@ interface MyApplyPageProps {
 const MyApplyPage = async ({ params }: MyApplyPageProps) => {
   let albarformData: AlbaformDetailData;
   let myApplicationData: MyApplicationData;
-  const { formId, applicationId } = await params;
+
+  const { formId } = await params;
 
   try {
     [albarformData, myApplicationData] = await Promise.all([
       fetchAlbarformDetailData(formId),
-      fetchApplicationData(applicationId),
+      fetchApplicationData(formId),
     ]);
   } catch (error) {
     console.error(error);
@@ -42,15 +43,21 @@ const MyApplyPage = async ({ params }: MyApplyPageProps) => {
       {albarformData.imageUrls && (
         <Carousel imageUrls={albarformData.imageUrls} />
       )}
-      <div className="flex flex-col gap-4">
-        <section>
-          <Title info={albarformData} />;
+      <div className="flex flex-col gap-6 p-10 pc:grid pc:grid-cols-2 pc:gap-x-[160px] pc:gap-y-[120px] pc:px-[200px]">
+        <section className="pc:col-start-1">
+          <Title info={albarformData} />
         </section>
-        <section>
+        <section className="pc:col-start-1">
           <Content description={albarformData.description} />
         </section>
-        <section>{/* <ApplicantInfo /> */}</section>
-        <section>
+        <section className="pc:col-start-2 pc:row-start-1">
+          <ApplicationStatus
+            recruitmentEndDate={albarformData.recruitmentEndDate}
+            createdAt={myApplicationData.createdAt}
+            status={myApplicationData.status}
+          />
+        </section>
+        <section className="-mb-8 pc:col-start-2 pc:row-start-2">
           <MyApplication info={myApplicationData} />
         </section>
       </div>

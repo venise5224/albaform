@@ -8,17 +8,20 @@ import xCircleIcon from "@/../public/icon/Xcircle-md.svg";
 import xCircleLargeIcon from "@/../public/icon/Xcircle-lg.svg";
 import ErrorText from "../errorText/ErrorText";
 import checkImageSize from "@/utils/checkImageSize";
+import renameIfKorean from "@/utils/renameIfKorean";
 
 interface ImageInputProps {
   size?: "small" | "medium" | "large";
   limit?: number;
   onImageChange: (files: File[]) => void;
   initialImage?: File[];
+  sizeCheck?: boolean;
 }
 
 const ImageInput = ({
   size = "small",
   limit = 1,
+  sizeCheck = false,
   onImageChange,
   initialImage,
 }: ImageInputProps) => {
@@ -76,16 +79,24 @@ const ImageInput = ({
         }
 
         // 이미지 크기 확인
-        const imageCheck = await checkImageSize(file);
-        if (!imageCheck) {
-          isError = true;
-          setError("이미지 크기는 최소 1560 x 560이어야 합니다.");
-          continue;
+        if (sizeCheck) {
+          const imageCheck = await checkImageSize(file);
+          if (!imageCheck) {
+            isError = true;
+            setError("이미지 크기는 최소 1560 x 560이어야 합니다.");
+            continue;
+          }
         }
 
-        const imageUrl = URL.createObjectURL(file);
+        // 한글 파일 이름을 영어로 변환
+        const newFileName = renameIfKorean(file.name);
+        const renamedFile = new File([file], newFileName, {
+          type: file.type,
+        });
+
+        const imageUrl = URL.createObjectURL(renamedFile);
         newImages.push(imageUrl);
-        updatedFiles.push(file);
+        updatedFiles.push(renamedFile);
       }
 
       if (isError) {
@@ -98,8 +109,7 @@ const ImageInput = ({
         setError(null);
       }
 
-      const updatedImages = [...selectedImages, ...newImages];
-      setSelectedImages(updatedImages);
+      setSelectedImages([...selectedImages, ...newImages]);
       setNewFiles(updatedFiles);
 
       onImageChange(updatedFiles); // 부모 컴포넌트로 파일 배열 전달
