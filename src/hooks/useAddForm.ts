@@ -51,6 +51,12 @@ export const useAddForm = () => {
     modalRef.current = openModal;
   }, [openModal]);
 
+  // 모달에서 '새로 쓰기' 버튼 클릭 시 전체 임시저장 데이터 초기화
+  const resetAllTempData = useCallback(() => {
+    methods.reset();
+    showModal.current = true;
+  }, [methods]);
+
   const loadAllTempData = useCallback(() => {
     if (showModal.current) {
       modalRef.current("NewWriteformModal");
@@ -79,7 +85,7 @@ export const useAddForm = () => {
     });
   }, [methods]);
 
-  return { methods, loadAllTempData };
+  return { methods, loadAllTempData, resetAllTempData };
 };
 
 // 등록 버튼 활성화 여부, 등록 중 여부

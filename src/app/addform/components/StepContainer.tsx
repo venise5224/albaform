@@ -4,7 +4,7 @@ import { addFormSchema } from "@/schema/addForm/addFormSchema";
 import { z } from "zod";
 import { FormProvider } from "react-hook-form";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useCallback, useRef } from "react";
+import { useEffect, useCallback } from "react";
 import {
   currentImageListAtom,
   addFromSubmitTriggerAtom,
@@ -21,7 +21,6 @@ import {
 } from "@/hooks/useAddForm";
 import StepContent from "./StepContent";
 import { newWriteAtom } from "@/atoms/newWrite";
-import { useModal } from "@/hooks/useModal";
 
 interface StepContainerProps {
   albaForm?:
@@ -39,13 +38,11 @@ const StepContainer = ({ albaForm, formId }: StepContainerProps) => {
   const [currentImageList, setCurrentImageList] = useAtom(currentImageListAtom);
   const [submitTrigger, setSubmitTrigger] = useAtom(addFromSubmitTriggerAtom);
   const { addToast } = useToast();
-  const { openModal } = useModal();
   const isNewWrite = useAtomValue(newWriteAtom);
-  const { methods, loadAllTempData } = useAddForm();
+  const { methods, loadAllTempData, resetAllTempData } = useAddForm();
   const router = useRouter();
   const isEdit = albaForm && !("status" in albaForm);
   const { initializeAddForm } = useAddFormInit({ albaForm });
-  const showModal = useRef(true);
 
   // 수정하기 마운트 시 초기화
   useEffect(() => {
@@ -58,8 +55,11 @@ const StepContainer = ({ albaForm, formId }: StepContainerProps) => {
   useEffect(() => {
     if (!isNewWrite) {
       loadAllTempData();
+    } else {
+      resetAllTempData();
+      setCurrentImageList([]);
     }
-  }, [loadAllTempData, isNewWrite]);
+  }, [loadAllTempData, isNewWrite, resetAllTempData, setCurrentImageList]);
 
   useValidateForm(methods);
 
