@@ -1,6 +1,8 @@
+import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (req: NextRequest) => {
+  const cookieStore = await cookies();
   const refreshToken = await req.json();
 
   if (!refreshToken) {
@@ -26,13 +28,13 @@ export const POST = async (req: NextRequest) => {
     const { accessToken } = await response.json();
     const res = NextResponse.json({ accessToken });
 
-    res.cookies.set({
-      name: "accessToken",
-      value: accessToken,
-      httpOnly: true,
-      secure: true,
-      maxAge: 60 * 60,
-    });
+    // res.cookies.set("accessToken", accessToken, {
+    //   httpOnly: true,
+    //   secure: process.env.NODE_ENV === "production",
+    //   maxAge: 60 * 60,
+    //   sameSite: "lax",
+    //   path: "/",
+    // });
 
     return res;
   } catch (error) {
