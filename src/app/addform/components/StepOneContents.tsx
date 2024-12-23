@@ -25,7 +25,7 @@ const StepOneContents = () => {
   const startDate = watch("recruitmentStartDate");
   const endDate = watch("recruitmentEndDate");
   let temporaryDateRange: [string, string] = [startDate || "", endDate || ""];
-  console.log(temporaryDateRange);
+
   const [loading, setLoading] = useState(true);
   const { loadFromLocalStorage } = useStepOneTemporaryData({
     currentImageList,

@@ -9,7 +9,7 @@ import { z } from "zod";
 export const useAddFormStepOne = () => {
   const { watch, setValue, getValues } =
     useFormContext<z.infer<typeof addFormSchema>>();
-  console.log(watch());
+
   const fields = useMemo(
     () =>
       [

@@ -16,7 +16,6 @@ import { useModal } from "./useModal";
 
 // addform 전체 관리
 export const useAddForm = () => {
-  const { openModal } = useModal();
   const methods = useForm<z.infer<typeof addFormSchema>>({
     resolver: zodResolver(addFormSchema),
     mode: "onSubmit",
@@ -43,7 +42,21 @@ export const useAddForm = () => {
     },
   });
 
+  // 단계별 페이지에서 반복하여 모달이 뜨는 것을 방지하기 위한 코드 포함
+  const { openModal } = useModal();
+  const showModal = useRef(true);
+  const modalRef = useRef(openModal);
+
+  useEffect(() => {
+    modalRef.current = openModal;
+  }, [openModal]);
+
   const loadAllTempData = useCallback(() => {
+    if (showModal.current) {
+      modalRef.current("NewWriteformModal");
+      showModal.current = false;
+    }
+
     const TempDataArr = ["stepOne", "stepTwo", "stepThree"];
 
     TempDataArr.forEach((step) => {

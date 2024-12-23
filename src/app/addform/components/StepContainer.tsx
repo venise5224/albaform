@@ -4,12 +4,12 @@ import { addFormSchema } from "@/schema/addForm/addFormSchema";
 import { z } from "zod";
 import { FormProvider } from "react-hook-form";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useRef } from "react";
 import {
   currentImageListAtom,
   addFromSubmitTriggerAtom,
 } from "@/atoms/addFormAtomStore";
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { handleDateRangeFormat } from "@/utils/formatAddFormDate";
 import { addFormImgUpload } from "../actions/addFormImgUpload";
 import { useToast } from "@/hooks/useToast";
@@ -20,6 +20,8 @@ import {
   useValidateForm,
 } from "@/hooks/useAddForm";
 import StepContent from "./StepContent";
+import { newWriteAtom } from "@/atoms/newWrite";
+import { useModal } from "@/hooks/useModal";
 
 interface StepContainerProps {
   albaForm?:
@@ -37,10 +39,13 @@ const StepContainer = ({ albaForm, formId }: StepContainerProps) => {
   const [currentImageList, setCurrentImageList] = useAtom(currentImageListAtom);
   const [submitTrigger, setSubmitTrigger] = useAtom(addFromSubmitTriggerAtom);
   const { addToast } = useToast();
+  const { openModal } = useModal();
+  const isNewWrite = useAtomValue(newWriteAtom);
   const { methods, loadAllTempData } = useAddForm();
   const router = useRouter();
   const isEdit = albaForm && !("status" in albaForm);
   const { initializeAddForm } = useAddFormInit({ albaForm });
+  const showModal = useRef(true);
 
   // 수정하기 마운트 시 초기화
   useEffect(() => {
@@ -51,8 +56,10 @@ const StepContainer = ({ albaForm, formId }: StepContainerProps) => {
 
   // 마운트 시 전체 임시저장 데이터 가져오기
   useEffect(() => {
-    loadAllTempData();
-  }, [loadAllTempData]);
+    if (!isNewWrite) {
+      loadAllTempData();
+    }
+  }, [loadAllTempData, isNewWrite]);
 
   useValidateForm(methods);
 
