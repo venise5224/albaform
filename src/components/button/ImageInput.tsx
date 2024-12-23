@@ -8,6 +8,7 @@ import xCircleIcon from "@/../public/icon/Xcircle-md.svg";
 import xCircleLargeIcon from "@/../public/icon/Xcircle-lg.svg";
 import ErrorText from "../errorText/ErrorText";
 import checkImageSize from "@/utils/checkImageSize";
+import renameIfKorean from "@/utils/renameIfKorean";
 
 interface ImageInputProps {
   size?: "small" | "medium" | "large";
@@ -87,9 +88,15 @@ const ImageInput = ({
           }
         }
 
-        const imageUrl = URL.createObjectURL(file);
+        // 한글 파일 이름을 영어로 변환
+        const newFileName = renameIfKorean(file.name);
+        const renamedFile = new File([file], newFileName, {
+          type: file.type,
+        });
+
+        const imageUrl = URL.createObjectURL(renamedFile);
         newImages.push(imageUrl);
-        updatedFiles.push(file);
+        updatedFiles.push(renamedFile);
       }
 
       if (isError) {
@@ -102,8 +109,7 @@ const ImageInput = ({
         setError(null);
       }
 
-      const updatedImages = [...selectedImages, ...newImages];
-      setSelectedImages(updatedImages);
+      setSelectedImages([...selectedImages, ...newImages]);
       setNewFiles(updatedFiles);
 
       onImageChange(updatedFiles); // 부모 컴포넌트로 파일 배열 전달
