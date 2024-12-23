@@ -22,14 +22,10 @@ const StepOneContents = () => {
   const [currentImageList, setCurrentImageList] = useAtom(currentImageListAtom);
   const setTemporaryDataByStep = useSetAtom(temporaryDataByStepAtom);
   const setStepOneActive = useSetAtom(stepActiveAtomFamily("stepOne"));
-  const [temporaryDateRange, setTemporaryDateRange] = useState<
-    [string, string]
-  >(() => {
-    const startDate = watch("recruitmentStartDate");
-    const endDate = watch("recruitmentEndDate");
-    return [startDate || "", endDate || ""];
-  });
-
+  const startDate = watch("recruitmentStartDate");
+  const endDate = watch("recruitmentEndDate");
+  let temporaryDateRange: [string, string] = [startDate || "", endDate || ""];
+  console.log(temporaryDateRange);
   const [loading, setLoading] = useState(true);
   const { loadFromLocalStorage } = useStepOneTemporaryData({
     currentImageList,
@@ -68,11 +64,6 @@ const StepOneContents = () => {
         ).then((files) => {
           setCurrentImageList(files);
         });
-
-        setTemporaryDateRange([
-          localStorageData.recruitmentStartDate,
-          localStorageData.recruitmentEndDate,
-        ]);
       }
       setLoading(false);
     };

@@ -12,9 +12,11 @@ import {
 import { useToast } from "./useToast";
 import { formatDate } from "@/utils/formatDate";
 import { base64ToFile } from "@/utils/imageFileConvert";
+import { useModal } from "./useModal";
 
 // addform 전체 관리
 export const useAddForm = () => {
+  const { openModal } = useModal();
   const methods = useForm<z.infer<typeof addFormSchema>>({
     resolver: zodResolver(addFormSchema),
     mode: "onSubmit",
