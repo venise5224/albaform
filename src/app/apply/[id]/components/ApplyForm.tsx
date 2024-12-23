@@ -15,6 +15,16 @@ import { useModal } from "@/hooks/useModal";
 import { useAtom } from "jotai";
 import { newWriteAtom } from "@/atoms/newWrite";
 
+const defaultValues = {
+  name: "",
+  phoneNumber: "",
+  experienceMonths: "",
+  resumeName: "",
+  resumeId: "",
+  introduction: "",
+  password: "",
+};
+
 const ApplyForm = ({ id }: { id: string }) => {
   const { addToast } = useToast();
   const { openModal } = useModal();
@@ -33,15 +43,7 @@ const ApplyForm = ({ id }: { id: string }) => {
   } = useForm<z.infer<typeof applySchema>>({
     resolver: zodResolver(applySchema),
     mode: "onChange",
-    defaultValues: {
-      name: "",
-      phoneNumber: "",
-      experienceMonths: "",
-      resumeName: "",
-      resumeId: "",
-      introduction: "",
-      password: "",
-    },
+    defaultValues,
   });
 
   //지원하기 폼 들어왔을 때 임시저장 사용할지 결정하는 로직
@@ -58,8 +60,8 @@ const ApplyForm = ({ id }: { id: string }) => {
       reset(parsedData);
     }
 
-    if (newWrite) {
-      reset({});
+    if (newWrite && !applyFormData) {
+      reset(defaultValues);
       setNewWrite(false);
     }
 
