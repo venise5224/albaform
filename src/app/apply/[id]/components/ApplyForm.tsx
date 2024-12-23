@@ -49,7 +49,7 @@ const ApplyForm = ({ id }: { id: string }) => {
   //지원하기 폼 들어왔을 때 임시저장 사용할지 결정하는 로직
   useEffect(() => {
     if (applyFormData) {
-      openModal("PatchAlbaformModal");
+      openModal("NewWriteformModal");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

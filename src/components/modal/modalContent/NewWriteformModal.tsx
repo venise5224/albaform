@@ -9,7 +9,7 @@ import { useToast } from "@/hooks/useToast";
 import { useSetAtom } from "jotai";
 import { newWriteAtom } from "@/atoms/newWrite";
 
-const PatchAlbaformModal = () => {
+const NewWriteformModal = () => {
   const { closeModal } = useModal();
   const { addToast } = useToast();
   const pathname = usePathname();
@@ -70,4 +70,4 @@ const PatchAlbaformModal = () => {
   );
 };
 
-export default PatchAlbaformModal;
+export default NewWriteformModal;
