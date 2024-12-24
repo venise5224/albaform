@@ -30,7 +30,7 @@ const Header = () => {
   return (
     <>
       <header
-        className={`flex h-[54px] w-full items-center justify-between border-b-[1px] border-b-gray-100 px-[24px] py-[12px] text-md ${tabletStyle} ${pcStyle} `}
+        className={`flex h-[54px] w-full items-center justify-between border-b-[1px] border-b-gray-100 px-[24px] py-[12px] text-xs ${tabletStyle} ${pcStyle}`}
       >
         <Logo />
         <HeaderNavigation isAuthPage={isAuthPage} />
