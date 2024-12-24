@@ -29,10 +29,8 @@ const StepOneContents = () => {
   const [loading, setLoading] = useState(true);
   const { loadFromLocalStorage } = useStepOneTemporaryData({
     currentImageList,
-    setCurrentImageList,
     temporaryDateRange,
     setTemporaryDataByStep,
-    fields,
   });
 
   // 1단계 '작성중' 태그 여부

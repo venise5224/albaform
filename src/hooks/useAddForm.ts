@@ -58,12 +58,14 @@ export const useAddForm = () => {
   }, [methods]);
 
   const loadAllTempData = useCallback(() => {
-    if (showModal.current) {
+    const TempDataArr = ["stepOne", "stepTwo", "stepThree"];
+
+    const hasTempData = TempDataArr.some((step) => localStorage.getItem(step));
+
+    if (hasTempData && showModal.current) {
       modalRef.current("NewWriteformModal");
       showModal.current = false;
     }
-
-    const TempDataArr = ["stepOne", "stepTwo", "stepThree"];
 
     TempDataArr.forEach((step) => {
       const localStorageData = localStorage.getItem(step);
