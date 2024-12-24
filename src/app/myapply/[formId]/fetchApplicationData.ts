@@ -1,13 +1,8 @@
 import instance from "@/lib/instance";
 
-const fetchApplicationData = async (
-  formId: string,
-  role: string | undefined
-) => {
+const fetchApplicationData = async (formId: string) => {
   const response = await instance(
-    role
-      ? `${process.env.NEXT_PUBLIC_API_URL}/forms/${formId}/my-application`
-      : `${process.env.NEXT_PUBLIC_API_URL}/forms/${formId}/my-application/verify`, // role이 undefined이면 비회원이라는 뜻
+    `${process.env.NEXT_PUBLIC_API_URL}/forms/${formId}/my-application`,
     {
       method: "GET",
       headers: { "content-type": "application/json" },

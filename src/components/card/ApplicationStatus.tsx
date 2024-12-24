@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import getCurrentTime from "@/utils/getCurrentTime";
 import translateStatus from "@/utils/translateStatus";
