@@ -38,8 +38,9 @@ const ApplicantStatsList = () => {
       setIsLoading(true);
       try {
         const res = await instance(
-          `${process.env.NEXT_PUBLIC_API_URL}/forms/${formId}/applications?limit=10&orderExperience=${orderExperience}&orderByStatus=${orderByStatus}`
+          `${process.env.NEXT_PUBLIC_API_URL}/forms/${formId}/applications?limit=10&orderByExperience=${orderExperience}&orderByStatus=${orderByStatus}`
         );
+        console.log("받아온 지원자 리스트", res.data);
         setList(res.data);
         setIsLoading(false);
       } catch (error) {
@@ -86,7 +87,11 @@ const ApplicantStatsList = () => {
                         onClick={() => toggleSortButton("experience")}
                       >
                         <Image
-                          src="/icon/sort-ascending-outline-lg.svg"
+                          src={
+                            orderExperience === "asc"
+                              ? "/icon/sort-ascending-outline-lg.svg"
+                              : "/icon/sort-descending-outline-lg.svg"
+                          }
                           fill
                           alt="정렬"
                         />
@@ -101,7 +106,11 @@ const ApplicantStatsList = () => {
                         onClick={() => toggleSortButton("status")}
                       >
                         <Image
-                          src="/icon/sort-ascending-outline-lg.svg"
+                          src={
+                            orderByStatus === "asc"
+                              ? "/icon/sort-ascending-outline-lg.svg"
+                              : "/icon/sort-descending-outline-lg.svg"
+                          }
                           fill
                           alt="정렬"
                         />
@@ -110,6 +119,7 @@ const ApplicantStatsList = () => {
                   </th>
                 </tr>
               </thead>
+
               <tbody>
                 {list.length > 0 &&
                   list.map((el) => (
