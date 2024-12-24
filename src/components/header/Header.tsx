@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
-import { useSidebarState } from "@/hooks/useSidebarState";
 import HeaderNavigation from "./HeaderNavigation";
 import AuthPageNavigation from "./AuthPageNavigation";
 import Logo from "./Logo";
 import HeaderMenu from "./HeaderMenu";
 import LoginButton from "../button/LoginButton";
+import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import { useSidebarState } from "@/hooks/useSidebarState";
 
 const Header = () => {
   const [isLogin, setIsLogin] = useState(false);
@@ -17,7 +17,9 @@ const Header = () => {
     currentPath.includes("/signin") || currentPath.includes("/signup");
 
   useEffect(() => {
-    setIsLogin(Boolean(localStorage.getItem("isLogin")));
+    // 브라우저 환경에서만 실행
+    const loginStatus = localStorage.getItem("isLogin");
+    setIsLogin(!!loginStatus);
   }, []);
 
   const tabletStyle =

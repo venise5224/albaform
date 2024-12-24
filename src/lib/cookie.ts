@@ -46,9 +46,11 @@ export const createCookie = async (data: CookieData) => {
   cookieStore.set({
     name: data.name,
     value: data.value,
-    secure: true,
+    secure: process.env.NODE_ENV === "production",
     httpOnly: true,
+    sameSite: "lax",
     maxAge: data.maxAge,
+    path: "/",
   });
 };
 
@@ -57,7 +59,7 @@ export const deleteCookie = async (isLogout: boolean) => {
   const cookieStore = await cookies();
 
   if (isLogout) {
-    const cookieArr = ["accessToken", "refreshToken", "role"];
+    const cookieArr = ["accessToken", "refreshToken", "role", "id"];
     await Promise.all(cookieArr.map((cookie) => cookieStore.delete(cookie)));
   }
 };

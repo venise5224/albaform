@@ -1,7 +1,6 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { deleteCookie } from "./cookie";
 
 // 토큰이 필요한 요청을 할 때 fetch 대신 instance를 사용합니다.
 const instance = async (url: string, options: RequestInit = {}) => {
@@ -20,38 +19,11 @@ const instance = async (url: string, options: RequestInit = {}) => {
   if (response.status === 401) {
     const refreshToken = cookieStore.get("refreshToken")?.value;
 
-    if (refreshToken) {
-      const refreshResponse = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`,
-        {
-          method: "POST",
-          body: JSON.stringify({ refreshToken }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (refreshResponse.ok) {
-        const tokenData = await refreshResponse.json();
-        const { accessToken: newAccessToken } = tokenData;
-
-        cookieStore.set("accessToken", newAccessToken);
-
-        options.headers = {
-          ...options.headers,
-          Authorization: `Bearer ${newAccessToken}`,
-        };
-
-        response = await fetch(url, { ...options });
-      } else {
-        console.error("토큰갱신 실패");
-        await deleteCookie(true);
-        return {
-          status: 401,
-          error: "장시간 미활동으로 인해 로그인이 해제되었습니다.",
-        };
-      }
+    if (!refreshToken) {
+      return {
+        status: response.status,
+        error: "장시간 사용하지 않아 로그인이 해제되었습니다.",
+      };
     }
   }
 

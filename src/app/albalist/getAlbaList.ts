@@ -1,3 +1,5 @@
+"use server";
+
 interface SearchParamsData {
   orderBy?: string;
   limit: number;
@@ -23,7 +25,9 @@ export const getAlbaList = async ({
     url.searchParams.append("isRecruiting", String(isRecruiting));
 
   try {
-    const response = await fetch(url.toString());
+    const response = await fetch(url.toString(), {
+      cache: "no-store",
+    });
 
     if (!response.ok) {
       return {

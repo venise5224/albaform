@@ -24,7 +24,7 @@ const CommentCard = ({ info }: CommentCardProps) => {
 
   return (
     <section
-      className="flex h-[202px] w-[327px] flex-col justify-between rounded-2xl border border-line-100 bg-white px-4 py-5 hover:bg-oldLace-50 pc:h-[264px] pc:w-[477px]"
+      className="flex h-[202px] w-[327px] flex-col justify-between rounded-2xl border border-line-100 bg-white px-4 py-5 shadow-md hover:bg-oldLace-50 pc:h-[264px] pc:w-[477px]"
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >
