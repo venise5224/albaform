@@ -1,19 +1,19 @@
 import Carousel from "@/components/Carousel/Carousel";
-import fetchAlbaformData from "./fetchAlbaformData";
-import Content from "./components/Content";
-import Title from "./components/Title";
-import SimpleRequirements from "./components/SimpleRequirements";
-import StoreLocation from "./components/StoreLocation";
-import EmployerInfo from "./components/EmployerInfo";
-import DetailRequirements from "./components/DetailRequirements";
-import NoticeApplicant from "./components/NoticeApplicant";
-import NoticeIsClosed from "./components/NoticeIsClosed";
-import ScrapAndShareButton from "./components/ScrapAndShareButton";
-import ApllicantActionButtons from "./components/ApllicantActionButtons";
-import OwnerActionButtons from "./components/OwnerActionButtons";
+import Content from "../components/Content";
+import Title from "../components/Title";
+import StoreLocation from "../components/StoreLocation";
+import SimpleRequirements from "../components/SimpleRequirements";
+import EmployerInfo from "../components/EmployerInfo";
+import DetailRequirements from "../components/DetailRequirements";
+import NoticeApplicant from "../components/NoticeApplicant";
+import NoticeIsClosed from "../components/NoticeIsClosed";
+import ScrapAndShareButton from "../components/ScrapAndShareButton";
+import ApllicantActionButtons from "../components/ApllicantActionButtons";
+import OwnerActionButtons from "../components/OwnerActionButtons";
+import fetchAlbarformDetailData from "./fetchAlbarformDetailData";
 import { cookies } from "next/headers";
-import { AlbaformDetailData } from "@/types/alba";
 import { cls } from "@/utils/dynamicTailwinds";
+import { AlbaformDetailData } from "@/types/alba";
 
 type PageProps = {
   params: Promise<{ formId: string }>;
@@ -22,7 +22,7 @@ type PageProps = {
 export const generateMetadata = async ({ params }: PageProps) => {
   const { formId } = await params;
 
-  const data: AlbaformDetailData = await fetchAlbaformData(formId);
+  const data: AlbaformDetailData = await fetchAlbarformDetailData(formId);
 
   return {
     title: "알바폼 상세페이지",
@@ -49,7 +49,7 @@ const AlbarformDetailPage = async ({ params }: PageProps) => {
   const { formId } = await params;
 
   try {
-    data = await fetchAlbaformData(formId);
+    data = await fetchAlbarformDetailData(formId);
     isMyAlbarform = Number(userId) === data.ownerId;
   } catch (error) {
     console.error(error);

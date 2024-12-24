@@ -1,4 +1,4 @@
-const fetchAlbaformData = async (formId: string) => {
+const fetchAlbarformDetailData = async (formId: string) => {
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
   if (!API_URL) {
@@ -16,4 +16,4 @@ const fetchAlbaformData = async (formId: string) => {
   return data;
 };
 
-export default fetchAlbaformData;
+export default fetchAlbarformDetailData;
