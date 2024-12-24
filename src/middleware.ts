@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { createCookie } from "./lib/cookie";
 
 export const middleware = async (request: NextRequest) => {
   const url = new URL(request.url);
@@ -8,6 +9,35 @@ export const middleware = async (request: NextRequest) => {
   const ownerPath = ["/owner", "/addform", "/addform/", "/applications/"];
   const applicantPath = ["/applicant", "/apply/", "/myapply/"];
   const accessToken = request.cookies.get("accessToken");
+
+  // 액세스토큰 만료 시 리프레시토큰으로 액세스토큰 재발급 후 요청 재전송
+  if (!accessToken) {
+    const refreshToken = request.cookies.get("refreshToken")?.value;
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`,
+      {
+        method: "POST",
+        body: JSON.stringify({ refreshToken }),
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+
+    if (response.ok) {
+      const { accessToken } = await response.json();
+      await createCookie({ name: "accessToken", value: accessToken });
+
+      const originalRequest = new Headers(request.headers);
+      originalRequest.set("Authorization", `Bearer ${accessToken}`);
+
+      const newRequest = new Request(request.url, {
+        method: request.method,
+        headers: originalRequest,
+        body: request.body,
+      });
+
+      return fetch(newRequest);
+    }
+  }
 
   // 사장님용 페이지
   if (role && role.value === "APPLICANT" && ownerPath.includes(path)) {

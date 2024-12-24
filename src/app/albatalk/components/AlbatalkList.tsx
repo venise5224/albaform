@@ -5,7 +5,7 @@ import { PostCardProps } from "@/types/post";
 import useInfinityScroll from "@/hooks/useInfinityScroll";
 import Empty from "./Empty";
 import PostCardListSkeleton from "./PostCardSkeleton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getArticles } from "../getArticles";
 import FloatingButton from "@/components/button/FloatingButton";
 
@@ -28,7 +28,12 @@ const AlbatalkList = ({
   const [posts, setPosts] = useState(initialPosts);
   const [cursor, setCursor] = useState(initialCursor);
   const [isLoading, setIsLoading] = useState(false);
-  const isLogin = localStorage.getItem("isLogin");
+  const [isLogin, setIsLogin] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const loginStatus = localStorage.getItem("isLogin");
+    setIsLogin(loginStatus === "true");
+  }, []);
 
   const fetchMoreData = async () => {
     if (isLoading) return;

@@ -46,10 +46,11 @@ export const createCookie = async (data: CookieData) => {
   cookieStore.set({
     name: data.name,
     value: data.value,
-    secure: true,
+    secure: process.env.NODE_ENV === "production",
     httpOnly: true,
     sameSite: "lax",
     maxAge: data.maxAge,
+    path: "/",
   });
 };
 
