@@ -38,7 +38,7 @@ const StepContainer = ({ albaForm, formId }: StepContainerProps) => {
   const [currentImageList, setCurrentImageList] = useAtom(currentImageListAtom);
   const [submitTrigger, setSubmitTrigger] = useAtom(addFromSubmitTriggerAtom);
   const { addToast } = useToast();
-  const isNewWrite = useAtomValue(newWriteAtom);
+  const [isNewWrite, setIsNewWrite] = useAtom(newWriteAtom);
   const { methods, loadAllTempData, resetAllTempData } = useAddForm();
   const router = useRouter();
   const isEdit = albaForm && !("status" in albaForm);
@@ -53,13 +53,17 @@ const StepContainer = ({ albaForm, formId }: StepContainerProps) => {
 
   // 마운트 시 전체 임시저장 데이터 가져오기
   useEffect(() => {
-    if (!isNewWrite) {
-      loadAllTempData();
-    } else {
+    loadAllTempData();
+  }, [loadAllTempData]);
+
+  // 새로 쓰기 버튼 클릭 시 전체 임시저장 데이터 초기화
+  useEffect(() => {
+    if (isNewWrite) {
       resetAllTempData();
       setCurrentImageList([]);
     }
-  }, [loadAllTempData, isNewWrite, resetAllTempData, setCurrentImageList]);
+    setIsNewWrite(false);
+  }, [isNewWrite, resetAllTempData, setCurrentImageList, setIsNewWrite]);
 
   useValidateForm(methods);
 

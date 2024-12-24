@@ -46,6 +46,9 @@ export const useAddForm = () => {
   const { openModal } = useModal();
   const showModal = useRef(true);
   const modalRef = useRef(openModal);
+  const setStepOneActive = useSetAtom(stepActiveAtomFamily("stepOne"));
+  const setStepTwoActive = useSetAtom(stepActiveAtomFamily("stepTwo"));
+  const setStepThreeActive = useSetAtom(stepActiveAtomFamily("stepThree"));
 
   useEffect(() => {
     modalRef.current = openModal;
@@ -54,8 +57,11 @@ export const useAddForm = () => {
   // 모달에서 '새로 쓰기' 버튼 클릭 시 전체 임시저장 데이터 초기화
   const resetAllTempData = useCallback(() => {
     methods.reset();
+    setStepOneActive(false);
+    setStepTwoActive(false);
+    setStepThreeActive(false);
     showModal.current = true;
-  }, [methods]);
+  }, [methods, setStepOneActive, setStepTwoActive, setStepThreeActive]);
 
   const loadAllTempData = useCallback(() => {
     const TempDataArr = ["stepOne", "stepTwo", "stepThree"];
@@ -103,7 +109,7 @@ export const useValidateForm = (
 
   const values = methods.getValues();
 
-  // 등록 버튼 활성화 여부 (선택값이 많아서 isValid 미동작으로 값들이 모두 채워지면 활성화)
+  // 등록 버튼 활성화 여부 (선택값이 많아서 isValid 미동작으로, 값들이 모두 채워지면 활성화)
   useEffect(() => {
     const subscription = methods.watch((value) => {
       if (!value) return;
