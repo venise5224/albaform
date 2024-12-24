@@ -25,7 +25,7 @@ const PostCard = ({ info }: { info: PostCardProps }) => {
         <h3 className="w-[80%] truncate font-semibold text-black-400 pc:w-[60%] pc:text-2lg">
           {info.title}
         </h3>
-        <p className="t-gray-500 mt-2 line-clamp-2 h-[48px] w-[80%] pc:-mt-[60px] pc:w-[60%] pc:text-lg">
+        <p className="mt-2 line-clamp-2 h-[48px] w-[80%] text-md text-gray-500 pc:-mt-[60px] pc:w-[60%] pc:text-lg">
           {info.content}
         </p>
         <div className="absolute right-3 top-3 pc:right-6 pc:top-6">
