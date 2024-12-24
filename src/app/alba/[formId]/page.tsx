@@ -44,7 +44,7 @@ const AlbarformDetailPage = async ({ params }: PageProps) => {
   let data: AlbaformDetailData;
   let isMyAlbarform: boolean;
   const cookie = await cookies();
-  const role = cookie.get("role")?.value || "defaultRole";
+  const role = cookie.get("role")?.value || "nonMember";
   const userId = cookie.get("id")?.value;
   const { formId } = await params;
 
@@ -92,7 +92,7 @@ const AlbarformDetailPage = async ({ params }: PageProps) => {
             isMyAlbarform ? "pc:grid-in-box6" : ""
           )}
         >
-          {role === "APPLICANT" ? (
+          {role === "APPLICANT" || role === "nonMember" ? (
             <ApllicantActionButtons
               formId={formId}
               recruitmentEndDate={data.recruitmentEndDate}

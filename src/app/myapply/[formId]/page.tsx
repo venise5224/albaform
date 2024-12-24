@@ -1,4 +1,5 @@
 import fetchApplicationData from "./fetchApplicationData";
+import GuestDataFetcher from "../components/GuestDataFetcher";
 import Title from "@/app/alba/components/Title";
 import Content from "@/app/alba/components/Content";
 import MyApplication from "@/app/alba/components/MyApplication";
@@ -21,7 +22,7 @@ const MyApplyPage = async ({ params }: MyApplyPageProps) => {
   let albarformData: AlbaformDetailData;
   let myApplicationData: MyApplicationData;
   const cookie = await cookies();
-  const role = cookie.get("role")?.value;
+  const role = cookie.get("role")?.value || "Guest";
   const { formId } = await params;
 
   try {
@@ -52,17 +53,23 @@ const MyApplyPage = async ({ params }: MyApplyPageProps) => {
         <section className="pc:col-start-1">
           <Content description={albarformData.description} />
         </section>
-        <section className="pc:col-start-2 pc:row-start-1">
-          <ApplicationStatus
-            recruitmentEndDate={albarformData.recruitmentEndDate}
-            createdAt={myApplicationData.createdAt}
-            status={myApplicationData.status}
-            role={role as string}
-          />
-        </section>
-        <section className="mt-8 pc:col-start-2 pc:row-start-2 pc:-mt-48">
-          <MyApplication info={myApplicationData} />
-        </section>
+        {role !== "Guest" ? (
+          <>
+            <section className="pc:col-start-2 pc:row-start-1">
+              <ApplicationStatus
+                recruitmentEndDate={albarformData.recruitmentEndDate}
+                createdAt={myApplicationData.createdAt}
+                status={myApplicationData.status}
+                role={role as string}
+              />
+            </section>
+            <section className="mt-8 pc:col-start-2 pc:row-start-2 pc:-mt-48">
+              <MyApplication info={myApplicationData} />
+            </section>
+          </>
+        ) : (
+          <GuestDataFetcher albarformData={albarformData} />
+        )}
       </div>
     </>
   );

@@ -53,7 +53,6 @@ const GetMyApplicationModal = () => {
       if (response.status === 200) {
         setNonMemberInfo(response.data);
         closeModal();
-
         router.push(`/myapply/${formId}`); //지원 상세 조회 페이지로 이동
       } else {
         console.error(response.message, response.status);
