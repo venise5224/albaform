@@ -19,7 +19,7 @@ const EditFormPage = async ({ params }: EditFormPageProps) => {
         `${process.env.NEXT_PUBLIC_API_URL}/forms/${id}`,
         {
           method: "GET",
-          cache: "force-cache",
+          next: { tags: ["albaformEdit"] },
         }
       );
 
