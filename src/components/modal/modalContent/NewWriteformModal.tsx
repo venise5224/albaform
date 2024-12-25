@@ -6,14 +6,16 @@ import SolidButton from "@/components/button/SolidButton";
 import { useModal } from "@/hooks/useModal";
 import { usePathname, useRouter } from "next/navigation";
 import { useToast } from "@/hooks/useToast";
+import useViewPort from "@/hooks/useViewport";
 import { useSetAtom } from "jotai";
 import { newWriteAtom } from "@/atoms/newWrite";
 
 const NewWriteformModal = () => {
   const { closeModal } = useModal();
   const { addToast } = useToast();
-  const pathname = usePathname();
+  const viewport = useViewPort();
   const router = useRouter();
+  const pathname = usePathname();
   const setNewWrite = useSetAtom(newWriteAtom);
 
   const handleContinueWriteClick = () => {
@@ -51,6 +53,7 @@ const NewWriteformModal = () => {
         <p className="modal-sub-title">이어서 작성하시겠어요?</p>
         <div className="mt-6 flex w-[327px] flex-col gap-2 pc:w-[360px]">
           <SolidButton
+            size={viewport === "pc" ? "2xl" : "xl"}
             style="orange300"
             type="button"
             onClick={handleContinueWriteClick}
@@ -58,6 +61,7 @@ const NewWriteformModal = () => {
             이어쓰기
           </SolidButton>
           <SolidButton
+            size={viewport === "pc" ? "2xl" : "xl"}
             style="outOrange300"
             type="button"
             onClick={handleNewWriteClick}
