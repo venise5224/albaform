@@ -44,6 +44,7 @@ const SelectProgressModal = () => {
       if (response.status) {
         addToast("지원상태 수정이 완료되었습니다.", "success");
         closeModal();
+        window.location.reload();
       } else {
         console.error(response.message, response.status);
         addToast(response.message as string, "warning");
