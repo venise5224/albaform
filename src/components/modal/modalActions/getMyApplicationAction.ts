@@ -4,7 +4,7 @@ import { getMyApplicationSchema } from "@/schema/modal/getMyApplicationSchema";
 
 export const getMyApplicationAction = async (
   formData: FormData,
-  id: string
+  formId: string
 ) => {
   const data = {
     name: formData.get("name")?.toString(),
@@ -21,11 +21,8 @@ export const getMyApplicationAction = async (
     };
   }
 
-  console.log("id :", id);
-  console.log("data :", data);
-
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/forms/${id}/my-application/verify`,
+    `${process.env.NEXT_PUBLIC_API_URL}/forms/${formId}/my-application/verify`,
     {
       method: "POST",
       body: JSON.stringify(data),
@@ -34,8 +31,6 @@ export const getMyApplicationAction = async (
       },
     }
   );
-
-  console.log("지원 내역 상세 :", response);
 
   if (!response.ok) {
     return {

@@ -7,16 +7,16 @@ import AlbatalkRander from "./components/AlbatalkRander";
 const AlbaTalkPage = async ({
   searchParams,
 }: {
-  searchParams: Promise<{ orderBy?: string; keyword?: string }>;
+  searchParams: Promise<{ albatalkOrderBy?: string; keyword?: string }>;
 }) => {
-  const { orderBy = "mostRecent", keyword = "" } = await searchParams;
+  const { albatalkOrderBy = "mostRecent", keyword = "" } = await searchParams;
 
   return (
     <Suspense
-      key={`${orderBy}-${keyword}`}
+      key={`${albatalkOrderBy}-${keyword}`}
       fallback={<PostCardListSkeleton count={9} />}
     >
-      <AlbatalkRander orderBy={orderBy} keyword={keyword} />
+      <AlbatalkRander orderBy={albatalkOrderBy} keyword={keyword} />
     </Suspense>
   );
 };

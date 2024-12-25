@@ -2,6 +2,7 @@
 
 import instance from "@/lib/instance";
 import { addFormSchema } from "@/schema/addForm/addFormSchema";
+import { revalidateTag } from "next/cache";
 
 export const addFormSubmit = async (
   formData: FormData,
@@ -69,8 +70,9 @@ export const addFormSubmit = async (
       };
     }
 
-    const resData = response.data;
-    const { id } = resData;
+    const { id } = response;
+
+    revalidateTag("myalbaform");
 
     return {
       status: response.status,

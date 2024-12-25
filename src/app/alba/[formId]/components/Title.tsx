@@ -20,7 +20,7 @@ const Title = ({ info }: { info: titleData }) => {
   const submitDate = getCurrentTime(info.createdAt);
 
   return (
-    <div className="flex w-[327px] flex-col gap-6 pc:w-[720px]">
+    <div className="flex w-full flex-col gap-6 pc:w-[720px]">
       <div className="flex items-center justify-between text-xs pc:justify-start pc:text-md">
         <ul className="flex gap-2">
           <li className="rounded-md border border-orange-100 bg-orange-50 px-2 py-1 font-semibold text-orange-300">
@@ -43,9 +43,11 @@ const Title = ({ info }: { info: titleData }) => {
         <h2 className="text-xl font-semibold text-black-500">{info.title}</h2>
       </div>
 
-      <ApplicantStats
-        info={{ scrapCount: info.scrapCount, applyCount: info.applyCount }}
-      />
+      <div className="mt-[30px]">
+        <ApplicantStats
+          info={{ scrapCount: info.scrapCount, applyCount: info.applyCount }}
+        />
+      </div>
     </div>
   );
 };

@@ -5,8 +5,9 @@ import { PostCardProps } from "@/types/post";
 import useInfinityScroll from "@/hooks/useInfinityScroll";
 import Empty from "./Empty";
 import PostCardListSkeleton from "./PostCardSkeleton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getArticles } from "../getArticles";
+import FloatingButton from "@/components/button/FloatingButton";
 
 interface AlbatalkResponse {
   data: PostCardProps[];
@@ -27,6 +28,12 @@ const AlbatalkList = ({
   const [posts, setPosts] = useState(initialPosts);
   const [cursor, setCursor] = useState(initialCursor);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLogin, setIsLogin] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const loginStatus = localStorage.getItem("isLogin");
+    setIsLogin(loginStatus === "true");
+  }, []);
 
   const fetchMoreData = async () => {
     if (isLoading) return;
@@ -73,6 +80,14 @@ const AlbatalkList = ({
       {cursor && <div ref={observerRef} style={{ height: "1px" }} />}
 
       {isLoading && <PostCardListSkeleton count={3} />}
+
+      {isLogin && (
+        <FloatingButton
+          icon="/icon/writing.svg"
+          href="/addtalk"
+          className="fixed bottom-20 right-10"
+        />
+      )}
     </div>
   );
 };

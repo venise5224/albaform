@@ -2,33 +2,31 @@
 
 import SolidButton from "@/components/button/SolidButton";
 import { useModal } from "@/hooks/useModal";
+import { revalidateTag } from "next/cache";
 import { useRouter } from "next/navigation";
 
-const OwnerActionButtons = ({
-  formId,
-  isMyAlbarform,
-}: {
-  formId: string;
-  isMyAlbarform: boolean;
-}) => {
+const OwnerActionButtons = ({ formId }: { formId: string }) => {
   const router = useRouter();
   const { openModal } = useModal();
 
+  const handleEdit = () => {
+    router.push(`/addform/${formId}`);
+    revalidateTag("albaformEdit");
+  };
+
   return (
     <>
-      {isMyAlbarform && (
-        <SolidButton
-          icon="/icon/document-md.svg"
-          style="orange300"
-          onClick={() => openModal("ApplicantListModal")}
-        >
-          지원 현황 조회
-        </SolidButton>
-      )}
+      <SolidButton
+        icon="/icon/document-md.svg"
+        style="orange300"
+        onClick={() => openModal("ApplicantListModal")}
+      >
+        지원 현황 조회
+      </SolidButton>
       <SolidButton
         icon="/icon/write-lg.svg"
         style="orange300"
-        onClick={() => router.push(`/addform/${formId}`)}
+        onClick={handleEdit}
       >
         수정하기
       </SolidButton>

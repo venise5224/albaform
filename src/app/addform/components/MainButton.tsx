@@ -1,23 +1,23 @@
 "use client";
 
 import {
-  addFormIsSubmittingAtom,
-  addFormSubmitDisabledAtom,
   addFromSubmitTriggerAtom,
   temporaryDataByStepAtom,
 } from "@/atoms/addFormAtomStore";
 import SolidButton from "@/components/button/SolidButton";
+import { useAddForm } from "@/hooks/useAddForm";
+import { useValidateForm } from "@/hooks/useAddForm";
 import { useToast } from "@/hooks/useToast";
 import { useAtomValue, useSetAtom } from "jotai";
+import { revalidateTag } from "next/cache";
 import { useParams } from "next/navigation";
 
 const MainButton = () => {
   const temporaryDataByStep = useAtomValue(temporaryDataByStepAtom);
-  const isDisabled = useAtomValue(addFormSubmitDisabledAtom);
-  const isSubmitting = useAtomValue(addFormIsSubmittingAtom);
+  const { methods } = useAddForm();
+  const { submitDisabled, addFormIsSubmitting } = useValidateForm(methods);
   const setAddFormSubmitTrigger = useSetAtom(addFromSubmitTriggerAtom);
   const params = useParams();
-
   const { addToast } = useToast();
 
   const temporaryDataArr = [
@@ -36,6 +36,11 @@ const MainButton = () => {
     addToast("입력한 내용이 임시 저장되었습니다.", "success");
   };
 
+  const handleEdit = () => {
+    setAddFormSubmitTrigger(true);
+    revalidateTag("albarformDetail");
+  };
+
   return (
     <div className="flex flex-col space-y-2 p-6">
       {!params.id ? (
@@ -47,19 +52,19 @@ const MainButton = () => {
             type="submit"
             style="orange300"
             onClick={() => setAddFormSubmitTrigger(true)}
-            disabled={isDisabled || isSubmitting}
+            disabled={submitDisabled || addFormIsSubmitting}
           >
-            {isSubmitting ? "등록중..." : "등록하기"}
+            {addFormIsSubmitting ? "등록중..." : "등록하기"}
           </SolidButton>
         </>
       ) : (
         <SolidButton
           type="submit"
           style="orange300"
-          onClick={() => setAddFormSubmitTrigger(true)}
-          disabled={isDisabled || isSubmitting}
+          onClick={handleEdit}
+          disabled={submitDisabled || addFormIsSubmitting}
         >
-          {isSubmitting ? "수정중..." : "수정하기"}
+          {addFormIsSubmitting ? "수정중..." : "수정하기"}
         </SolidButton>
       )}
     </div>
