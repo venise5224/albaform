@@ -7,7 +7,8 @@ const EazyLogin = () => {
   const pathname = usePathname();
   const isSigninPage = pathname.includes("/signin");
   const loginOrSignup = isSigninPage ? "로그인" : "회원가입";
-  const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}&redirect_uri=${process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URL}&response_type=code`;
+  const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}&redirect_uri=${process.env.NEXT_PUBLIC_KAKAO_APPLICANT_REDIRECT_URL}
+&response_type=code`;
 
   const handleEazyLogin = (sns: string) => {
     if (sns === "kakao") window.location.href = kakaoURL;
