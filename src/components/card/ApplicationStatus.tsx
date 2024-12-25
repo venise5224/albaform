@@ -10,15 +10,15 @@ import { getDday } from "@/utils/getDday";
 type ApplicationStatusProps = {
   createdAt: string;
   recruitmentEndDate: string;
-  status: "REJECTED" | "INTERVIEW_PENDING" | "INTERVIEW_COMPLETED" | "HIRED";
-  role: string;
+  status: string;
+  role?: string;
 };
 
 const ApplicationStatus = ({
   createdAt,
   recruitmentEndDate,
   status,
-  role,
+  role = "Applicant",
 }: ApplicationStatusProps) => {
   const Dday = getDday(recruitmentEndDate);
   const formattedCreatedTime = getCurrentTime(createdAt);

@@ -92,8 +92,13 @@ const AlbarformDetailPage = async ({ params }: PageProps) => {
         <section className="pc:grid-in-box3">
           <StoreLocation location={data.location} />
         </section>
-        {role === "APPLICANT" || role === "nonMember" ? (
-          <section className="flex w-full flex-col gap-[10px] pc:grid-in-box6">
+        <section
+          className={cls(
+            "flex w-full flex-col gap-[10px]",
+            isMyAlbarform ? "pc:grid-in-box6" : ""
+          )}
+        >
+          {role === "APPLICANT" || role === "nonMember" ? (
             <ApllicantActionButtons
               formId={formId}
               recruitmentEndDate={data.recruitmentEndDate}
