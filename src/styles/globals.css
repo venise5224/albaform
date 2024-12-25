@@ -56,13 +56,21 @@ body {
     @apply mt-[8px] text-md font-regular text-gray-400;
   }
 
+  .labelStyle {
+    @apply mt-[33px] w-fit cursor-pointer text-md font-regular text-black-400 pc:mt-[52px] pc:text-xl;
+  }
+
+  .inputStyle {
+    @apply mt-4 rounded-[8px] border border-gray-50 bg-background-200 p-[14px] pr-10 placeholder:text-lg placeholder:font-regular focus:border-orange-300 pc:mt-4;
+  }
+
   /* Form 기본 스타일 */
   .form-input-base {
     @apply max-w-[640px] rounded-lg border-[0.5px] border-gray-200 p-[14px] placeholder:text-gray-400 focus:border-orange-300;
   }
 
   .addform-input-base {
-    @apply max-w-[640px] rounded-lg border-none bg-background-200 p-[14px] placeholder:text-gray-400 transition-all;
+    @apply max-w-[640px] rounded-lg border-none bg-background-200 p-[14px] transition-all placeholder:text-gray-400;
   }
 
   /* 스크롤바 숨기기 */
