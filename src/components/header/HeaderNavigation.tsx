@@ -5,7 +5,10 @@ import { usePathname } from "next/navigation";
 
 const HeaderNavigation = ({ isAuthPage }: { isAuthPage: boolean }) => {
   const currentPathname = usePathname();
-  const isNotLogin = localStorage.getItem("isLogin") === null;
+  let isNotLogin: boolean;
+
+  if (typeof window !== "undefined")
+    isNotLogin = localStorage.getItem("isLogin") === null;
 
   if (isAuthPage) return null;
 

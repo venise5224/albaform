@@ -8,9 +8,9 @@ import DetailRequirements from "../components/DetailRequirements";
 import NoticeApplicant from "../components/NoticeApplicant";
 import NoticeIsClosed from "../components/NoticeIsClosed";
 import ScrapAndShareButton from "../components/ScrapAndShareButton";
-import ApllicantActionButtons from "../components/ApllicantActionButtons";
 import OwnerActionButtons from "../components/OwnerActionButtons";
 import fetchAlbarformDetailData from "./fetchAlbarformDetailData";
+import ApllicantActionButtons from "./components/ApllicantActionButtons";
 import { cookies } from "next/headers";
 import { cls } from "@/utils/dynamicTailwinds";
 import { AlbaformDetailData } from "@/types/alba";
@@ -21,7 +21,6 @@ type PageProps = {
 
 export const generateMetadata = async ({ params }: PageProps) => {
   const { formId } = await params;
-
   const data: AlbaformDetailData = await fetchAlbarformDetailData(formId);
 
   return {
@@ -41,12 +40,13 @@ export const generateMetadata = async ({ params }: PageProps) => {
 };
 
 const AlbarformDetailPage = async ({ params }: PageProps) => {
-  let data: AlbaformDetailData;
-  let isMyAlbarform: boolean;
   const cookie = await cookies();
-  const role = cookie.get("role")?.value || "nonMember";
+  const role = cookie.get("role")?.value || "Guest";
   const userId = cookie.get("id")?.value;
   const { formId } = await params;
+
+  let data: AlbaformDetailData;
+  let isMyAlbarform = false;
 
   try {
     data = await fetchAlbarformDetailData(formId);
@@ -61,6 +61,20 @@ const AlbarformDetailPage = async ({ params }: PageProps) => {
       </div>
     );
   }
+
+  const renderActionButtons = () => {
+    if (role === "APPLICANT" || role === "Guest") {
+      return (
+        <ApllicantActionButtons
+          formId={formId}
+          recruitmentEndDate={data.recruitmentEndDate}
+          isLogin={role !== "Guest"}
+        />
+      );
+    } else if (isMyAlbarform) {
+      return <OwnerActionButtons formId={formId} />;
+    } else return null;
+  };
 
   return (
     <>
@@ -78,15 +92,7 @@ const AlbarformDetailPage = async ({ params }: PageProps) => {
         <section className="pc:justify-self-start pc:grid-in-box2">
           <Content description={data.description} />
         </section>
-        <section
-          className={
-            role === "APPLICANT" || role === "nonMember"
-              ? "pc:grid-in-box7"
-              : isMyAlbarform
-                ? "pc:grid-in-box7"
-                : "pc:grid-in-box6"
-          }
-        >
+        <section className="pc:grid-in-box7">
           <DetailRequirements info={data} />
         </section>
         <section className="pc:grid-in-box3">
@@ -98,23 +104,8 @@ const AlbarformDetailPage = async ({ params }: PageProps) => {
             isMyAlbarform ? "pc:grid-in-box6" : ""
           )}
         >
-          {role === "APPLICANT" || role === "nonMember" ? (
-            <ApllicantActionButtons
-              formId={formId}
-              recruitmentEndDate={data.recruitmentEndDate}
-              isLogin={role !== "nonMember"}
-            />
-          </section>
-        ) : isMyAlbarform ? (
-          <section
-            className={cls(
-              "flex w-full flex-col gap-[10px]",
-              isMyAlbarform ? "pc:grid-in-box6" : ""
-            )}
-          >
-            <OwnerActionButtons formId={formId} />
-          </section>
-        ) : null}
+          {renderActionButtons()}
+        </section>
       </div>
       <NoticeApplicant count={data.applyCount} />
       <NoticeIsClosed closedDate={data.recruitmentEndDate} />
