@@ -28,7 +28,7 @@ const MyApplyPage = async ({ params }: MyApplyPageProps) => {
   try {
     [albarformData, myApplicationData] = await Promise.all([
       fetchAlbarformDetailData(formId),
-      fetchApplicationData(formId),
+      fetchApplicationData(formId, role as string),
     ]);
   } catch (error) {
     console.error(error);

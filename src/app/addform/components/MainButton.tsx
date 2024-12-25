@@ -9,6 +9,7 @@ import { useAddForm } from "@/hooks/useAddForm";
 import { useValidateForm } from "@/hooks/useAddForm";
 import { useToast } from "@/hooks/useToast";
 import { useAtomValue, useSetAtom } from "jotai";
+import { revalidateTag } from "next/cache";
 import { useParams } from "next/navigation";
 
 const MainButton = () => {
@@ -35,6 +36,11 @@ const MainButton = () => {
     addToast("입력한 내용이 임시 저장되었습니다.", "success");
   };
 
+  const handleEdit = () => {
+    setAddFormSubmitTrigger(true);
+    revalidateTag("albarformDetail");
+  };
+
   return (
     <div className="flex flex-col space-y-2 p-6">
       {!params.id ? (
@@ -55,7 +61,7 @@ const MainButton = () => {
         <SolidButton
           type="submit"
           style="orange300"
-          onClick={() => setAddFormSubmitTrigger(true)}
+          onClick={handleEdit}
           disabled={submitDisabled || addFormIsSubmitting}
         >
           {addFormIsSubmitting ? "수정중..." : "수정하기"}
