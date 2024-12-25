@@ -28,6 +28,7 @@ const ApllicantActionButtons = ({
     <>
       <SolidButton
         icon={disabled ? "" : "/icon/write-fill-md.svg"}
+        size="2xl"
         style={disabled ? "gray100" : "orange300"}
         disabled={disabled}
         onClick={() => router.push(`/apply/${formId}`)}
@@ -36,6 +37,7 @@ const ApllicantActionButtons = ({
       </SolidButton>
       <SolidButton
         icon="/icon/document-md.svg"
+        size="2xl"
         style="outOrange300"
         onClick={
           isLogin
