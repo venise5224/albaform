@@ -44,19 +44,20 @@ const StepContainer = ({ albaForm, formId }: StepContainerProps) => {
   const isEdit = albaForm && !("status" in albaForm);
   const { initializeAddForm } = useAddFormInit({ albaForm });
 
-  // 수정하기 마운트 시 초기화
+  // 수정하기 마운트 시 초기화, 만들기페이지에서 마운트 시 전체 임시저장 데이터 가져오기
   useEffect(() => {
     if (isEdit) {
       initializeAddForm(methods, setCurrentImageList);
+      return;
     }
-  }, [isEdit, initializeAddForm, methods, setCurrentImageList]);
-
-  // 마운트 시 전체 임시저장 데이터 가져오기
-  useEffect(() => {
-    if (!isEdit) {
-      loadAllTempData();
-    }
-  }, [loadAllTempData, isEdit]);
+    loadAllTempData();
+  }, [
+    isEdit,
+    initializeAddForm,
+    methods,
+    setCurrentImageList,
+    loadAllTempData,
+  ]);
 
   // 새로 쓰기 버튼 클릭 시 전체 임시저장 데이터 초기화
   useEffect(() => {
