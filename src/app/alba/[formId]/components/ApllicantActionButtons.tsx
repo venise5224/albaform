@@ -1,11 +1,13 @@
 "use client";
 
+import instance from "@/lib/instance";
 import isPast from "@/utils/isPast";
 import SolidButton from "@/components/button/SolidButton";
 import { useModal } from "@/hooks/useModal";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useToast } from "@/hooks/useToast";
+import { AppliedAlbaData } from "@/types/alba";
 
 type ApllicantActionButtonsProps = {
   formId: string;
@@ -19,13 +21,28 @@ const ApllicantActionButtons = ({
   isLogin,
 }: ApllicantActionButtonsProps) => {
   const [disabled, setDisabled] = useState(false);
+  const [isApplied, setIsApplied] = useState(false);
   const router = useRouter();
   const { openModal } = useModal();
   const { addToast } = useToast();
 
   useEffect(() => {
     if (isPast(recruitmentEndDate)) setDisabled(true);
-  }, [recruitmentEndDate]);
+    // 회원이라면 페이지에 들어왔을 때 해당 알바폼에 지원한 이력이 있는지 체크해야 함.
+    const confirmIsApplied = async () => {
+      const res = await instance(
+        `${process.env.NEXT_PUBLIC_API_URL}/users/me/applications?limit=99`,
+        {
+          method: "GET",
+          headers: { "content-type": "application/json" },
+        }
+      );
+      res.data.map((data: AppliedAlbaData) => {
+        if (data.form.id === Number(formId)) setIsApplied(true);
+      });
+    };
+    confirmIsApplied();
+  }, [recruitmentEndDate, formId]);
 
   const submitApply = () => {
     if (isLogin) router.push(`/apply/${formId}`);
@@ -33,8 +50,10 @@ const ApllicantActionButtons = ({
   };
 
   const showMyApplication = () => {
-    if (isLogin) router.push(`/myapply/${formId}`);
-    else openModal("GetMyApplicationModal");
+    if (isLogin) {
+      if (isApplied) router.push(`/myapply/${formId}`);
+      else addToast("지원한 내역이 없습니다.", "warning");
+    } else openModal("GetMyApplicationModal");
   };
 
   return (
