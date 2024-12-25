@@ -30,7 +30,7 @@ const NewWriteformModal = () => {
     if (pathname.startsWith("/apply")) {
       localStorage.removeItem("applyFormData");
     }
-    addToast("폼을 새로작성해주세요.", "info");
+    addToast("폼을 새로 작성해 주세요.", "info");
     closeModal();
     setNewWrite(true);
     router.push(pathname);

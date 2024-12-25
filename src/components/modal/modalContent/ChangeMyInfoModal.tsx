@@ -4,7 +4,7 @@ import ModalContainer from "../modalContainer/ModalContainer";
 import FormInput from "@/components/input/FormInput";
 import ErrorText from "@/components/errorText/ErrorText";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Path, useForm } from "react-hook-form";
+import { FormProvider, Path, useForm } from "react-hook-form";
 import { changeMyInfoSchema } from "@/schema/modal/changeMyInfoSchema";
 import { z } from "zod";
 import SolidButton from "@/components/button/SolidButton";

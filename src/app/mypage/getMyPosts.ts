@@ -18,7 +18,13 @@ export const getMyPosts = async (query: getMyPostsProps) => {
   });
 
   const response = await instance(
-    `${process.env.NEXT_PUBLIC_API_URL}/users/me/posts?${queryString}`
+    `${process.env.NEXT_PUBLIC_API_URL}/users/me/posts?${queryString}`,
+    {
+      next: {
+        revalidate: 300,
+        tags: ["myPost"],
+      },
+    }
   );
 
   if (response.status !== 200) {

@@ -42,7 +42,6 @@ const ScrapButton = ({
           },
         }
       );
-      console.log("스크랩 완료 후 데이터", res.data);
     }
   };
 

@@ -1,6 +1,7 @@
 "use server";
 
 import instance from "@/lib/instance";
+import { revalidateTag } from "next/cache";
 
 const postComment = async ({
   id,
@@ -27,6 +28,8 @@ const postComment = async ({
       error: response.error,
     };
   }
+
+  revalidateTag("myComment");
 
   return {
     status: response.status,

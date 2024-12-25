@@ -4,7 +4,13 @@ import SolidButton from "@/components/button/SolidButton";
 import MyInfoEditDropdown from "@/components/dropdown/MyInfoEditDropdown";
 import { useModal } from "@/hooks/useModal";
 
-const MyInfoEditContainer = () => {
+export enum roleType {
+  APPLICANT = "APPLICANT",
+  OWNER = "OWNER",
+  nonMember = "nonMember",
+}
+
+const MyInfoEditContainer = ({ role }: { role: roleType }) => {
   const { openModal } = useModal();
 
   return (
@@ -13,7 +19,11 @@ const MyInfoEditContainer = () => {
         <div className="h-[58px] w-[180px]">
           <SolidButton
             style="orange300"
-            onClick={() => openModal("ChangeMyInfoModal")}
+            onClick={() => {
+              role === "APPLICANT"
+                ? openModal("ChangeMyInfoModal")
+                : openModal("ChangeCEOInfoModal");
+            }}
           >
             내 정보 수정
           </SolidButton>
@@ -29,7 +39,11 @@ const MyInfoEditContainer = () => {
       </div>
       <div className="pc:hidden">
         <MyInfoEditDropdown
-          onMyInfoEdit={() => openModal("ChangeMyInfoModal")}
+          onMyInfoEdit={() => {
+            role === "APPLICANT"
+              ? openModal("ChangeMyInfoModal")
+              : openModal("ChangeCEOInfoModal");
+          }}
           onPasswordEdit={() => openModal("ChangePasswordModal")}
         />
       </div>

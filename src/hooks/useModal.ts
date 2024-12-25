@@ -2,18 +2,20 @@
 
 import { modalAtom } from "@/atoms/modalAtomStore";
 import { ModalType } from "@/types/modal";
-import { useSetAtom } from "jotai";
+import { useAtom } from "jotai";
 
 export const useModal = () => {
-  const setModalType = useSetAtom(modalAtom);
+  const [modals, setModals] = useAtom(modalAtom);
 
-  const openModal = (type: keyof typeof ModalType) => {
-    setModalType(ModalType[type]);
+  const openModal = (modalType: ModalType) => {
+    setModals((prev) => [...prev, modalType]);
   };
 
   const closeModal = () => {
-    setModalType(null);
+    setModals((prev) => prev.slice(0, -1)); // 마지막 모달만 제거
   };
 
-  return { openModal, closeModal };
+  const getCurrentModal = () => modals[modals.length - 1];
+
+  return { openModal, closeModal, getCurrentModal };
 };
