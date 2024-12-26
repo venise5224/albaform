@@ -1,75 +1,114 @@
 import { NextResponse } from "next/server";
 
-const GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token";
-const CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
-const CLIENT_SECRET = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET;
-const APPLICANT_REDIRECT_URI =
-  process.env.NEXT_PUBLIC_GOOGLE_APPLICANT_REDIRECT_URL;
-const OWNER_REDIRECT_URI = process.env.NEXT_PUBLIC_GOOGLE_OWNER_REDIRECT_URL;
-
-// 액세스 토큰 요청 함수
-const getAccessToken = async (code: string, role: string) => {
-  try {
-    const redirectUri =
-      role === "applicant" ? APPLICANT_REDIRECT_URI : OWNER_REDIRECT_URI;
-
-    const response = await fetch(GOOGLE_TOKEN_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: new URLSearchParams({
-        code, // 전달받은 Authorization Code
-        client_id: CLIENT_ID || "",
-        client_secret: CLIENT_SECRET || "",
-        redirect_uri: redirectUri || "",
-        grant_type: "authorization_code",
-      }).toString(),
-    });
-
-    if (!response.ok) {
-      throw new Error("Failed to fetch access token");
-    }
-
-    const data = await response.json();
-    return data.access_token; // 액세스 토큰 반환
-  } catch (error) {
-    console.error("Error fetching access token:", error);
-    throw new Error("Failed to fetch access token");
-  }
-};
-
-// Route Handler
+// 구글에서의 리다이렉트로 요청에 따른 Route Handler
 export const GET = async (request: Request) => {
   const { searchParams } = new URL(request.url);
   const code = searchParams.get("code"); // URL에서 Authorization Code 추출
   const role = request.url.includes("applicant") ? "applicant" : "owner";
+  const isProgress = request.url.includes("signin") ? "signin" : "signup";
+  let oauthAccessToken = null;
 
   if (!code) {
     return new Response("Authorization code not provided", { status: 400 });
   }
 
   try {
-    // 1. 인가 코드를 사용해 액세스 토큰 요청
-    const accessToken = await getAccessToken(code, role);
+    // 1. 회원가입 요청이라면 Google API를 통해 Access Token을 요청한 뒤 쿠키에 저장하고 이후 추가 데이터를 받기 위해 singup/stepOneDone 페이지로 이동시킴
+    if (isProgress === "signup") {
+      const redirectUri =
+        role === "applicant"
+          ? process.env.NEXT_PUBLIC_GOOGLE_APPLICANT_SIGNUP_REDIRECT_URL
+          : process.env.NEXT_PUBLIC_GOOGLE_OWNER_SIGNUP_REDIRECT_URL;
 
-    // 2. 쿠키에 AccesToken 추가, 사용자 정보 받는 페이지로 이동시킴
-    const response = NextResponse.redirect(
-      role === "applicant"
-        ? "http://localhost:3000/signup/applicant?stepOneDone=true&isOAuth=true&provider=google"
-        : "http://localhost:3000/signup/owner?stepOneDone=true&isOAuth=true&provider=google"
-    );
+      const tokenResponse = await fetch("https://oauth2.googleapis.com/token", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({
+          code, // Authorization Code
+          client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "",
+          client_secret: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET || "",
+          redirect_uri: redirectUri || "", // redirect URI
+          grant_type: "authorization_code", // grant type
+        }).toString(),
+      });
 
-    response.cookies.set("OauthAccessToken", accessToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: 60 * 60 * 24, // 24시간
-    });
+      if (!tokenResponse.ok) {
+        throw new Error("Failed to fetch access token from Google");
+      }
 
-    return response;
+      const tokenData = await tokenResponse.json();
+      oauthAccessToken = tokenData.id_token;
+
+      const response = NextResponse.redirect(
+        role === "applicant"
+          ? "http://localhost:3000/signup/applicant?stepOneDone=true&isOAuth=true&provider=google"
+          : "http://localhost:3000/signup/owner?stepOneDone=true&isOAuth=true&provider=google"
+      );
+
+      response.cookies.set("oauthAcessToken", oauthAccessToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        maxAge: 60 * 60 * 24, // 24시간
+      });
+
+      return response;
+    }
+
+    // 2. 로그인 요청이라면 넥스트 서버 -> 백엔드 서버(/oauth/sign-in/{provider})로 바로 요청을 보내고 쿠키에 데이터 저장
+    else if (isProgress === "signin") {
+      const oauthLoginResponse: any = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/oauth/sign-in/google`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            redirectUri:
+              role === "applicant"
+                ? process.env.NEXT_PUBLIC_GOOGLE_APPLICANT_SIGNIN_REDIRECT_URL
+                : process.env.NEXT_PUBLIC_GOOGLE_OWNER_SIGNIN_REDIRECT_URL,
+            token: oauthAccessToken, // 구글은 카카오와 다르게 Authorization Code가 아닌 AccessToken임;;
+          }),
+        }
+      );
+
+      if (oauthLoginResponse.ok) {
+        const {
+          user: userData,
+          refreshToken,
+          accessToken,
+        } = await oauthLoginResponse.json();
+
+        const response = NextResponse.redirect(
+          `${process.env.NEXT_PUBLIC_DEPLOY_URL}`
+        );
+
+        response.cookies.set("userData", userData, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "lax",
+          maxAge: 60 * 60 * 24, // 24시간
+        });
+
+        response.cookies.set("accessToken", accessToken, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "lax",
+          maxAge: 60 * 60 * 24, // 24시간
+        });
+
+        response.cookies.set("refreshToken", refreshToken, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "lax",
+          maxAge: 60 * 60 * 24, // 24시간
+        });
+
+        return response;
+      }
+    }
   } catch (error) {
-    console.error("Error during Google login process:", error);
-    return new Response("Failed to process Google login", { status: 500 });
+    console.error("Error during Google OAuth process:", error);
+    return new Response("Failed to process Google OAuth", { status: 500 });
   }
 };
