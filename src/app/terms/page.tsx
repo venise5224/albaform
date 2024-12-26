@@ -3,6 +3,9 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "알바폼 이용약관",
+  openGraph: {
+    title: "알바폼 이용약관",
+  },
 };
 
 const TermsPage = () => {

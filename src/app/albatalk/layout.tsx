@@ -1,5 +1,13 @@
 import AlbatalkSmartSearch from "./components/AlbatalkSmartSearch";
 import { Suspense } from "react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "알바토크",
+  openGraph: {
+    title: "알바토크",
+  },
+};
 
 const AlbaTalkLayout = ({ children }: { children: React.ReactNode }) => {
   return (

@@ -10,6 +10,10 @@ import { AlbaformDetailData, MyApplicationData } from "@/types/alba";
 export const metadata = {
   title: "지원자 상세 보기",
   description: "Albarform - 지원자 상세 보기 페이지입니다",
+  openGraph: {
+    title: "지원자 상세 보기",
+    description: "Albarform - 지원자 상세 보기 페이지입니다",
+  },
 };
 
 interface MyApplicantDetailPageProps {
