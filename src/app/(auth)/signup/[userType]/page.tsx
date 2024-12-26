@@ -1,6 +1,5 @@
 import SignupTitle from "../components/SignupTitle";
 import SignupContents from "../components/SignupContents";
-import EazyLogin from "../../components/EazyLogin";
 import { Metadata } from "next";
 
 interface SignupPageProps {
@@ -23,7 +22,6 @@ const SignupPage = async ({ params, searchParams }: SignupPageProps) => {
     <>
       <SignupTitle userType={userType} stepOneDone={stepOneDone} />
       <SignupContents userType={userType} stepOneDone={stepOneDone} />
-      {!stepOneDone && <EazyLogin />}
     </>
   );
 };

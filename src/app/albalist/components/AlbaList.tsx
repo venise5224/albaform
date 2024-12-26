@@ -24,7 +24,6 @@ const AlbaList = ({ list, nextCursor, role, params }: AlbaListProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const orderBy = params?.orderBy ?? "mostRecent";
   const keyword = params?.keyword ?? "";
-  const isPublic = params?.isPublic ?? undefined;
   const isRecruiting = params?.isRecruiting ?? undefined;
 
   const fetchMoreData = useCallback(async () => {
@@ -39,16 +38,9 @@ const AlbaList = ({ list, nextCursor, role, params }: AlbaListProps) => {
         isRecruiting,
       });
 
-      const filteredData =
-        isPublic !== undefined
-          ? response.data.filter(
-              (item: AlbarformData) => item.isPublic === isPublic
-            )
-          : response.data;
-
       setAlbaList((prevList) => [
         ...prevList,
-        ...filteredData.filter(
+        ...response.data.filter(
           (newList: AlbarformData) =>
             !prevList.some((card) => card.id === newList.id)
         ),
@@ -60,7 +52,7 @@ const AlbaList = ({ list, nextCursor, role, params }: AlbaListProps) => {
     } finally {
       setIsLoading(false);
     }
-  }, [orderBy, cursor, albaList.length, keyword, isRecruiting, isPublic]);
+  }, [orderBy, cursor, albaList.length, keyword, isRecruiting]);
 
   // 무한 스크롤 Ref
   const observerRef = useInfinityScroll({ fetchMoreData });

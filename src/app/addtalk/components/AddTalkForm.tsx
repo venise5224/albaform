@@ -94,7 +94,7 @@ const AddTalkForm = () => {
 
       fetchData();
     }
-  }, [talkId, setValue, addToast]);
+  }, [talkId, setValue]);
 
   const onCancel = () => {
     router.push("/albatalk");

@@ -18,7 +18,6 @@ import ExperienceInput from "./ExperienceInput";
 import ResumeNameInput from "./ResumeInput";
 import IntroductionInput from "./IntroductionInput";
 import PasswordInput from "./PasswordInput";
-import { revalidateTag } from "next/cache";
 
 const defaultValues = {
   name: "",
@@ -84,7 +83,7 @@ const ApplyForm = ({ id }: { id: string }) => {
 
       addToast("지원서 제출에 성공하였습니다", "success");
       localStorage.removeItem("applyFormData");
-      revalidateTag("myapply");
+
       router.push(`/myapply/${id}`);
     } catch (error) {
       console.error("지원서 제출 오류:", error);

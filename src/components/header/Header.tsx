@@ -7,14 +7,22 @@ import HeaderMenu from "./HeaderMenu";
 import LoginButton from "../button/LoginButton";
 import { usePathname } from "next/navigation";
 import { useSidebarState } from "@/hooks/useSidebarState";
+import { useEffect, useState } from "react";
+import { useAtom } from "jotai";
+import { isLoggedAtom } from "@/atoms/isLogged";
 
 const Header = () => {
+  const [isLogin, setIsLogin] = useState<boolean | null>(null);
+  const [isLogged] = useAtom(isLoggedAtom);
   const { isOpen, setIsOpen } = useSidebarState();
   const currentPath = usePathname();
   const isAuthPage =
     currentPath.includes("/signin") || currentPath.includes("/signup");
-  const isLogin =
-    typeof window !== "undefined" && localStorage.getItem("isLogin");
+
+  useEffect(() => {
+    const loginStatus = localStorage.getItem("isLogin") !== null;
+    setIsLogin(loginStatus);
+  }, [isLogged]);
 
   const tabletStyle =
     "tablet:h-[60px] tablet:gap-[24px] tablet:px-[72px] tablet:py-[15px] tablet:text-lg";

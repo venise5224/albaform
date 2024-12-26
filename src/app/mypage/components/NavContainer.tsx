@@ -6,8 +6,9 @@ import AlbatalkFilterDropdown from "@/components/dropdown/AlbatalkFilterDropdown
 import PublicDropdown from "@/components/dropdown/PublicDropdown";
 import OrderByDropdown from "@/components/dropdown/OrderByDropdown";
 import ApplicationDropdown from "@/components/dropdown/ApplicationDropdown";
+import { roleType } from "./InfoEditContainer";
 
-const NavContainer = () => {
+const NavContainer = ({ role }: { role: roleType }) => {
   const searchParams = useSearchParams();
   const tab = searchParams.get("tab") || "post"; // 기본값은 "post"로 설정
 
@@ -15,7 +16,7 @@ const NavContainer = () => {
     <>
       <div className="pc:mt-[46px] pc:flex pc:items-center pc:justify-between">
         <div className="mt-6 flex justify-start pc:mt-0 tablet:mt-[30px]">
-          <NavMenu />
+          <NavMenu role={role} />
         </div>
         {tab === "post" && (
           <div className="mt-4 flex justify-end pc:mt-0">

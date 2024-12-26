@@ -59,7 +59,14 @@ export const deleteCookie = async (isLogout: boolean) => {
   const cookieStore = await cookies();
 
   if (isLogout) {
-    const cookieArr = ["accessToken", "refreshToken", "role", "id"];
+    const cookieArr = [
+      "accessToken",
+      "refreshToken",
+      "role",
+      "id",
+      "authorizationcode",
+      "oauthAccessToken",
+    ];
     await Promise.all(cookieArr.map((cookie) => cookieStore.delete(cookie)));
   }
 };

@@ -1,6 +1,6 @@
 export const PostCardSkeleton = () => {
   return (
-    <section className="relative flex h-[210px] w-[327px] flex-col justify-between rounded-[16px] border border-line-100 bg-background-100 p-6 pc:h-[280px] pc:w-[477px] tablet:h-[180px] tablet:w-[600px]">
+    <section className="relative flex h-[210px] w-[327px] flex-col justify-between rounded-[16px] border border-line-100 bg-background-100 p-6 pc:h-[280px] pc:w-[477px] tablet:h-[180px] tablet:w-full">
       <h3 className="h-[26px] w-[80%] rounded-md bg-gray-100"></h3>
       <p className="mt-2 h-[48px] w-[80%] rounded-md bg-gray-100 pc:-mt-[60px]"></p>
       <div className="mt-[20px] flex items-center justify-between gap-2">
