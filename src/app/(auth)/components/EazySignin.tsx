@@ -27,7 +27,7 @@ const EazySignin = () => {
         alt="kakao logo"
         priority={true}
       />
-      <span className="text-[rgba(0, 0, 0, 0.85)] text-xl font-semibold">
+      <span className="text-[rgba(0, 0, 0, 0.85)] text-xl font-semibold mobile:text-lg">
         5초만에 카카오로 시작하기
       </span>
     </button>
