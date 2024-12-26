@@ -51,6 +51,8 @@ const StepTwoContents = ({ isEdit }: { isEdit: boolean | undefined }) => {
 
   // 2단계 '작성중' 태그 여부
   useEffect(() => {
+    if (isEdit) return;
+
     const subscription = watch((value, { name }) => {
       if (name && fields.includes(name as (typeof fields)[number])) {
         const currentValue = value[name as keyof typeof value];
@@ -61,7 +63,7 @@ const StepTwoContents = ({ isEdit }: { isEdit: boolean | undefined }) => {
     });
 
     return () => subscription.unsubscribe();
-  }, [watch, fields, setStepActive]);
+  }, [watch, fields, setStepActive, isEdit]);
 
   // 추출한 필수값을 폼에 적용
   useEffect(() => {

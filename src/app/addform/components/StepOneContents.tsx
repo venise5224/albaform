@@ -33,10 +33,11 @@ const StepOneContents = ({ isEdit }: { isEdit: boolean | undefined }) => {
     currentImageList,
     temporaryDateRange,
     setTemporaryDataByStep,
+    isEdit,
   });
 
   // 1단계 '작성중' 태그 여부
-  useStepOneActive({ fields, setStepOneActive });
+  useStepOneActive({ fields, setStepOneActive, isEdit });
 
   // 추출한 필수값을 폼에 적용
   useEffect(() => {

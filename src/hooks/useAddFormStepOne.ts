@@ -22,11 +22,12 @@ export const useAddFormStepOne = () => {
   );
 
   const stepOneData = useMemo(() => {
+    const currentValues = getValues();
     return fields.reduce(
-      (acc, field) => ({ ...acc, [field]: watch(field) }),
+      (acc, field) => ({ ...acc, [field]: currentValues[field] }),
       {} as NonNullable<AddFormStepProps["stepOne"]>
     );
-  }, [watch, fields]);
+  }, [getValues, fields]);
 
   return { watch, setValue, getValues, stepOneData, fields };
 };
@@ -36,15 +37,18 @@ export const useStepOneTemporaryData = ({
   currentImageList,
   temporaryDateRange,
   setTemporaryDataByStep,
+  isEdit,
 }: {
   currentImageList: File[];
   temporaryDateRange: [string, string];
   setTemporaryDataByStep: (data: AddFormStepProps) => void;
+  isEdit?: boolean;
 }) => {
   const { getValues } = useFormContext<z.infer<typeof addFormSchema>>();
 
   // 임시 데이터 atom 업데이트
   useEffect(() => {
+    if (isEdit) return;
     const title = getValues("title");
     const description = getValues("description");
 
@@ -67,7 +71,13 @@ export const useStepOneTemporaryData = ({
     };
 
     updateTemporaryData();
-  }, [getValues, setTemporaryDataByStep, currentImageList, temporaryDateRange]);
+  }, [
+    getValues,
+    setTemporaryDataByStep,
+    currentImageList,
+    temporaryDateRange,
+    isEdit,
+  ]);
 
   const loadFromLocalStorage = useCallback(() => {
     const localStorageData = localStorage.getItem("stepOne");
@@ -84,14 +94,18 @@ export const useStepOneTemporaryData = ({
 export const useStepOneActive = ({
   fields,
   setStepOneActive,
+  isEdit,
 }: {
   fields: readonly string[];
   setStepOneActive: (active: boolean) => void;
+  isEdit?: boolean;
 }) => {
   const { watch } = useFormContext<z.infer<typeof addFormSchema>>();
 
   // 1단계 '작성중' 태그 여부
   useEffect(() => {
+    if (isEdit) return;
+
     const subscription = watch((value, { name }) => {
       if (name && fields.includes(name as (typeof fields)[number])) {
         const currentValue = value[name as keyof typeof value];
@@ -102,5 +116,5 @@ export const useStepOneActive = ({
     });
 
     return () => subscription.unsubscribe();
-  }, [watch, fields, setStepOneActive]);
+  }, [watch, fields, setStepOneActive, isEdit]);
 };
