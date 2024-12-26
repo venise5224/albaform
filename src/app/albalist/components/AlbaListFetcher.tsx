@@ -10,7 +10,6 @@ export interface AlbaListFetcherProps {
     keyword?: string;
     orderBy?: string;
     isRecruiting?: boolean;
-    isPublic?: boolean;
   };
 }
 
@@ -27,14 +26,7 @@ const AlbaListFetcher = async ({ params }: AlbaListFetcherProps) => {
       params.isRecruiting === undefined ? undefined : params.isRecruiting,
   });
 
-  const filteredData =
-    params.isPublic !== undefined
-      ? response.data.filter(
-          (item: AlbarformData) => item.isPublic === params.isPublic
-        )
-      : response.data;
-
-  const albaList = filteredData || [];
+  const albaList = response.data || [];
   const nextCursor: number | null = response.nextCursor;
 
   return (
