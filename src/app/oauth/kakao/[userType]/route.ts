@@ -54,8 +54,8 @@ export const GET = async (request: Request) => {
     // 2. 쿠키에 AccesToken 추가, 사용자 정보 받는 페이지로 이동시킴
     const response = NextResponse.redirect(
       request.url.includes("applicant")
-        ? "http:localhost:3000/signup/applicant?stepOneDone=true?isOAuth=true"
-        : "http:localhost:3000/signup/owner?stepOneDone=true?isOAuth=true"
+        ? "http:localhost:3000/signup/applicant?stepOneDone=true?isOAuth=true?provider=kakao"
+        : "http:localhost:3000/signup/owner?stepOneDone=true?isOAuth=true?provider=kakao"
     );
 
     response.cookies.set("accessToken", accessToken, {
