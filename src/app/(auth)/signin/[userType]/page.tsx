@@ -1,6 +1,5 @@
 import SigninTitle from "../components/SigninTitle";
 import SigninContents from "../components/SigninContents";
-import EazySignin from "../../components/EazySignin";
 import { Metadata } from "next";
 
 interface SigninPageProps {
@@ -21,7 +20,6 @@ const SigninPage = async ({ params }: SigninPageProps) => {
     <>
       <SigninTitle userType={userType} />
       <SigninContents />
-      <EazySignin />
     </>
   );
 };

@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import SolidButton from "@/components/button/SolidButton";
 import { cls } from "@/utils/dynamicTailwinds";
 import { useToast } from "@/hooks/useToast";
+import EazySignin from "../../components/EazySignin";
 
 const SigninContents = () => {
   const router = useRouter();
@@ -99,14 +100,17 @@ const SigninContents = () => {
             </ErrorText>
           </div>
         </div>
-        <SolidButton
-          disabled={!isValid || isSubmitting}
-          type="submit"
-          style="orange300"
-          size="2xl"
-        >
-          로그인 하기
-        </SolidButton>
+        <div className="flex flex-col space-y-4">
+          <SolidButton
+            disabled={!isValid || isSubmitting}
+            type="submit"
+            style="orange300"
+            size="2xl"
+          >
+            로그인 하기
+          </SolidButton>
+          <EazySignin />
+        </div>
       </div>
     </form>
   );
