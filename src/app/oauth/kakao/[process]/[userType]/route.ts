@@ -79,7 +79,13 @@ export const GET = async (request: Request) => {
         });
 
         return response;
+      } else {
+        console.error("Kakao 로그인 실패", oauthLoginResponse.statusText);
+        return new Response("카카오로그인에 실패했습니다.", { status: 500 });
       }
+    } else {
+      console.error("잘못된 경로로의 요청입니다.");
+      return new Response("잘못된 경로로의 요청입니다.", { status: 404 });
     }
   } catch (error) {
     console.error("Error during Kakao login process:", error);

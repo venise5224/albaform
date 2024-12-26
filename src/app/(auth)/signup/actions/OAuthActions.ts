@@ -10,7 +10,8 @@ export const OAuthActions = async (
   role: string
 ) => {
   const cookieStore = await cookies();
-  const kakaoToken = cookieStore.get("accessToken")?.value;
+  const authorizationCode = cookieStore.get("authorizationcode")?.value;
+  const oauthAccessToken = cookieStore.get("oauthAccessToken")?.value;
 
   const providerRedirectUri =
     role === "OWNER"
@@ -30,7 +31,7 @@ export const OAuthActions = async (
     nickname: formData.get("nickname")?.toString(),
     name: formData.get("name")?.toString() || "",
     redirectUri: providerRedirectUri,
-    token: kakaoToken,
+    token: authorizationCode || oauthAccessToken,
   };
 
   const result = OAuthSchema.safeParse(data);
@@ -47,17 +48,15 @@ export const OAuthActions = async (
       `${process.env.NEXT_PUBLIC_API_URL}/oauth/sign-up/${provider}`,
       {
         method: "POST",
-        body: JSON.stringify(data),
+        body: JSON.stringify(result.data),
         headers: {
           "Content-Type": "application/json",
         },
       }
     );
 
-    console.log(response);
-
     const responseErrorText = {
-      400: "이미 존재하는 이메일입니다.",
+      400: "잘못된 인가코드입니다.",
       404: "잘못된 경로로의 요청입니다.",
       500: "서버 오류가 발생했습니다.",
     };

@@ -45,11 +45,12 @@ const SignupContents = ({
   const profileImg = useAtomValue(profileImgAtom);
   const address = useAtomValue(addressAtom);
   const { addToast } = useToast();
-  const stepParams = currentParams.get("stepOneDone") || "";
+  const isOAuth = currentParams.get("isOAuth") || "";
+  const provider = currentParams.get("provider") || "";
 
   const methods = useForm<FormSchema>({
     resolver: zodResolver(
-      stepParams.includes("isOAuth")
+      isOAuth
         ? OAuthSchema
         : userType === "applicant"
           ? applicantSchema
@@ -92,9 +93,6 @@ const SignupContents = ({
 
   const onSubmit = async (data: FormSchema) => {
     try {
-      const isOAuth = stepParams.includes("isOAuth");
-      const provider = stepParams.includes("kakao") ? "kakao" : "google";
-
       const formData = new FormData();
       Object.entries(data).forEach(([key, value]) => {
         formData.append(key, value || "");

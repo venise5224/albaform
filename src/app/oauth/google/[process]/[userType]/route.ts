@@ -45,7 +45,7 @@ export const GET = async (request: Request) => {
           : "http://localhost:3000/signup/owner?stepOneDone=true&isOAuth=true&provider=google"
       );
 
-      response.cookies.set("oauthAcessToken", oauthAccessToken, {
+      response.cookies.set("oauthAccessToken", oauthAccessToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "lax",
