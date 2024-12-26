@@ -6,6 +6,7 @@ import ModalManager from "@/components/modal/modalManager/ModalManager";
 import ToastContainer from "@/components/toast/ToastContainer";
 import Script from "next/script";
 import RedirectWarning from "@/lib/RedirectWarning";
+import OAuthLoginCheck from "@/lib/OAuthLoginCheck";
 
 export const metadata: Metadata = {
   title: {
@@ -35,6 +36,7 @@ export default function RootLayout({
     <html lang="ko">
       <body>
         <RedirectWarning />
+        <OAuthLoginCheck />
         <Sidebar />
         <Header />
         <ModalManager />

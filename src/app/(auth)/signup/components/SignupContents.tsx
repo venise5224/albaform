@@ -22,6 +22,8 @@ import SolidButton from "@/components/button/SolidButton";
 import { cls } from "@/utils/dynamicTailwinds";
 import { useToast } from "@/hooks/useToast";
 import { addressAtom } from "@/atoms/addressAtom";
+import { OAuthActions } from "../actions/OAuthActions";
+import { OAuthSchema } from "@/schema/signup/OAuthSchema";
 
 export type FormSchema =
   | z.infer<typeof applicantSchema>
@@ -43,10 +45,16 @@ const SignupContents = ({
   const profileImg = useAtomValue(profileImgAtom);
   const address = useAtomValue(addressAtom);
   const { addToast } = useToast();
+  const isOAuth = currentParams.get("isOAuth") || "";
+  const provider = currentParams.get("provider") || "";
 
   const methods = useForm<FormSchema>({
     resolver: zodResolver(
-      userType === "applicant" ? applicantSchema : ownerSchema
+      isOAuth
+        ? OAuthSchema
+        : userType === "applicant"
+          ? applicantSchema
+          : ownerSchema
     ),
     mode: "onChange",
     defaultValues: {
@@ -90,7 +98,9 @@ const SignupContents = ({
         formData.append(key, value || "");
       });
 
-      const response = await signupActions(formData);
+      const response = isOAuth
+        ? await OAuthActions(formData, provider, data.role)
+        : await signupActions(formData);
 
       if (response.status === 200) {
         if (profileImg) {
