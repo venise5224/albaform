@@ -83,6 +83,7 @@ const AlbarPreview = ({ info, role }: AlbarPreviewProps) => {
               height={24}
               alt="kebab icon"
               className="pc:size-9"
+              priority={true}
             />
           </AlbaPreviewDropdown>
         )}
