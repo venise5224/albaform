@@ -5,7 +5,7 @@ import StoreLocation from "../components/StoreLocation";
 import SimpleRequirements from "../components/SimpleRequirements";
 import EmployerInfo from "../components/EmployerInfo";
 import DetailRequirements from "../components/DetailRequirements";
-import NoticeApplicant from "../components/NoticeApplicant";
+import NoticeApplicant from "./components/NoticeApplicant";
 import NoticeIsClosed from "../components/NoticeIsClosed";
 import ScrapAndShareButton from "../components/ScrapAndShareButton";
 import OwnerActionButtons from "../components/OwnerActionButtons";
@@ -109,7 +109,7 @@ const AlbarformDetailPage = async ({ params }: PageProps) => {
         </section>
       </div>
       <NoticeIsClosed closedDate={data.recruitmentEndDate} />
-      {count > 0 && <NoticeApplicant count={data.applyCount} /> }
+      {data.applyCount > 0 && <NoticeApplicant count={data.applyCount} />}
       {role === "APPLICANT" && (
         <ScrapAndShareButton formId={formId} isScrapped={data.isScrapped} />
       )}

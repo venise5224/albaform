@@ -3,13 +3,12 @@
 import TabButton from "./TabButton";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getRole } from "../actions/getRole";
+import { roleType } from "./InfoEditContainer";
 
-const NavMenu = () => {
+const NavMenu = ({ role }: { role: roleType }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState("post");
-  const [role, setRole] = useState("APPLICANT");
   const tabs = [
     { name: "post", label: "내가 쓴 글" },
     { name: "comment", label: "내가 쓴 댓글" },
@@ -18,14 +17,6 @@ const NavMenu = () => {
 
   const filteredTabs =
     role === "OWNER" ? tabs.filter((tab) => tab.name !== "scrap") : tabs;
-
-  useEffect(() => {
-    const fetchRole = async () => {
-      const roleFromServer = await getRole();
-      setRole(roleFromServer);
-    };
-    fetchRole();
-  }, []);
 
   useEffect(() => {
     const tabFromUrl = searchParams.get("tab");

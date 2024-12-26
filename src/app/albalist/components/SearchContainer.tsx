@@ -10,7 +10,6 @@ const SearchContainer = () => {
         <SearchInput placeholder="어떤 알바를 찾고 계세요?" />
         <div className="mt-[14px] flex items-center justify-between pc:mt-6">
           <div className="flex gap-x-[10px] pc:gap-x-4">
-            <PublicDropdown />
             <ApplicationDropdown />
           </div>
           <OrderByDropdown />

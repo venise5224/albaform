@@ -59,8 +59,8 @@ const ApllicantActionButtons = ({
   return (
     <>
       <SolidButton
-        icon={disabled ? "" : "/icon/write-fill-md.svg"}
         size="2xl"
+        icon={disabled ? "" : "/icon/write-fill-md.svg"}
         style={disabled ? "gray100" : "orange300"}
         disabled={disabled}
         onClick={submitApply}
@@ -68,8 +68,8 @@ const ApllicantActionButtons = ({
         {disabled ? "모집 완료" : "지원하기"}
       </SolidButton>
       <SolidButton
-        icon="/icon/document-md.svg"
         size="2xl"
+        icon="/icon/document-md.svg"
         style="outOrange300"
         onClick={showMyApplication}
       >

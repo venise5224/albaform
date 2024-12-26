@@ -7,6 +7,8 @@ const MyPageLayout = async ({ children }: { children: React.ReactNode }) => {
   const cookie = await cookies();
   const role = cookie.get("role")?.value || "nonMember";
 
+  console.log("role:", role);
+
   return (
     <div className="mx-auto mt-4 box-content max-w-[327px] px-6 pb-[80px] pc:max-w-[1480px] tablet:max-w-[680px]">
       <div className="flex items-center justify-between">
@@ -16,7 +18,7 @@ const MyPageLayout = async ({ children }: { children: React.ReactNode }) => {
         <MyInfoEditContainer role={role as roleType} />
       </div>
       <Suspense>
-        <NavContainer />
+        <NavContainer role={role as roleType} />
       </Suspense>
       <div className="mt-[30px] pc:mt-10 tablet:mt-[14px]">{children}</div>
     </div>

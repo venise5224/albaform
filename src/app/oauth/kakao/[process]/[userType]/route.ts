@@ -16,8 +16,8 @@ export const GET = async (request: Request) => {
     if (isProgress === "signup") {
       const response = NextResponse.redirect(
         role === "applicant"
-          ? "http://localhost:3000/signup/applicant?stepOneDone=true&isOAuth=true&provider=kakao"
-          : "http://localhost:3000/signup/owner?stepOneDone=true&isOAuth=true&provider=kakao"
+          ? `${process.env.NEXT_PUBLIC_DEPLOY_URL}/signup/applicant?stepOneDone=true&isOAuth=true&provider=kakao`
+          : `${process.env.NEXT_PUBLIC_DEPLOY_URL}/signup/owner?stepOneDone=true&isOAuth=true&provider=kakao`
       );
 
       response.cookies.set("authorizationcode", code, {
