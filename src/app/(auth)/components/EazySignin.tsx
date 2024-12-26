@@ -3,20 +3,19 @@
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 
-const EazyLogin = () => {
+const EazySignin = () => {
   const pathname = usePathname();
-  const isSigninOrSignup = pathname.includes("/signin") ? "로그인" : "회원가입";
 
   // SNS 로그인 화면으로 이동시키기
-  const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}&redirect_uri=${pathname.includes("applicant") ? process.env.NEXT_PUBLIC_KAKAO_APPLICANT_REDIRECT_URL : process.env.NEXT_PUBLIC_KAKAO_OWNER_REDIRECT_URL}
+  const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}&redirect_uri=${pathname.includes("applicant") ? process.env.NEXT_PUBLIC_KAKAO_APPLICANT_SIGNIN_REDIRECT_URL : process.env.NEXT_PUBLIC_KAKAO_OWNER_SIGNIN_REDIRECT_URL}
 &response_type=code`;
   const googleURL = `https://accounts.google.com/o/oauth2/v2/auth?
 		client_id=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}
-		&redirect_uri=${pathname.includes("applicant") ? process.env.NEXT_PUBLIC_GOOGLE_APPLICANT_REDIRECT_URL : process.env.NEXT_PUBLIC_GOOGLE_OWNER_REDIRECT_URL}
+		&redirect_uri=${pathname.includes("applicant") ? process.env.NEXT_PUBLIC_GOOGLE_APPLICANT_SIGNIN_REDIRECT_URL : process.env.NEXT_PUBLIC_GOOGLE_OWNER_SIGNIN_REDIRECT_URL}
 		&response_type=code
     &scope=email`;
 
-  const handleEazyLogin = (sns: string) => {
+  const handleClick = (sns: string) => {
     if (sns === "kakao") window.location.href = kakaoURL;
     if (sns === "google") window.location.href = googleURL;
   };
@@ -26,13 +25,13 @@ const EazyLogin = () => {
       <div className="flex items-center gap-[13px] text-gray-300">
         <div className="h-0 w-full border border-gray-100" />
         <span className="w-[500px] break-keep text-center">
-          SNS 계정으로 {isSigninOrSignup} 하기
+          SNS 계정으로 로그인하기
         </span>
         <div className="h-0 w-full border border-gray-100" />
       </div>
 
       <div className="mx-auto flex h-[48px] w-[112px] gap-4">
-        <button onClick={() => handleEazyLogin("google")}>
+        <button onClick={() => handleClick("google")}>
           <Image
             src={"/logo/logo-google.svg"}
             width={48}
@@ -40,7 +39,7 @@ const EazyLogin = () => {
             alt="google logo"
           />
         </button>
-        <button onClick={() => handleEazyLogin("kakao")}>
+        <button onClick={() => handleClick("kakao")}>
           <Image
             src={"/logo/logo-kakao.svg"}
             width={48}
@@ -53,4 +52,4 @@ const EazyLogin = () => {
   );
 };
 
-export default EazyLogin;
+export default EazySignin;
