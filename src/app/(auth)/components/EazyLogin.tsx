@@ -5,13 +5,20 @@ import { usePathname } from "next/navigation";
 
 const EazyLogin = () => {
   const pathname = usePathname();
-  const isSigninPage = pathname.includes("/signin");
-  const loginOrSignup = isSigninPage ? "로그인" : "회원가입";
-  const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}&redirect_uri=${process.env.NEXT_PUBLIC_KAKAO_APPLICANT_REDIRECT_URL}
+  const isSigninOrSignup = pathname.includes("/signin") ? "로그인" : "회원가입";
+
+  // SNS 로그인 화면으로 이동시키기
+  const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}&redirect_uri=${pathname.includes("applicant") ? process.env.NEXT_PUBLIC_KAKAO_APPLICANT_REDIRECT_URL : process.env.NEXT_PUBLIC_KAKAO_OWNER_REDIRECT_URL}
 &response_type=code`;
+  const googleURL = `https://accounts.google.com/o/oauth2/v2/auth?
+		client_id=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}
+		&redirect_uri=${pathname.includes("applicant") ? process.env.NEXT_PUBLIC_GOOGLE_APPLICANT_REDIRECT_URL : process.env.NEXT_PUBLIC_GOOGLE_OWNER_REDIRECT_URL}
+		&response_type=code
+    &scope=email`;
 
   const handleEazyLogin = (sns: string) => {
     if (sns === "kakao") window.location.href = kakaoURL;
+    if (sns === "google") window.location.href = googleURL;
   };
 
   return (
@@ -19,13 +26,13 @@ const EazyLogin = () => {
       <div className="flex items-center gap-[13px] text-gray-300">
         <div className="h-0 w-full border border-gray-100" />
         <span className="w-[500px] break-keep text-center">
-          SNS 계정으로 {loginOrSignup} 하기
+          SNS 계정으로 {isSigninOrSignup} 하기
         </span>
         <div className="h-0 w-full border border-gray-100" />
       </div>
 
       <div className="mx-auto flex h-[48px] w-[112px] gap-4">
-        <button>
+        <button onClick={() => handleEazyLogin("google")}>
           <Image
             src={"/logo/logo-google.svg"}
             width={48}
