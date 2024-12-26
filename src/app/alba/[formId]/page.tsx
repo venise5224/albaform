@@ -43,13 +43,15 @@ const AlbarformDetailPage = async ({ params }: PageProps) => {
   const cookie = await cookies();
   const role = cookie.get("role")?.value || "Guest";
   const userId = cookie.get("id")?.value;
+  const isLogin = userId ? true : false;
   const { formId } = await params;
 
   let data: AlbaformDetailData;
   let isMyAlbarform = false;
 
   try {
-    data = await fetchAlbarformDetailData(formId);
+    data = await fetchAlbarformDetailData(formId, isLogin);
+    console.log(data);
     isMyAlbarform = Number(userId) === data.ownerId;
   } catch (error) {
     console.error(error);
