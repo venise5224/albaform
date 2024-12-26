@@ -48,18 +48,23 @@ export const GET = async (request: Request) => {
 
       if (oauthLoginResponse.ok) {
         const {
-          user: userData,
+          user: { role, id },
           refreshToken,
           accessToken,
         } = await oauthLoginResponse.json();
 
         const response = NextResponse.redirect(
-          `${process.env.NEXT_PUBLIC_DEPLOY_URL}`
+          `${process.env.NEXT_PUBLIC_DEPLOY_URL}/`
         );
 
-        response.cookies.set("userData", userData, {
+        response.cookies.set("role", role, {
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
+          sameSite: "lax",
+          maxAge: 60 * 60 * 24, // 24시간
+        });
+
+        response.cookies.set("id", id, {
           sameSite: "lax",
           maxAge: 60 * 60 * 24, // 24시간
         });

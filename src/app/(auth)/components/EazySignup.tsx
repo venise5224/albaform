@@ -9,11 +9,9 @@ const EazySignup = () => {
   // SNS 로그인 화면으로 이동시키기
   const kakaoURL = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}&redirect_uri=${pathname.includes("applicant") ? process.env.NEXT_PUBLIC_KAKAO_APPLICANT_SIGNUP_REDIRECT_URL : process.env.NEXT_PUBLIC_KAKAO_OWNER_SIGNUP_REDIRECT_URL}
 &response_type=code`;
-  const googleURL = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}&redirect_uri=${pathname.includes("applicant") ? process.env.NEXT_PUBLIC_GOOGLE_APPLICANT_SIGNUP_REDIRECT_URL : process.env.NEXT_PUBLIC_GOOGLE_OWNER_SIGNUP_REDIRECT_URL}&response_type=code&scope=email`;
 
   const handleClick = (sns: string) => {
     if (sns === "kakao") window.location.href = kakaoURL;
-    if (sns === "google") window.location.href = googleURL;
   };
 
   return (
@@ -26,21 +24,14 @@ const EazySignup = () => {
         <div className="h-0 w-full border border-gray-100" />
       </div>
 
-      <div className="mx-auto flex h-[48px] w-[112px] gap-4">
-        <button onClick={() => handleClick("google")}>
+      <div className="mx-auto flex w-full gap-4">
+        <button onClick={() => handleClick("kakao")} className="m-auto">
           <Image
-            src={"/logo/logo-google.svg"}
-            width={48}
-            height={48}
-            alt="google logo"
-          />
-        </button>
-        <button onClick={() => handleClick("kakao")}>
-          <Image
-            src={"/logo/logo-kakao.svg"}
-            width={48}
-            height={48}
+            src={"/image/kakao_login_large.png"}
+            width={480}
+            height={480}
             alt="kakao logo"
+            priority={true}
           />
         </button>
       </div>
