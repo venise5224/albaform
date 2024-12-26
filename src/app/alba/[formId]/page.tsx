@@ -43,13 +43,14 @@ const AlbarformDetailPage = async ({ params }: PageProps) => {
   const cookie = await cookies();
   const role = cookie.get("role")?.value || "Guest";
   const userId = cookie.get("id")?.value;
+  const isLogin = userId ? true : false;
   const { formId } = await params;
 
   let data: AlbaformDetailData;
   let isMyAlbarform = false;
 
   try {
-    data = await fetchAlbarformDetailData(formId);
+    data = await fetchAlbarformDetailData(formId, isLogin);
     isMyAlbarform = Number(userId) === data.ownerId;
   } catch (error) {
     console.error(error);
@@ -107,8 +108,8 @@ const AlbarformDetailPage = async ({ params }: PageProps) => {
           {renderActionButtons()}
         </section>
       </div>
-      <NoticeApplicant count={data.applyCount} />
       <NoticeIsClosed closedDate={data.recruitmentEndDate} />
+      {data.applyCount > 0 && <NoticeApplicant count={data.applyCount} />}
       {role === "APPLICANT" && (
         <ScrapAndShareButton formId={formId} isScrapped={data.isScrapped} />
       )}

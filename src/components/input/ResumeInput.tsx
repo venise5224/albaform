@@ -9,7 +9,7 @@ type ResumeInputProps = {
 const ResumInput = ({ title }: ResumeInputProps) => {
   return (
     <div className="flex h-[52px] w-full items-center justify-between rounded-lg bg-background-200 p-4">
-      <span>{title}.pdf </span>
+      <span>{title}</span>
       <button>
         <Image
           src="/icon/edit-black.svg"
