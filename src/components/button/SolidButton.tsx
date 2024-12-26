@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 
 interface SolidButtonProps {
   size?: "2xl" | "xl" | "lg" | "md" | "sm";
@@ -14,6 +15,8 @@ interface SolidButtonProps {
   icon?: string;
   children: string;
   disabled?: boolean;
+  method?: "button" | "link";
+  href?: string;
   className?: string;
   [key: string]: any;
 }
@@ -24,6 +27,8 @@ const SolidButton = ({
   icon,
   children,
   disabled = false,
+  method = "button",
+  href,
   className,
   ...rest
 }: SolidButtonProps) => {
@@ -69,8 +74,27 @@ const SolidButton = ({
   // 최종 스타일
   const finalClassName = `${commonClass} ${buttonSizes[size]} ${buttonStyles[style]} ${className}`;
 
+  if (method === "button") {
+    return (
+      <button className={finalClassName} disabled={disabled} {...rest}>
+        {icon && (
+          <span>
+            <Image
+              src={icon}
+              alt="buttonIcon"
+              width={24}
+              height={24}
+              className="pc:size-9"
+            />
+          </span>
+        )}
+        {children}
+      </button>
+    );
+  }
+
   return (
-    <button className={finalClassName} disabled={disabled} {...rest}>
+    <Link href={href || "#"} className={finalClassName} {...rest}>
       {icon && (
         <span>
           <Image
@@ -83,7 +107,7 @@ const SolidButton = ({
         </span>
       )}
       {children}
-    </button>
+    </Link>
   );
 };
 
