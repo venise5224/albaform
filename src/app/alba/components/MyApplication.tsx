@@ -1,11 +1,13 @@
 import ResumInput from "@/components/input/ResumeInput";
 import formatExperienceMonth from "@/utils/formatExperienceMonth";
 import { MyApplicationData } from "@/types/alba";
+import decodeURIToKorean from "@/utils/decodeURIString";
 
 const MyApplication = ({ info }: { info: MyApplicationData }) => {
   const formattedExperienceMonth = formatExperienceMonth(
     info?.experienceMonths
   );
+  const decodedResumeName = decodeURIToKorean(info.resumeName);
 
   return (
     <div className="flex flex-col gap-4 pb-[8px]">
@@ -28,7 +30,7 @@ const MyApplication = ({ info }: { info: MyApplicationData }) => {
       </section>
       <section className="mt-4 flex flex-col gap-[14px]">
         <h3 className="text-black-100">이력서</h3>
-        <ResumInput title={info?.resumeName} />
+        <ResumInput title={decodedResumeName} />
       </section>
       <section className="mt-4 flex flex-col gap-[14px]">
         <h3 className="text-black-100">자기소개</h3>
