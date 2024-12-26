@@ -1,6 +1,4 @@
-const translateStatus = (
-  status: "REJECTED" | "INTERVIEW_PENDING" | "INTERVIEW_COMPLETED" | "HIRED"
-) => {
+const translateStatus = (status: string) => {
   switch (status) {
     case "REJECTED":
       return "거절";

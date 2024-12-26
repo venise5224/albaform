@@ -5,6 +5,7 @@ import Sidebar from "@/components/header/Sidebar";
 import ModalManager from "@/components/modal/modalManager/ModalManager";
 import ToastContainer from "@/components/toast/ToastContainer";
 import Script from "next/script";
+import RedirectWarning from "@/lib/RedirectWarning";
 
 export const metadata: Metadata = {
   title: {
@@ -33,6 +34,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body>
+        <RedirectWarning />
         <Sidebar />
         <Header />
         <ModalManager />

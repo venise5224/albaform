@@ -7,20 +7,20 @@ interface FloatingButtonProps {
   icon: string;
   color?: "orange300" | "oldLace50" | "white";
   children?: string;
-  type?: "link" | "button";
-  onClick?: () => void;
+  method?: "link" | "button";
   href?: string;
   className?: string;
+  [key: string]: any;
 }
 
 const FloatingButton = ({
   icon,
   color = "orange300",
   children,
-  type = "link",
-  onClick,
+  method = "link",
   href,
   className,
+  ...rest
 }: FloatingButtonProps) => {
   const iconTextClass =
     "w-full max-w-[120px] h-full max-h-[54px] text-base font-semibold pc:max-w-[140px] pc:max-h-16 pc:text-xl";
@@ -54,9 +54,9 @@ const FloatingButton = ({
     children ? iconTextClass : noTextClass
   } ${className}`;
 
-  if (type === "link") {
+  if (method === "link") {
     return (
-      <Link href={href || "#"} className={finalClassName}>
+      <Link href={href || "#"} className={finalClassName} {...rest}>
         <Image
           src={icon}
           alt="buttonIcon"
@@ -70,7 +70,7 @@ const FloatingButton = ({
   }
 
   return (
-    <button type="button" onClick={onClick} className={finalClassName}>
+    <button type="button" className={finalClassName} {...rest}>
       <Image
         src={icon}
         alt="buttonIcon"
