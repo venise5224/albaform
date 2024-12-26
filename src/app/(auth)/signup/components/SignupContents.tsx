@@ -93,8 +93,8 @@ const SignupContents = ({
   const onSubmit = async (data: FormSchema) => {
     try {
       const isOAuth = stepParams.includes("isOAuth");
-      const provider = stepParams.includes("provider") ? "kakao" : "google";
-      console.log(provider);
+      const provider = stepParams.includes("kakao") ? "kakao" : "google";
+
       const formData = new FormData();
       Object.entries(data).forEach(([key, value]) => {
         formData.append(key, value || "");

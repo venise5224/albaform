@@ -21,8 +21,8 @@ export const OAuthActions = async (
     name: formData.get("name")?.toString() || "",
     redirectUri:
       role === "OWNER"
-        ? `${process.env.NEXT_PUBLIC_KAKAO_OWNER_REDIRECT_URL}`
-        : `${process.env.NEXT_PUBLIC_KAKAO_APPLICANT_REDIRECT_URL}`,
+        ? `${process.env.NEXT_PUBLIC_KAKAO_OWNER_SIGNUP_REDIRECT_URL}`
+        : `${process.env.NEXT_PUBLIC_KAKAO_APPLICANT_SIGNUP_REDIRECT_URL}`,
     token: kakaoToken,
   };
 
