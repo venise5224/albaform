@@ -13,12 +13,15 @@ import { useRouter } from "next/navigation";
 import SolidButton from "@/components/button/SolidButton";
 import { cls } from "@/utils/dynamicTailwinds";
 import { useToast } from "@/hooks/useToast";
+import { useSetAtom } from "jotai";
+import { isLoggedAtom } from "@/atoms/isLogged";
 import EazySignin from "../../components/EazySignin";
 
 const SigninContents = () => {
   const router = useRouter();
   const [visible, setVisible] = useState(false);
   const { addToast } = useToast();
+  const isLogged = useSetAtom(isLoggedAtom);
   const {
     register,
     handleSubmit,
@@ -42,6 +45,7 @@ const SigninContents = () => {
 
       if (response.status === 200) {
         localStorage.setItem("isLogin", "true");
+        isLogged(true);
         router.push("/");
       } else {
         addToast(response.error as string, "warning");
