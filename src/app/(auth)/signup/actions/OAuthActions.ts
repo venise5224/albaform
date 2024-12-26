@@ -1,6 +1,7 @@
 "use server";
 
 import { setCookie } from "@/lib/cookie";
+import { OAuthSchema } from "@/schema/signup/OAuthSchema";
 import { cookies } from "next/headers";
 
 export const OAuthActions = async (
@@ -11,6 +12,15 @@ export const OAuthActions = async (
   const cookieStore = await cookies();
   const kakaoToken = cookieStore.get("accessToken")?.value;
 
+  const providerRedirectUri =
+    role === "OWNER"
+      ? provider === "kakao"
+        ? `${process.env.NEXT_PUBLIC_KAKAO_OWNER_SIGNUP_REDIRECT_URL}`
+        : `${process.env.NEXT_PUBLIC_GOOGLE_OWNER_SIGNUP_REDIRECT_URL}`
+      : provider === "kakao"
+        ? `${process.env.NEXT_PUBLIC_KAKAO_APPLICANT_SIGNUP_REDIRECT_URL}`
+        : `${process.env.NEXT_PUBLIC_GOOGLE_APPLICANT_SIGNUP_REDIRECT_URL}`;
+
   const data = {
     location: formData.get("location")?.toString() || "",
     phoneNumber: formData.get("phoneNumber"),
@@ -19,12 +29,18 @@ export const OAuthActions = async (
     role: formData.get("role")?.toString(),
     nickname: formData.get("nickname")?.toString(),
     name: formData.get("name")?.toString() || "",
-    redirectUri:
-      role === "OWNER"
-        ? `${process.env.NEXT_PUBLIC_KAKAO_OWNER_SIGNUP_REDIRECT_URL}`
-        : `${process.env.NEXT_PUBLIC_KAKAO_APPLICANT_SIGNUP_REDIRECT_URL}`,
+    redirectUri: providerRedirectUri,
     token: kakaoToken,
   };
+
+  const result = OAuthSchema.safeParse(data);
+
+  if (!result.success) {
+    return {
+      status: false,
+      message: result.error.flatten(),
+    };
+  }
 
   try {
     const response = await fetch(
