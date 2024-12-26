@@ -4,6 +4,9 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "내 알바폼",
+  openGraph: {
+    title: "내 알바폼",
+  },
 };
 
 const Layout = ({ children }: { children: ReactNode }) => {

@@ -1,3 +1,12 @@
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "알바토크 게시글",
+  openGraph: {
+    title: "알바토크 게시글",
+  },
+};
+
 const layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <main className="mx-auto mt-10 max-w-[327px] pb-12 pc:mt-[88px] pc:max-w-[1480px] pc:pb-[41px] tablet:mt-20 tablet:max-w-[600px] tablet:pb-[66px]">

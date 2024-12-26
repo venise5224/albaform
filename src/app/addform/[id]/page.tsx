@@ -4,6 +4,9 @@ import instance from "@/lib/instance";
 
 export const metadata: Metadata = {
   title: "알바폼 수정하기",
+  openGraph: {
+    title: "알바폼 수정하기",
+  },
 };
 
 interface EditFormPageProps {
