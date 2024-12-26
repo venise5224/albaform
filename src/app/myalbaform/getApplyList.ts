@@ -24,7 +24,7 @@ export const getApplyList = async ({
 
   try {
     const response = await instance(url.toString(), {
-      next: { revalidate: 300, tags: ["myalbaform"] },
+      next: { revalidate: 300, tags: ["myapply"] },
     });
 
     if (response.status !== 200) {
