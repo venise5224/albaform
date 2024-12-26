@@ -9,6 +9,7 @@ import { useAddForm } from "@/hooks/useAddForm";
 import { useValidateForm } from "@/hooks/useAddForm";
 import { useToast } from "@/hooks/useToast";
 import { useAtomValue, useSetAtom } from "jotai";
+import { revalidateTag } from "next/cache";
 import { useParams } from "next/navigation";
 
 const MainButton = () => {
@@ -35,11 +36,20 @@ const MainButton = () => {
     addToast("입력한 내용이 임시 저장되었습니다.", "success");
   };
 
+  const handleEdit = () => {
+    setAddFormSubmitTrigger(true);
+    revalidateTag("albarformDetail");
+  };
+
   return (
     <div className="flex flex-col space-y-2 p-6">
       {!params.id ? (
         <>
-          <SolidButton style="outOrange300" onClick={handleTemporarySave}>
+          <SolidButton
+            style="outOrange300"
+            onClick={handleTemporarySave}
+            size="2xl"
+          >
             임시 저장
           </SolidButton>
           <SolidButton
@@ -47,6 +57,7 @@ const MainButton = () => {
             style="orange300"
             onClick={() => setAddFormSubmitTrigger(true)}
             disabled={submitDisabled || addFormIsSubmitting}
+            size="2xl"
           >
             {addFormIsSubmitting ? "등록중..." : "등록하기"}
           </SolidButton>
@@ -55,8 +66,9 @@ const MainButton = () => {
         <SolidButton
           type="submit"
           style="orange300"
-          onClick={() => setAddFormSubmitTrigger(true)}
+          onClick={handleEdit}
           disabled={submitDisabled || addFormIsSubmitting}
+          size="2xl"
         >
           {addFormIsSubmitting ? "수정중..." : "수정하기"}
         </SolidButton>

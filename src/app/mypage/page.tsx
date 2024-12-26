@@ -7,6 +7,9 @@ import PostCardListSkeleton from "../albatalk/components/PostCardSkeleton";
 
 export const metadata: Metadata = {
   title: "마이페이지",
+  openGraph: {
+    title: "마이페이지",
+  },
 };
 
 interface MyPageProps {

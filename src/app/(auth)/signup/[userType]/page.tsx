@@ -10,6 +10,9 @@ interface SignupPageProps {
 
 export const metadata: Metadata = {
   title: "회원가입",
+  openGraph: {
+    title: "회원가입",
+  },
 };
 
 const SignupPage = async ({ params, searchParams }: SignupPageProps) => {

@@ -6,7 +6,7 @@ const fetchAlbarformDetailData = async (formId: string) => {
   }
 
   const response = await fetch(`${API_URL}/forms/${formId}`, {
-    next: { revalidate: 60 * 5 },
+    next: { tags: ["albarformDetail"] },
   });
   if (!response.ok) {
     throw new Error(`데이터 요청에 실패했습니다.: ${response.statusText}`);

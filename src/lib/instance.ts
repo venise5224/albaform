@@ -25,6 +25,17 @@ const instance = async (url: string, options: RequestInit = {}) => {
         error: "장시간 사용하지 않아 로그인이 해제되었습니다.",
       };
     }
+
+    const newAccessToken = cookieStore.get("accessToken")?.value;
+
+    if (newAccessToken && newAccessToken !== accessToken) {
+      options.headers = {
+        ...options.headers,
+        Authorization: `Bearer ${newAccessToken}`,
+      };
+    }
+
+    response = await fetch(url, { ...options });
   }
 
   if (response.status === 204) {

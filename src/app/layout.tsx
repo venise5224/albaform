@@ -5,6 +5,7 @@ import Sidebar from "@/components/header/Sidebar";
 import ModalManager from "@/components/modal/modalManager/ModalManager";
 import ToastContainer from "@/components/toast/ToastContainer";
 import Script from "next/script";
+import RedirectWarning from "@/lib/RedirectWarning";
 
 export const metadata: Metadata = {
   title: {
@@ -13,7 +14,7 @@ export const metadata: Metadata = {
   },
   description: "아르바이트 공고를 올리고 채용하는 플랫폼 Albaform!",
   icons: { icon: "/logo/main-logo.svg", shortcut: "/logo/main-logo.svg" },
-  metadataBase: new URL("http://localhost:3000"),
+  metadataBase: new URL("https://albaform-five.vercel.app/"),
   openGraph: {
     title: {
       template: "%s",
@@ -21,7 +22,7 @@ export const metadata: Metadata = {
     },
     description: "아르바이트 공고를 올리고 채용하는 플랫폼 Albaform!",
     images: "/logo/main-logo.svg",
-    url: "http://localhost:3000",
+    url: "https://albaform-five.vercel.app/",
   },
 };
 
@@ -33,6 +34,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body>
+        <RedirectWarning />
         <Sidebar />
         <Header />
         <ModalManager />

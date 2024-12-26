@@ -5,10 +5,15 @@ import Image from "next/image";
 import { ReactNode, useEffect, useRef } from "react";
 
 const ModalContainer = ({ children }: { children: ReactNode }) => {
-  const { closeModal } = useModal();
+  const { closeModal, getCurrentModal } = useModal();
   const modalRef = useRef<HTMLDivElement | null>(null);
 
+  const currentModal = getCurrentModal();
+  const isActive = currentModal === children;
+
   useEffect(() => {
+    if (!isActive) return;
+
     const handleClickOutside = (event: MouseEvent) => {
       if (
         modalRef.current &&
@@ -19,16 +24,18 @@ const ModalContainer = ({ children }: { children: ReactNode }) => {
     };
 
     document.body.style.overflow = "hidden";
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside, true);
 
     return () => {
       document.body.style.overflow = "auto";
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside, true);
     };
-  }, [closeModal]);
+  }, [closeModal, isActive]);
 
   return (
-    <div className="fixed inset-0 z-10 flex items-end justify-center bg-black/50 pc:items-center tablet:items-center">
+    <div
+      className={`fixed inset-0 z-10 flex items-end justify-center bg-black/50 pc:items-center tablet:items-center`}
+    >
       <div
         ref={modalRef}
         className="relative w-full rounded-[24px] rounded-b-none bg-gray-50 px-[24px] pb-[16px] pt-[24px] pc:w-auto pc:rounded-[24px] pc:px-10 pc:pb-[24px] pc:pt-[32px] tablet:w-auto tablet:rounded-[24px]"

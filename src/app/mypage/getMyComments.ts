@@ -16,7 +16,13 @@ export const getMyComments = async (query: getMyCommentsProps) => {
   });
 
   const response = await instance(
-    `${process.env.NEXT_PUBLIC_API_URL}/users/me/comments?${queryString}`
+    `${process.env.NEXT_PUBLIC_API_URL}/users/me/comments?${queryString}`,
+    {
+      next: {
+        revalidate: 300,
+        tags: ["myComment"],
+      },
+    }
   );
 
   if (response.status !== 200) {

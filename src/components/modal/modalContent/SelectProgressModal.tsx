@@ -7,8 +7,7 @@ import { useState } from "react";
 import { useModal } from "@/hooks/useModal";
 import { useToast } from "@/hooks/useToast";
 import { selectProgressAction } from "../modalActions/selectProgressAction";
-import { useAtomValue } from "jotai";
-import { applicationIdAtom } from "@/atoms/modalAtomStore";
+import { useParams } from "next/navigation";
 
 export type ProgressValue =
   | "REJECTED"
@@ -28,7 +27,8 @@ const SelectProgressModal = () => {
   const { addToast } = useToast();
   const viewPort = useViewPort();
   const [selected, setSelected] = useState<ProgressValue>("INTERVIEW_PENDING");
-  const applicationId = useAtomValue(applicationIdAtom);
+
+  const { applicationId } = useParams() as { applicationId: string };
 
   const handleChange = (value: ProgressValue) => {
     setSelected(value);
@@ -36,18 +36,22 @@ const SelectProgressModal = () => {
 
   const handleSubmit = async () => {
     try {
-      const response = await selectProgressAction(selected, applicationId);
+      const response = await selectProgressAction(
+        { status: selected },
+        Number(applicationId)
+      );
 
-      if (response.status === 200) {
-        addToast("지원상태 수정이 완료되었습니다.", "success");
+      if (response.status) {
+        addToast("지원 상태 수정이 완료되었습니다.", "success");
         closeModal();
+        window.location.reload();
       } else {
         console.error(response.message, response.status);
         addToast(response.message as string, "warning");
       }
     } catch (error) {
-      console.error("지원상태 수정 에러 발생", error);
-      addToast("지원상태 수정 중 오류가 발생했습니다.", "warning");
+      console.error("지원 상태 수정 에러 발생", error);
+      addToast("지원 상태 수정 중 오류가 발생했습니다.", "warning");
     }
   };
 
@@ -57,7 +61,7 @@ const SelectProgressModal = () => {
         <h2 className="modal-title mt-0">진행상태 선택</h2>
         <p className="modal-sub-title">현재 진행상태를 알려주세요.</p>
 
-        <ul className="mt-[24px] flex w-full flex-col gap-[10px] pc:mt-12">
+        <ul className="mt-[24px] flex w-[327px] flex-col gap-[10px] pc:mt-12">
           {progressList.map((progress) => (
             <li key={progress.name}>
               <label
@@ -80,7 +84,7 @@ const SelectProgressModal = () => {
         <div className="mt-[30px] flex gap-[11px] pc:gap-[8px]">
           <div className={buttmonContainerStyle}>
             <SolidButton
-              size={viewPort === "pc" ? "large" : "small"}
+              size={viewPort === "pc" ? "2xl" : "xl"}
               style="gray100"
               type="button"
               onClick={() => {
@@ -92,7 +96,7 @@ const SelectProgressModal = () => {
           </div>
           <div className={buttmonContainerStyle}>
             <SolidButton
-              size={viewPort === "pc" ? "large" : "small"}
+              size={viewPort === "pc" ? "2xl" : "xl"}
               style="orange300"
               type="button"
               onClick={handleSubmit}

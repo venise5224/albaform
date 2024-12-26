@@ -10,6 +10,10 @@ import { AlbaformDetailData, MyApplicationData } from "@/types/alba";
 export const metadata = {
   title: "지원자 상세 보기",
   description: "Albarform - 지원자 상세 보기 페이지입니다",
+  openGraph: {
+    title: "지원자 상세 보기",
+    description: "Albarform - 지원자 상세 보기 페이지입니다",
+  },
 };
 
 interface MyApplicantDetailPageProps {
@@ -44,7 +48,7 @@ const MyApplicantDetailPage = async ({
       {albarformData.imageUrls && (
         <Carousel imageUrls={albarformData.imageUrls} />
       )}
-      <div className="flex flex-col gap-6 p-10 pc:grid pc:grid-cols-2 pc:gap-x-[160px] pc:gap-y-[120px] pc:px-[200px] tablet:px-[150px]">
+      <div className="flex flex-col gap-6 pc:grid pc:grid-cols-2 pc:gap-x-[160px] pc:gap-y-[120px]">
         <section className="pc:col-start-1">
           <Title info={albarformData} />
         </section>

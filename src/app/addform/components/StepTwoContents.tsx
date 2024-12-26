@@ -10,7 +10,7 @@ import {
 import { useSetAtom } from "jotai";
 import LoadingSkeleton from "./LoadingSkeleton";
 
-const StepTwoContents = () => {
+const StepTwoContents = ({ isEdit }: { isEdit: boolean | undefined }) => {
   const {
     setValue,
     getValues,
@@ -51,6 +51,8 @@ const StepTwoContents = () => {
 
   // 2단계 '작성중' 태그 여부
   useEffect(() => {
+    if (isEdit) return;
+
     const subscription = watch((value, { name }) => {
       if (name && fields.includes(name as (typeof fields)[number])) {
         const currentValue = value[name as keyof typeof value];
@@ -61,7 +63,7 @@ const StepTwoContents = () => {
     });
 
     return () => subscription.unsubscribe();
-  }, [watch, fields, setStepActive]);
+  }, [watch, fields, setStepActive, isEdit]);
 
   // 추출한 필수값을 폼에 적용
   useEffect(() => {
@@ -89,6 +91,11 @@ const StepTwoContents = () => {
 
   // 임시 데이터 있으면 로컬스토리지에서 불러오기
   useEffect(() => {
+    if (isEdit) {
+      setLoading(false);
+      return;
+    }
+
     const localStorageData = localStorage.getItem("stepTwo");
     if (localStorageData) {
       const parsedData = JSON.parse(localStorageData);
@@ -99,7 +106,7 @@ const StepTwoContents = () => {
       setStepTwoData(parsedData);
     }
     setLoading(false);
-  }, [setValue, setStepTwoData, fields]);
+  }, [setValue, setStepTwoData, fields, isEdit]);
 
   if (loading) {
     return <LoadingSkeleton count={5} />;

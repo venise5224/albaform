@@ -9,6 +9,9 @@ interface SigninPageProps {
 
 export const metadata: Metadata = {
   title: "로그인",
+  openGraph: {
+    title: "로그인",
+  },
 };
 
 const SigninPage = async ({ params }: SigninPageProps) => {

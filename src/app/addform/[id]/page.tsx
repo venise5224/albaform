@@ -4,6 +4,9 @@ import instance from "@/lib/instance";
 
 export const metadata: Metadata = {
   title: "알바폼 수정하기",
+  openGraph: {
+    title: "알바폼 수정하기",
+  },
 };
 
 interface EditFormPageProps {
@@ -19,7 +22,7 @@ const EditFormPage = async ({ params }: EditFormPageProps) => {
         `${process.env.NEXT_PUBLIC_API_URL}/forms/${id}`,
         {
           method: "GET",
-          cache: "force-cache",
+          next: { tags: ["albaformEdit"] },
         }
       );
 

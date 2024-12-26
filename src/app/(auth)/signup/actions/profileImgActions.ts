@@ -25,7 +25,7 @@ export const profileImgActions = async (imgFormData: FormData) => {
       `${process.env.NEXT_PUBLIC_API_URL}/users/me`,
       {
         method: "PATCH",
-        body: JSON.stringify({ imageUrl: imageData.data.url }),
+        body: JSON.stringify({ imageUrl: imageData.url }),
         headers: {
           "Content-Type": "application/json",
         },

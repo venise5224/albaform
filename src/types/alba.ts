@@ -65,10 +65,10 @@ export interface AlbaformDetailData {
 }
 
 export interface MyApplicationData {
-  applicantId: number;
+  applicantId: number | null;
   updatedAt: string;
   createdAt: string;
-  status: "REJECTED" | "INTERVIEW_PENDING" | "INTERVIEW_COMPLETED" | "HIRED";
+  status: string;
   introduction: string;
   resumeName: string;
   resumeId: number;

@@ -1,15 +1,19 @@
 import { Suspense } from "react";
-import MyInfoEditContainer from "./components/InfoEditContainer";
+import MyInfoEditContainer, { roleType } from "./components/InfoEditContainer";
 import NavContainer from "./components/NavContainer";
+import { cookies } from "next/headers";
 
-const MyPageLayout = ({ children }: { children: React.ReactNode }) => {
+const MyPageLayout = async ({ children }: { children: React.ReactNode }) => {
+  const cookie = await cookies();
+  const role = cookie.get("role")?.value || "nonMember";
+
   return (
     <div className="mx-auto mt-4 box-content max-w-[327px] px-6 pb-[80px] pc:max-w-[1480px] tablet:max-w-[680px]">
       <div className="flex items-center justify-between">
         <h2 className="text-xl font-semibold text-black-500 pc:text-3xl">
           마이페이지
         </h2>
-        <MyInfoEditContainer />
+        <MyInfoEditContainer role={role as roleType} />
       </div>
       <Suspense>
         <NavContainer />
