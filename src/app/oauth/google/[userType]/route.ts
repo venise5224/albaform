@@ -1,27 +1,29 @@
 import { NextResponse } from "next/server";
 
-const KAKAO_TOKEN_URL = "https://kauth.kakao.com/oauth/token";
+const GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token";
+const CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+const CLIENT_SECRET = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET;
 const APPLICANT_REDIRECT_URI =
-  process.env.NEXT_PUBLIC_KAKAO_APPLICANT_REDIRECT_URL;
-const OWNER_REDIRECT_URI = process.env.NEXT_PUBLIC_KAKAO_OWNER_REDIRECT_URL;
-const REST_API_KEY = process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY;
+  process.env.NEXT_PUBLIC_GOOGLE_APPLICANT_REDIRECT_URL;
+const OWNER_REDIRECT_URI = process.env.NEXT_PUBLIC_GOOGLE_OWNER_REDIRECT_URL;
 
 // 액세스 토큰 요청 함수
 const getAccessToken = async (code: string, role: string) => {
   try {
-    const response = await fetch(KAKAO_TOKEN_URL, {
+    const redirectUri =
+      role === "applicant" ? APPLICANT_REDIRECT_URI : OWNER_REDIRECT_URI;
+
+    const response = await fetch(GOOGLE_TOKEN_URL, {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
       body: new URLSearchParams({
-        grant_type: "authorization_code",
-        client_id: REST_API_KEY || "",
-        redirect_uri:
-          (role === "applicant"
-            ? APPLICANT_REDIRECT_URI
-            : OWNER_REDIRECT_URI) || "",
         code, // 전달받은 Authorization Code
+        client_id: CLIENT_ID || "",
+        client_secret: CLIENT_SECRET || "",
+        redirect_uri: redirectUri || "",
+        grant_type: "authorization_code",
       }).toString(),
     });
 
@@ -53,9 +55,9 @@ export const GET = async (request: Request) => {
 
     // 2. 쿠키에 AccesToken 추가, 사용자 정보 받는 페이지로 이동시킴
     const response = NextResponse.redirect(
-      request.url.includes("applicant")
-        ? "http:localhost:3000/signup/applicant?stepOneDone=true?isOAuth=true?provider=kakao"
-        : "http:localhost:3000/signup/owner?stepOneDone=true?isOAuth=true?provider=kakao"
+      role === "applicant"
+        ? "http://localhost:3000/signup/applicant?stepOneDone=true&isOAuth=true&provider=google"
+        : "http://localhost:3000/signup/owner?stepOneDone=true&isOAuth=true&provider=google"
     );
 
     response.cookies.set("accessToken", accessToken, {
@@ -67,7 +69,7 @@ export const GET = async (request: Request) => {
 
     return response;
   } catch (error) {
-    console.error("Error during Kakao login process:", error);
-    return new Response("Failed to process Kakao login", { status: 500 });
+    console.error("Error during Google login process:", error);
+    return new Response("Failed to process Google login", { status: 500 });
   }
 };
