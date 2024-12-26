@@ -15,27 +15,22 @@ const EazySignup = () => {
   };
 
   return (
-    <section className="flex h-[96px] w-full flex-col gap-6 text-md">
-      <div className="flex items-center gap-[13px] text-gray-300">
-        <div className="h-0 w-full border border-gray-100" />
-        <span className="w-[500px] break-keep text-center">
-          SNS 계정으로 회원가입하기
-        </span>
-        <div className="h-0 w-full border border-gray-100" />
-      </div>
-
-      <div className="mx-auto flex w-full gap-4">
-        <button onClick={() => handleClick("kakao")} className="m-auto">
-          <Image
-            src={"/image/kakao_login_large.png"}
-            width={480}
-            height={480}
-            alt="kakao logo"
-            priority={true}
-          />
-        </button>
-      </div>
-    </section>
+    <button
+      type="button"
+      onClick={() => handleClick("kakao")}
+      className="flex h-[72px] w-full items-center justify-center space-x-4 rounded-xl bg-[#FEE500]"
+    >
+      <Image
+        src={"/icon/kakao_login_logo.png"}
+        width={20}
+        height={20}
+        alt="kakao logo"
+        priority={true}
+      />
+      <span className="text-[rgba(0, 0, 0, 0.85)] text-xl font-semibold">
+        5초만에 카카오로 시작하기
+      </span>
+    </button>
   );
 };
 
