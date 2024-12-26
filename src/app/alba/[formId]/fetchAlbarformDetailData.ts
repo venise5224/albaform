@@ -1,6 +1,6 @@
 import instance from "@/lib/instance";
 
-const fetchAlbarformDetailData = async (formId: string, isLogin: boolean) => {
+const fetchAlbarformDetailData = async (formId: string, isLogin?: boolean = false) => {
   const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
   if (!API_URL) {

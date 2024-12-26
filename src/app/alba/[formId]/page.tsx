@@ -51,7 +51,6 @@ const AlbarformDetailPage = async ({ params }: PageProps) => {
 
   try {
     data = await fetchAlbarformDetailData(formId, isLogin);
-    console.log(data);
     isMyAlbarform = Number(userId) === data.ownerId;
   } catch (error) {
     console.error(error);
@@ -109,8 +108,8 @@ const AlbarformDetailPage = async ({ params }: PageProps) => {
           {renderActionButtons()}
         </section>
       </div>
-      <NoticeApplicant count={data.applyCount} />
       <NoticeIsClosed closedDate={data.recruitmentEndDate} />
+      {count > 0 && <NoticeApplicant count={data.applyCount} /> }
       {role === "APPLICANT" && (
         <ScrapAndShareButton formId={formId} isScrapped={data.isScrapped} />
       )}
