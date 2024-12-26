@@ -203,10 +203,3 @@ const labelStyle =
 const inputStyle =
   "mt-[8px] rounded-[8px] bg-gray-50 p-[14px] placeholder:text-md placeholder:font-regular border focus:border-orange-300 pc:mt-4";
 const buttmonContainerStyle = "h-[58px] w-[158px] pc:h-[72px] pc:w-[314px]";
-
-// {
-//     register,
-//     handleSubmit,
-//     watch,
-//     formState: { errors, isSubmitting },
-//   }
