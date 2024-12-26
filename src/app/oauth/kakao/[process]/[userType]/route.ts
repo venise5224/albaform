@@ -1,71 +1,86 @@
 import { NextResponse } from "next/server";
 
-const KAKAO_TOKEN_URL = "https://kauth.kakao.com/oauth/token";
-const APPLICANT_REDIRECT_URI =
-  process.env.NEXT_PUBLIC_KAKAO_APPLICANT_REDIRECT_URL;
-const OWNER_REDIRECT_URI = process.env.NEXT_PUBLIC_KAKAO_OWNER_REDIRECT_URL;
-const REST_API_KEY = process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY;
-
-// 액세스 토큰 요청 함수
-const getAccessToken = async (code: string, role: string) => {
-  try {
-    const response = await fetch(KAKAO_TOKEN_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      body: new URLSearchParams({
-        grant_type: "authorization_code",
-        client_id: REST_API_KEY || "",
-        redirect_uri:
-          (role === "applicant"
-            ? APPLICANT_REDIRECT_URI
-            : OWNER_REDIRECT_URI) || "",
-        code, // 전달받은 Authorization Code
-      }).toString(),
-    });
-
-    if (!response.ok) {
-      throw new Error("Failed to fetch access token");
-    }
-
-    const data = await response.json();
-    return data.access_token; // 액세스 토큰 반환
-  } catch (error) {
-    console.error("Error fetching access token:", error);
-    throw new Error("Failed to fetch access token");
-  }
-};
-
-// Route Handler
+// 카카오에서의 리다이렉트로 요청에 따른 Route Handler
 export const GET = async (request: Request) => {
   const { searchParams } = new URL(request.url);
   const code = searchParams.get("code"); // URL에서 Authorization Code 추출
   const role = request.url.includes("applicant") ? "applicant" : "owner";
+  const isProgress = request.url.includes("signin") ? "signin" : "signup";
 
   if (!code) {
     return new Response("Authorization code not provided", { status: 400 });
   }
 
   try {
-    // 1. 인가 코드를 사용해 액세스 토큰 요청
-    const accessToken = await getAccessToken(code, role);
+    // 1. 회원가입 요청이라면 플랫폼에서 받아야 하는 추가 데이터가 필요해 cookie에 Authorization code만 실어서 singup/stepOneDone 페이지로 이동시킴
+    if (isProgress === "signup") {
+      const response = NextResponse.redirect(
+        role === "applicant"
+          ? "http://localhost:3000/signup/applicant?stepOneDone=true&isOAuth=true&provider=kakao"
+          : "http://localhost:3000/signup/owner?stepOneDone=true&isOAuth=true&provider=kakao"
+      );
 
-    // 2. 쿠키에 AccesToken 추가, 사용자 정보 받는 페이지로 이동시킴
-    const response = NextResponse.redirect(
-      request.url.includes("applicant")
-        ? "http:localhost:3000/signup/applicant?stepOneDone=true?isOAuth=true?provider=kakao"
-        : "http:localhost:3000/signup/owner?stepOneDone=true?isOAuth=true?provider=kakao"
-    );
+      response.cookies.set("authorizationcode", code, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax",
+        maxAge: 60 * 60 * 24, // 24시간
+      });
 
-    response.cookies.set("OauthAccessToken", accessToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: 60 * 60 * 24, // 24시간
-    });
+      return response;
+    }
+    // 2. 로그인 요청이라면 넥스트 서버 -> 백엔드 서버(/oauth/sign-in/{provider})로 바로 요청을 보내고 ok를 받으면 쿠키에 userInfo,refreshtoken, accesstoken만 싣고 "/" 페이지로 리다이렉트 시킴
+    else if (isProgress === "signin") {
+      const oauthLoginResponse: any = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/oauth/sign-in/kakao`,
+        {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({
+            redirectUri:
+              role === "applicant"
+                ? process.env.NEXT_PUBLIC_KAKAO_APPLICANT_SIGNIN_REDIRECT_URL
+                : process.env.NEXT_PUBLIC_KAKAO_OWNER_SIGNIN_REDIRECT_URL,
+            token: code,
+          }),
+        }
+      );
 
-    return response;
+      if (oauthLoginResponse.ok) {
+        const {
+          user: userData,
+          refreshToken,
+          accessToken,
+        } = await oauthLoginResponse.json();
+
+        const response = NextResponse.redirect(
+          `${process.env.NEXT_PUBLIC_DEPLOY_URL}`
+        );
+
+        response.cookies.set("userData", userData, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "lax",
+          maxAge: 60 * 60 * 24, // 24시간
+        });
+
+        response.cookies.set("accessToken", accessToken, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "lax",
+          maxAge: 60 * 60 * 24, // 24시간
+        });
+
+        response.cookies.set("refreshToken", refreshToken, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "lax",
+          maxAge: 60 * 60 * 24, // 24시간
+        });
+
+        return response;
+      }
+    }
   } catch (error) {
     console.error("Error during Kakao login process:", error);
     return new Response("Failed to process Kakao login", { status: 500 });
