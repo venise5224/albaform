@@ -2,6 +2,7 @@
 
 import instance from "@/lib/instance";
 import { applySchema } from "@/schema/apply/applySchema";
+import { revalidateTag } from "next/cache";
 
 export const applyFormActions = async (formData: FormData, formId: string) => {
   const data = {
@@ -40,6 +41,7 @@ export const applyFormActions = async (formData: FormData, formId: string) => {
       message: response.error,
     };
   }
+  revalidateTag("myapply");
 
   return {
     status: response.status,
