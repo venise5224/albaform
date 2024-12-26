@@ -1,4 +1,5 @@
 import fetchApplicationData from "./fetchApplicationData";
+import GuestDataFetcher from "../components/GuestDataFetcher";
 import Title from "@/app/alba/components/Title";
 import Content from "@/app/alba/components/Content";
 import MyApplication from "@/app/alba/components/MyApplication";
@@ -21,13 +22,13 @@ const MyApplyPage = async ({ params }: MyApplyPageProps) => {
   let albarformData: AlbaformDetailData;
   let myApplicationData: MyApplicationData;
   const cookie = await cookies();
-  const role = cookie.get("role")?.value;
+  const role = cookie.get("role")?.value || "Guest";
   const { formId } = await params;
 
   try {
     [albarformData, myApplicationData] = await Promise.all([
       fetchAlbarformDetailData(formId),
-      fetchApplicationData(formId, role as string),
+      fetchApplicationData(formId),
     ]);
   } catch (error) {
     console.error(error);
@@ -45,24 +46,30 @@ const MyApplyPage = async ({ params }: MyApplyPageProps) => {
       {albarformData.imageUrls && (
         <Carousel imageUrls={albarformData.imageUrls} />
       )}
-      <div className="flex flex-col gap-6 p-10 pc:grid pc:grid-cols-2 pc:gap-x-[160px] pc:gap-y-[120px] pc:px-[200px] tablet:px-[150px]">
+      <div className="flex flex-col gap-6 p-10 pc:grid pc:grid-cols-2 pc:gap-x-[160px] pc:gap-y-[120px]">
         <section className="pc:col-start-1">
           <Title info={albarformData} />
         </section>
         <section className="pc:col-start-1">
           <Content description={albarformData.description} />
         </section>
-        <section className="pc:col-start-2 pc:row-start-1">
-          <ApplicationStatus
-            recruitmentEndDate={albarformData.recruitmentEndDate}
-            createdAt={myApplicationData.createdAt}
-            status={myApplicationData.status}
-            role={role as string}
-          />
-        </section>
-        <section className="mt-8 pc:col-start-2 pc:row-start-2 pc:-mt-48">
-          <MyApplication info={myApplicationData} />
-        </section>
+        {role !== "Guest" ? (
+          <>
+            <section className="pc:col-start-2 pc:row-start-1">
+              <ApplicationStatus
+                recruitmentEndDate={albarformData.recruitmentEndDate}
+                createdAt={myApplicationData.createdAt}
+                status={myApplicationData.status}
+                role={role as string}
+              />
+            </section>
+            <section className="mt-8 pc:col-start-2 pc:row-start-2 pc:-mt-48">
+              <MyApplication info={myApplicationData} />
+            </section>
+          </>
+        ) : (
+          <GuestDataFetcher albarformData={albarformData} />
+        )}
       </div>
     </>
   );

@@ -16,8 +16,9 @@ const MyInfoEditContainer = ({ role }: { role: roleType }) => {
   return (
     <div>
       <div className="hidden pc:flex pc:gap-4">
-        <div className="h-[58px] w-[180px]">
+        <div className="w-[180px]">
           <SolidButton
+            size="xl"
             style="orange300"
             onClick={() => {
               role === "APPLICANT"
@@ -28,8 +29,9 @@ const MyInfoEditContainer = ({ role }: { role: roleType }) => {
             내 정보 수정
           </SolidButton>
         </div>
-        <div className="h-[58px] w-[180px]">
+        <div className="w-[180px]">
           <SolidButton
+            size="xl"
             style="outOrange300"
             onClick={() => openModal("ChangePasswordModal")}
           >

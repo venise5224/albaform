@@ -168,6 +168,7 @@ const ChangeCEOInfoModal = () => {
             <div className="mt-6 flex gap-[11px] pc:mt-[30px] pc:gap-3">
               <div className={buttmonContainerStyle}>
                 <SolidButton
+                  size="xl"
                   style="gray100"
                   type="button"
                   onClick={() => {
@@ -179,6 +180,7 @@ const ChangeCEOInfoModal = () => {
               </div>
               <div className={buttmonContainerStyle}>
                 <SolidButton
+                  size="xl"
                   disabled={isRequiredValid || methods.formState.isSubmitting}
                   style="orange300"
                   type="submit"
