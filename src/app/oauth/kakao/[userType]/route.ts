@@ -4,7 +4,7 @@ const KAKAO_TOKEN_URL = "https://kauth.kakao.com/oauth/token";
 const APPLICANT_REDIRECT_URI =
   process.env.NEXT_PUBLIC_KAKAO_APPLICANT_REDIRECT_URL;
 const OWNER_REDIRECT_URI = process.env.NEXT_PUBLIC_KAKAO_OWNER_REDIRECT_URL;
-const CLIENT_ID = process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY;
+const REST_API_KEY = process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY;
 
 // 액세스 토큰 요청 함수
 const getAccessToken = async (code: string, role: string) => {
@@ -16,7 +16,7 @@ const getAccessToken = async (code: string, role: string) => {
       },
       body: new URLSearchParams({
         grant_type: "authorization_code",
-        client_id: CLIENT_ID || "",
+        client_id: REST_API_KEY || "",
         redirect_uri:
           (role === "applicant"
             ? APPLICANT_REDIRECT_URI
@@ -47,19 +47,15 @@ export const GET = async (request: Request) => {
     return new Response("Authorization code not provided", { status: 400 });
   }
 
-  console.log(code);
-
   try {
     // 1. 인가 코드를 사용해 액세스 토큰 요청
     const accessToken = await getAccessToken(code, role);
 
-    console.log(accessToken);
-
     // 2. 쿠키에 AccesToken 추가, 사용자 정보 받는 페이지로 이동시킴
     const response = NextResponse.redirect(
       request.url.includes("applicant")
-        ? "http:localhost:3000/signup/applicant?stepOneDone=true"
-        : "http:localhost:3000/signup/owner?stepOneDone=true"
+        ? "http:localhost:3000/signup/applicant?stepOneDone=true?isOAuth=true"
+        : "http:localhost:3000/signup/owner?stepOneDone=true?isOAuth=true"
     );
 
     response.cookies.set("accessToken", accessToken, {
