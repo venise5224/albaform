@@ -58,7 +58,7 @@ export const GET = async (request: Request) => {
         : "http:localhost:3000/signup/owner?stepOneDone=true?isOAuth=true?provider=kakao"
     );
 
-    response.cookies.set("accessToken", accessToken, {
+    response.cookies.set("OauthAccessToken", accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
