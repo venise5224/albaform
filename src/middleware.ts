@@ -31,17 +31,6 @@ export const middleware = async (request: NextRequest) => {
     if (response.ok) {
       const { accessToken } = await response.json();
       await createCookie({ name: "accessToken", value: accessToken });
-
-      const originalRequest = new Headers(request.headers);
-      originalRequest.set("Authorization", `Bearer ${accessToken}`);
-
-      const newRequest = new Request(request.url, {
-        method: request.method,
-        headers: originalRequest,
-        body: request.body,
-      });
-
-      return fetch(newRequest);
     }
   }
 
