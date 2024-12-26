@@ -80,13 +80,19 @@ const ChangePasswordModal = () => {
 
       const response = await changePasswordAction(formData);
 
+      if (response.status === 401) {
+        addToast("현재 비밀번호가 일치하지 않습니다.", "warning");
+        return;
+      }
+
       if (response.status === 200) {
         addToast("비밀번호 변경이 완료되었습니다.", "info");
         closeModal();
-      } else {
-        console.error(response.message, response.status);
-        addToast(response.message as string, "warning");
+        return;
       }
+
+      console.error(response.message, response.status);
+      addToast(response.message as string, "warning");
     } catch (error) {
       console.error("정보 수정 에러 발생", error);
       addToast("정보 수정 중 오류가 발생했습니다.", "warning");

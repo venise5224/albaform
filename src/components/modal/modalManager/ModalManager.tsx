@@ -16,38 +16,44 @@ import SelectLocationModal from "../modalContent/SelectLocationModal";
 import ApplicantListModal from "../modalContent/ApplicantListModal";
 
 const ModalManager = () => {
-  const modalType = useAtomValue(modalAtom);
+  const modalTypes = useAtomValue(modalAtom);
 
-  if (!modalType) return null;
+  if (!modalTypes.length) return null;
 
-  switch (modalType) {
-    case "ClosedAlbaformModal":
-      return <CloseAlbaformModal />;
-    case "DeleteAlbaformModal":
-      return <DeleteAlbaformModal />;
-    case "NewWriteformModal":
-      return <NewWriteformModal />;
-    case "GetMyApplicationModal":
-      return <GetMyApplicationModal />;
-    case "MyApplicationModal":
-      return <MyApplicationModal />;
-    case "SelectProgressModal":
-      return <SelectProgressModal />;
-    case "ChangePasswordModal":
-      return <ChangePasswordModal />;
-    case "ChangeMyInfoModal":
-      return <ChangeMyInfoModal />;
-    case "ChangeCEOInfoModal":
-      return <ChangeCEOInfoModal />;
-    case "ShareSNSModal":
-      return <ShareSNSModal />;
-    case "SelectLocationModal":
-      return <SelectLocationModal />;
-    case "ApplicantListModal":
-      return <ApplicantListModal />;
-    default:
-      return null;
-  }
+  return (
+    <>
+      {modalTypes.map((modalType, index) => {
+        switch (modalType) {
+          case "ClosedAlbaformModal":
+            return <CloseAlbaformModal key={index} />;
+          case "DeleteAlbaformModal":
+            return <DeleteAlbaformModal key={index} />;
+          case "NewWriteformModal":
+            return <NewWriteformModal key={index} />;
+          case "GetMyApplicationModal":
+            return <GetMyApplicationModal key={index} />;
+          case "MyApplicationModal":
+            return <MyApplicationModal key={index} />;
+          case "SelectProgressModal":
+            return <SelectProgressModal key={index} />;
+          case "ChangePasswordModal":
+            return <ChangePasswordModal key={index} />;
+          case "ChangeMyInfoModal":
+            return <ChangeMyInfoModal key={index} />;
+          case "ChangeCEOInfoModal":
+            return <ChangeCEOInfoModal key={index} />;
+          case "ShareSNSModal":
+            return <ShareSNSModal key={index} />;
+          case "SelectLocationModal":
+            return <SelectLocationModal key={index} />;
+          case "ApplicantListModal":
+            return <ApplicantListModal key={index} />;
+          default:
+            return null;
+        }
+      })}
+    </>
+  );
 };
 
 export default ModalManager;

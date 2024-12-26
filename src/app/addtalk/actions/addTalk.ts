@@ -1,6 +1,7 @@
 "use server";
 
 import instance from "@/lib/instance";
+import { revalidateTag } from "next/cache";
 
 interface data {
   title: string;
@@ -23,6 +24,8 @@ const addTalk = async (data: data) => {
       error: response.error,
     };
   }
+
+  revalidateTag("myPost");
 
   return {
     status: response.status,

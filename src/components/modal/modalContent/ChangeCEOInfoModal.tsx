@@ -1,10 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import ModalContainer from "../modalContainer/ModalContainer";
 import FormInput from "@/components/input/FormInput";
 import ErrorText from "@/components/errorText/ErrorText";
-import { useForm, Path } from "react-hook-form";
+import { useForm, Path, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { changeCEOInfoSchema } from "@/schema/modal/changeCEOInfoSchema";
@@ -17,18 +16,14 @@ import { profileImgActions } from "@/app/(auth)/signup/actions/profileImgActions
 import { useToast } from "@/hooks/useToast";
 import ProfileImg from "@/app/(auth)/signup/components/ProfileImg";
 import { addressAtom } from "@/atoms/addressAtom";
+import StoreLocationInput from "../modalComponents/StoreLocationInput";
 
 const ChangeCEOInfoModal = () => {
-  const { openModal, closeModal } = useModal();
+  const { closeModal } = useModal();
   const profileImg = useAtomValue(profileImgAtom);
   const { addToast } = useToast();
   const address = useAtomValue(addressAtom);
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors, isSubmitting },
-  } = useForm<z.infer<typeof changeCEOInfoSchema>>({
+  const methods = useForm<z.infer<typeof changeCEOInfoSchema>>({
     resolver: zodResolver(changeCEOInfoSchema),
     mode: "onChange",
     defaultValues: {
@@ -41,10 +36,10 @@ const ChangeCEOInfoModal = () => {
   });
 
   const isRequiredValid =
-    !watch("nickname") ||
-    !watch("storeName") ||
-    !watch("storePhoneNumber") ||
-    !watch("location");
+    !methods.watch("nickname") ||
+    !methods.watch("storeName") ||
+    !methods.watch("storePhoneNumber") ||
+    !methods.watch("location");
 
   const inputArr = [
     {
@@ -52,8 +47,8 @@ const ChangeCEOInfoModal = () => {
       name: "nickname",
       type: "text",
       placeholder: "닉네임을 입력해주세요.",
-      error: errors.nickname,
-      register: register("nickname"),
+      error: methods.formState.errors.nickname,
+      register: methods.register("nickname"),
       required: true,
     },
     {
@@ -61,8 +56,8 @@ const ChangeCEOInfoModal = () => {
       name: "storeName",
       type: "text",
       placeholder: "가게 이름(상호명)을 입력해주세요.",
-      error: errors.storeName,
-      register: register("storeName"),
+      error: methods.formState.errors.storeName,
+      register: methods.register("storeName"),
       required: true,
     },
     {
@@ -70,8 +65,8 @@ const ChangeCEOInfoModal = () => {
       name: "storePhoneNumber",
       type: "tel",
       placeholder: "숫자만 입력해주세요.",
-      error: errors.storePhoneNumber,
-      register: register("storePhoneNumber"),
+      error: methods.formState.errors.storePhoneNumber,
+      register: methods.register("storePhoneNumber"),
       required: true,
     },
     {
@@ -79,18 +74,9 @@ const ChangeCEOInfoModal = () => {
       name: "phoneNumber",
       type: "tel",
       placeholder: "숫자만 입력해주세요.",
-      error: errors.phoneNumber,
-      register: register("phoneNumber"),
+      error: methods.formState.errors.phoneNumber,
+      register: methods.register("phoneNumber"),
       required: false,
-    },
-    {
-      label: "가게 위치",
-      name: "location",
-      type: "text",
-      placeholder: address ? address : "위치를 입력해주세요.",
-      error: errors.location,
-      register: register("location"),
-      required: true,
     },
   ];
 
@@ -148,66 +134,63 @@ const ChangeCEOInfoModal = () => {
         <div className="mt-10 pc:mt-[50px]">
           <ProfileImg />
         </div>
-
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="mt-6 flex flex-col pc:mt-10"
-        >
-          {inputArr.map((input) => (
-            <div key={input.name} className="relative flex flex-col">
-              <label htmlFor={input.name} className={labelStyle}>
-                {input.label}
-                {input.required && <span className="text-red"> *</span>}
-              </label>
-              <FormInput
-                id={input.name}
-                name={input.name as Path<z.infer<typeof changeCEOInfoSchema>>}
-                type={input.type}
-                register={register}
-                error={input.error}
-                placeholder={input.placeholder}
-                className={
-                  input.name === "location" ? `${inputStyle} pl-11` : inputStyle
-                }
-              />
-              <ErrorText error={input.error}>{input.error?.message}</ErrorText>
-              {input.name === "location" && (
-                <Image
-                  src="/icon/pin-fill-lg.svg"
-                  alt="가게 위치"
-                  width={36}
-                  height={36}
-                  className="absolute bottom-2 left-2"
+        <FormProvider {...methods}>
+          <form
+            onSubmit={methods.handleSubmit(onSubmit)}
+            className="mt-6 flex flex-col pc:mt-10"
+          >
+            {inputArr.map((input) => (
+              <div key={input.name} className="relative flex flex-col">
+                <label htmlFor={input.name} className={labelStyle}>
+                  {input.label}
+                  {input.required && <span className="text-red"> *</span>}
+                </label>
+                <FormInput
+                  id={input.name}
+                  name={input.name as Path<z.infer<typeof changeCEOInfoSchema>>}
+                  type={input.type}
+                  register={methods.register}
+                  error={input.error}
+                  placeholder={input.placeholder}
+                  className={
+                    input.name === "location"
+                      ? `${inputStyle} pl-11`
+                      : inputStyle
+                  }
                 />
-              )}
-            </div>
-          ))}
+                <ErrorText error={input.error}>
+                  {input.error?.message}
+                </ErrorText>
+              </div>
+            ))}
+            <StoreLocationInput />
 
-          <div className="mt-6 flex gap-[11px] pc:mt-[30px] pc:gap-3">
-            <div className={buttmonContainerStyle}>
-              <SolidButton
-                size="xl"
-                style="gray100"
-                type="button"
-                onClick={() => {
-                  closeModal();
-                }}
-              >
-                취소
-              </SolidButton>
+            <div className="mt-6 flex gap-[11px] pc:mt-[30px] pc:gap-3">
+              <div className={buttmonContainerStyle}>
+                <SolidButton
+                  size="xl"
+                  style="gray100"
+                  type="button"
+                  onClick={() => {
+                    closeModal();
+                  }}
+                >
+                  취소
+                </SolidButton>
+              </div>
+              <div className={buttmonContainerStyle}>
+                <SolidButton
+                  size="xl"
+                  disabled={isRequiredValid || methods.formState.isSubmitting}
+                  style="orange300"
+                  type="submit"
+                >
+                  수정하기
+                </SolidButton>
+              </div>
             </div>
-            <div className={buttmonContainerStyle}>
-              <SolidButton
-                size="xl"
-                disabled={isRequiredValid || isSubmitting}
-                style="orange300"
-                type="submit"
-              >
-                수정하기
-              </SolidButton>
-            </div>
-          </div>
-        </form>
+          </form>
+        </FormProvider>
       </div>
     </ModalContainer>
   );

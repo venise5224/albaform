@@ -42,7 +42,7 @@ const SelectProgressModal = () => {
       );
 
       if (response.status) {
-        addToast("지원상태 수정이 완료되었습니다.", "success");
+        addToast("지원 상태 수정이 완료되었습니다.", "success");
         closeModal();
         window.location.reload();
       } else {
@@ -50,8 +50,8 @@ const SelectProgressModal = () => {
         addToast(response.message as string, "warning");
       }
     } catch (error) {
-      console.error("지원상태 수정 에러 발생", error);
-      addToast("지원상태 수정 중 오류가 발생했습니다.", "warning");
+      console.error("지원 상태 수정 에러 발생", error);
+      addToast("지원 상태 수정 중 오류가 발생했습니다.", "warning");
     }
   };
 

@@ -1,6 +1,7 @@
 "use server";
 
 import instance from "@/lib/instance";
+import { revalidateTag } from "next/cache";
 
 const patchComment = async (id: number, content: string) => {
   const url = new URL(`${process.env.NEXT_PUBLIC_API_URL}/comments/${id}`);
@@ -19,6 +20,8 @@ const patchComment = async (id: number, content: string) => {
       error: response.error,
     };
   }
+
+  revalidateTag("myComment");
 
   return {
     status: response.status,
