@@ -40,7 +40,6 @@ const ApplicantStatsList = () => {
         const res = await instance(
           `${process.env.NEXT_PUBLIC_API_URL}/forms/${formId}/applications?limit=10&orderByExperience=${orderExperience}&orderByStatus=${orderByStatus}`
         );
-        console.log("받아온 지원자 리스트", res.data);
         setList(res.data);
         setIsLoading(false);
       } catch (error) {

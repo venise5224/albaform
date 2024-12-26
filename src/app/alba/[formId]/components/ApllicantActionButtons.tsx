@@ -60,6 +60,7 @@ const ApllicantActionButtons = ({
     <>
       <SolidButton
         icon={disabled ? "" : "/icon/write-fill-md.svg"}
+        size="2xl"
         style={disabled ? "gray100" : "orange300"}
         disabled={disabled}
         onClick={submitApply}
@@ -68,6 +69,7 @@ const ApllicantActionButtons = ({
       </SolidButton>
       <SolidButton
         icon="/icon/document-md.svg"
+        size="2xl"
         style="outOrange300"
         onClick={showMyApplication}
       >
