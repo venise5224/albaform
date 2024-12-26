@@ -6,16 +6,20 @@ import { useRouter } from "next/navigation";
 import { useSidebarState } from "@/hooks/useSidebarState";
 import { useToast } from "@/hooks/useToast";
 import { deleteCookie } from "@/lib/cookie";
+import { useSetAtom } from "jotai";
+import { isLoggedAtom } from "@/atoms/isLogged";
 
 const Sidebar = () => {
   const router = useRouter();
   const { isOpen, setIsOpen } = useSidebarState();
   const { addToast } = useToast();
+  const setIsLogged = useSetAtom(isLoggedAtom);
 
   const handleLogout = async () => {
     await deleteCookie(true);
     addToast("로그아웃 되었습니다.", "info");
     localStorage.removeItem("isLogin");
+    setIsLogged(false);
     setIsOpen(false);
     router.push("/");
   };

@@ -1,14 +1,25 @@
 "use client";
 
+import { isLoggedAtom } from "@/atoms/isLogged";
+import { useAtomValue } from "jotai";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const HeaderNavigation = ({ isAuthPage }: { isAuthPage: boolean }) => {
   const currentPathname = usePathname();
-  let isNotLogin: boolean;
+  const isLogged = useAtomValue(isLoggedAtom);
+  const [isNotLogin, setIsNotLogin] = useState<boolean>(true); // 초기 상태를 true로 설정
 
-  if (typeof window !== "undefined")
-    isNotLogin = localStorage.getItem("isLogin") === null;
+  useEffect(() => {
+    // 클라이언트에서만 실행되는 코드
+    const isLoggedIn = localStorage.getItem("isLogin") !== null;
+    setIsNotLogin(!isLoggedIn); // 로그인 상태에 따라 변경
+  }, [isLogged]); // 의존성 배열이 빈 배열이므로 컴포넌트 마운트 시에만 실행됨
+  // let isNotLogin: boolean;
+
+  // if (typeof window !== "undefined")
+  //   isNotLogin = localStorage.getItem("isLogin") === null;
 
   if (isAuthPage) return null;
 
