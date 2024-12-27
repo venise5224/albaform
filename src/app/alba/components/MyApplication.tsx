@@ -2,12 +2,17 @@ import ResumInput from "@/components/input/ResumeInput";
 import formatExperienceMonth from "@/utils/formatExperienceMonth";
 import { MyApplicationData } from "@/types/alba";
 import decodeURIToKorean from "@/utils/decodeURIString";
+import isUrlEncoded from "@/utils/isUrlEncoded";
 
 const MyApplication = ({ info }: { info: MyApplicationData }) => {
+  let decodedResumeName;
   const formattedExperienceMonth = formatExperienceMonth(
     info?.experienceMonths
   );
-  const decodedResumeName = decodeURIToKorean(info.resumeName);
+
+  decodedResumeName = isUrlEncoded(info.resumeName)
+    ? decodeURIToKorean(info.resumeName)
+    : info.resumeName;
 
   return (
     <div className="flex flex-col gap-4 pb-[8px]">
