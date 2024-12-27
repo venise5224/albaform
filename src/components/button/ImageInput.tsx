@@ -48,7 +48,7 @@ const ImageInput = ({
       );
       setNewFiles(initialImage);
     }
-  }, [initialImage]);
+  }, [initialImage, selectedImages]);
 
   useEffect(() => {
     return () => {
