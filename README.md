@@ -66,44 +66,39 @@
 
 # 시연 영상
 
-랜딩페이지
+## 랜딩페이지
+<img src="https://github.com/user-attachments/assets/9ab3fa78-0391-4c4d-837e-962448b5de80" alt="랜딩페이지" width="600" />
 
-![랜딩페이지.gif](https://prod-files-secure.s3.us-west-2.amazonaws.com/7d9a1105-43f0-4706-8d4d-219c231d3a47/1714a3bb-715d-4ff7-ba2a-d1bf7eec6664/%EB%9E%9C%EB%94%A9%ED%8E%98%EC%9D%B4%EC%A7%80.gif)
+## 로그인
+<img src="https://github.com/user-attachments/assets/c303ff1a-8b86-4242-9c59-fd11ffc3e604" alt="로그인 - 지원자" width="600" />
 
-로그인
+## 회원가입
+<img src="https://github.com/user-attachments/assets/ed421eb7-efbb-472b-8379-570f26ecc458" alt="회원가입 - 지원자" width="600" />
 
-![로그인 - 지원자.gif](https://prod-files-secure.s3.us-west-2.amazonaws.com/7d9a1105-43f0-4706-8d4d-219c231d3a47/a913892a-f593-40a2-878f-335ca11d4918/%EB%A1%9C%EA%B7%B8%EC%9D%B8_-_%EC%A7%80%EC%9B%90%EC%9E%90.gif)
+## 알바 목록페이지
+<img src="https://github.com/user-attachments/assets/942b6b5d-5b87-48d9-ad7c-39e80f37f2fd" alt="알바목록 페이지" width="600" />
 
-회원가입
+## 알바 목록 상세 페이지
+<img src="https://github.com/user-attachments/assets/2228800c-aa4e-4ccd-9887-39b60ad0e142" alt="알바 상세 페이지" width="600" />
 
-![회원가입-지원자-동영상.gif](https://prod-files-secure.s3.us-west-2.amazonaws.com/7d9a1105-43f0-4706-8d4d-219c231d3a47/ea7fbe1f-d388-4bf1-bae9-17334edce36e/%ED%9A%8C%EC%9B%90%EA%B0%80%EC%9E%85-%EC%A7%80%EC%9B%90%EC%9E%90-%EB%8F%99%EC%98%81%EC%83%81.gif)
+## 알바 토크 페이지
+<img src="https://github.com/user-attachments/assets/493ddd9a-7dda-4c10-9a76-b04c62671e76" alt="알바 토크 페이지" width="600" />
 
-알바 목록페이지
+## 알바 토크 상세 페이지
+<img src="https://github.com/user-attachments/assets/eac6052c-bd02-4499-bd3c-de2f9262eb26" alt="알바-토크-상세페이지" width="600" />
 
-![알바목록 페이지.gif](https://prod-files-secure.s3.us-west-2.amazonaws.com/7d9a1105-43f0-4706-8d4d-219c231d3a47/018052fe-5127-424f-b948-8a6abe5154e9/%EC%95%8C%EB%B0%94%EB%AA%A9%EB%A1%9D_%ED%8E%98%EC%9D%B4%EC%A7%80.gif)
+## 알바 토크 글쓰기
+<img src="https://github.com/user-attachments/assets/63db5284-1691-4a3e-89f0-6c2803a6b7d1" alt="알바토크 글쓰기" width="600" />
 
-알바 목록 상세 페이지
+## 내 알바폼
+<img src="https://github.com/user-attachments/assets/5a90dd32-708c-44ba-a4c2-6276a7d92648" alt="내 알바폼" width="600" />
 
-![알바 상세 페이지.gif](https://prod-files-secure.s3.us-west-2.amazonaws.com/7d9a1105-43f0-4706-8d4d-219c231d3a47/178e8632-c453-482c-9402-7948506dc970/%EC%95%8C%EB%B0%94_%EC%83%81%EC%84%B8_%ED%8E%98%EC%9D%B4%EC%A7%80.gif)
+## 마이 페이지
+<img src="https://github.com/user-attachments/assets/79bbb351-dda4-471a-8cd3-c9c1409bdd0a" alt="마이페이지" width="600" />
 
-알바 토크 페이지
+## 알바폼 만들기 페이지
+<img src="https://github.com/user-attachments/assets/3d6da416-2db3-4039-ba89-bae8ed7c7b39" alt="알바폼-만들기" width="600" />
 
-![알바 토크 페이지.gif](https://prod-files-secure.s3.us-west-2.amazonaws.com/7d9a1105-43f0-4706-8d4d-219c231d3a47/528df183-e353-4c57-9d64-d5e60a272e6b/%EC%95%8C%EB%B0%94_%ED%86%A0%ED%81%AC_%ED%8E%98%EC%9D%B4%EC%A7%80.gif)
+## 지원하기 페이지
+<img src="https://github.com/user-attachments/assets/306c98c5-59c2-4ab4-a1bb-86a0d5427204" alt="지원하기" width="600" />
 
-알바 토크 상세 페이지
-
-[]()
-
-알바 토크 글쓰기
-
-내 알바폼
-
-마이 페이지
-
-알바폼 만들기 페이지
-
-지원하기 페이지
-
-![지원하기.gif](https://prod-files-secure.s3.us-west-2.amazonaws.com/7d9a1105-43f0-4706-8d4d-219c231d3a47/c2ccd13c-ec72-44fa-9a49-987112744664/%EC%A7%80%EC%9B%90%ED%95%98%EA%B8%B0.gif)
-
-지원하기 상세 페이지
