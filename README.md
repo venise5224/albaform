@@ -53,16 +53,16 @@
 
 ## 기술스택
 
-<img src="https://github.com/user-attachments/assets/7fbce4f3-dbf9-42ea-abd5-34fea333eeff" width="12%" height="12%"> &nbsp;&nbsp;&nbsp;
-<img src="https://github.com/user-attachments/assets/bc73becf-117b-473c-ac99-25e7076f54f6" width="10%" height="10%"> &nbsp;&nbsp;&nbsp;
-<img src="https://github.com/user-attachments/assets/6d770581-15e8-405e-81d3-7e0e7451a2f2" width="12%" height="12%"> &nbsp;&nbsp;&nbsp;
-<img src="https://github.com/user-attachments/assets/c35c92b2-2070-4196-8964-c84864fae752" width="10%" height="10%"> &nbsp;&nbsp;&nbsp;
-<img src="https://github.com/user-attachments/assets/91820898-62f6-4965-9a84-047bbcae7598" width="10%" height="10%"> &nbsp;&nbsp;&nbsp;
-<img src="https://github.com/user-attachments/assets/00d84e07-3e18-4a82-b147-bd0d4330f350" width="10%" height="10%"> &nbsp;&nbsp;&nbsp;
-<img src="https://github.com/user-attachments/assets/467d8a77-1e28-4c6d-9bc6-b7e520b8551c" width="10%" height="10%"> &nbsp;&nbsp;&nbsp;
-<img src="https://github.com/user-attachments/assets/f38e0e0e-78e7-4602-bbea-03f277f9497f" width="12%" height="12%"> &nbsp;&nbsp;&nbsp;&nbsp;
-<img src="https://github.com/user-attachments/assets/3d567d52-2883-450b-ac3f-d124bbc79689" width="9%" height="9%"> &nbsp;&nbsp;&nbsp;
-<img src="https://github.com/user-attachments/assets/4eeacf3f-e690-43b3-aa52-18c8646497a5" width="12%" height="12%"> &nbsp;
+<img src="https://github.com/user-attachments/assets/7fbce4f3-dbf9-42ea-abd5-34fea333eeff" width="12%" height="12%"> &nbsp;&nbsp;&nbsp;&nbsp;
+<img src="https://github.com/user-attachments/assets/bc73becf-117b-473c-ac99-25e7076f54f6" width="10%" height="10%"> &nbsp;&nbsp;&nbsp;&nbsp;
+<img src="https://github.com/user-attachments/assets/6d770581-15e8-405e-81d3-7e0e7451a2f2" width="12%" height="12%"> &nbsp;&nbsp;&nbsp;&nbsp;
+<img src="https://github.com/user-attachments/assets/c35c92b2-2070-4196-8964-c84864fae752" width="10%" height="10%"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="https://github.com/user-attachments/assets/91820898-62f6-4965-9a84-047bbcae7598" width="10%" height="10%"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="https://github.com/user-attachments/assets/00d84e07-3e18-4a82-b147-bd0d4330f350" width="10%" height="10%"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="https://github.com/user-attachments/assets/467d8a77-1e28-4c6d-9bc6-b7e520b8551c" width="10%" height="10%"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="https://github.com/user-attachments/assets/f38e0e0e-78e7-4602-bbea-03f277f9497f" width="12%" height="12%"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="https://github.com/user-attachments/assets/3d567d52-2883-450b-ac3f-d124bbc79689" width="9%" height="9%"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<img src="https://github.com/user-attachments/assets/4eeacf3f-e690-43b3-aa52-18c8646497a5" width="12%" height="12%"> 
 <img src="https://github.com/user-attachments/assets/6266651b-3fe4-4dcb-ae77-1c05da773eac" width="14%" height="14%">
 
 # 시연 영상
