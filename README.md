@@ -1,6 +1,6 @@
-# 대표 이미지
+# albaform
 
-<img src="https://prod-files-secure.s3.us-west-2.amazonaws.com/7d9a1105-43f0-4706-8d4d-219c231d3a47/e46d13cf-9ecf-41e3-9627-8e921f1a1e0f/%EB%8C%80%ED%91%9C.png" width="100" height="100">
+![대표](https://github.com/user-attachments/assets/6b62a4cb-a645-430a-ac82-3d117d53fe17)
 
 # 배포 사이트: https://albaform-five.vercel.app/
 
@@ -53,27 +53,16 @@
 
 ## 기술스택
 
-![next.svg](https://prod-files-secure.s3.us-west-2.amazonaws.com/7d9a1105-43f0-4706-8d4d-219c231d3a47/a587d784-b38d-4dc4-a928-976621bcb50d/next.svg)
-
-![React.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/7d9a1105-43f0-4706-8d4d-219c231d3a47/d0099ac1-acb0-4e75-a7d0-d11854453d63/React.png)
-
-![typescript.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/7d9a1105-43f0-4706-8d4d-219c231d3a47/292ce654-d49a-4b7c-a57b-571516d3d697/typescript.png)
-
-![tailwind.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/7d9a1105-43f0-4706-8d4d-219c231d3a47/5dd4d0d6-87f0-4b4e-b36f-79a671f87432/tailwind.png)
-
-![bun.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/7d9a1105-43f0-4706-8d4d-219c231d3a47/9b47a827-a25f-4e0c-b142-0ba4db7e869e/bun.png)
-
-![react-hook-form.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/7d9a1105-43f0-4706-8d4d-219c231d3a47/25a9a0c2-7239-4aac-b5b2-d0157b738060/react-hook-form.png)
-
-![zod.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/7d9a1105-43f0-4706-8d4d-219c231d3a47/2c5825e4-9ba0-47e3-a086-8f3358f7d1a2/zod.png)
-
-![git.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/7d9a1105-43f0-4706-8d4d-219c231d3a47/5026aa02-7330-4edf-afd9-729e7fe1cf39/git.png)
-
-![github-mark-white.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/7d9a1105-43f0-4706-8d4d-219c231d3a47/275e8c3c-3c97-4e2b-b16a-ebc985132aa2/github-mark-white.png)
-
-![html.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/7d9a1105-43f0-4706-8d4d-219c231d3a47/fea090be-df74-4b18-95eb-743e3003c50e/html.png)
-
-![css.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/7d9a1105-43f0-4706-8d4d-219c231d3a47/5223d94b-67cc-4a97-a804-3beb57f754ba/css.png)
+<img src="https://github.com/user-attachments/assets/bc73becf-117b-473c-ac99-25e7076f54f6" width="10%" height="10%"> &nbsp;&nbsp;
+<img src="https://github.com/user-attachments/assets/6d770581-15e8-405e-81d3-7e0e7451a2f2" width="10%" height="10%"> &nbsp;&nbsp;
+<img src="https://github.com/user-attachments/assets/c35c92b2-2070-4196-8964-c84864fae752" width="10%" height="10%"> &nbsp;&nbsp;
+<img src="https://github.com/user-attachments/assets/91820898-62f6-4965-9a84-047bbcae7598" width="10%" height="10%"> &nbsp;&nbsp;
+<img src="https://github.com/user-attachments/assets/00d84e07-3e18-4a82-b147-bd0d4330f350" width="10%" height="10%"> &nbsp;&nbsp;
+<img src="https://github.com/user-attachments/assets/467d8a77-1e28-4c6d-9bc6-b7e520b8551c" width="10%" height="10%"> &nbsp;&nbsp;
+<img src="https://github.com/user-attachments/assets/f38e0e0e-78e7-4602-bbea-03f277f9497f" width="15%" height="10%"> &nbsp;&nbsp;
+<img src="https://github.com/user-attachments/assets/3d567d52-2883-450b-ac3f-d124bbc79689" width="10%" height="10%"> &nbsp;&nbsp;
+<img src="https://github.com/user-attachments/assets/4eeacf3f-e690-43b3-aa52-18c8646497a5" width="10%" height="10%"> &nbsp;&nbsp;
+<img src="https://github.com/user-attachments/assets/6266651b-3fe4-4dcb-ae77-1c05da773eac" width="12%" height="10%">
 
 # 시연 영상
 
