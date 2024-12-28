@@ -21,6 +21,25 @@
 |<img src="https://avatars.githubusercontent.com/u/126491953?v=4" width="100" height="100">|<img src="https://avatars.githubusercontent.com/u/81373171?v=4" width="100" height="100">|<img src="https://avatars.githubusercontent.com/u/174448906?v=4" width="100" height="100">|<img src="https://avatars.githubusercontent.com/u/79072510?v=4" width="100" height="100">|
 |byeolee1221|junjeong|venise5224|wooy0|
 
+# 시작 가이드
+### 요구사항
+  * bun 1.1.31
+  * jotai 2.10.3
+  * js-cookie 2.2.1
+  * next 15.0.3
+  * react 19.0.0-rc
+  * react-calendar 5.1.0
+  * react-hook-form 7.53.2
+  * zod 3.23.8
+
+### 설치
+```
+$ git clone https://github.com/sprint-9-3/albaform.git
+$ cd albaform
+$ bun install
+$ bun run dev
+```
+
 # 주요 기능 및 기술 스택
 
 ## 주요기능
