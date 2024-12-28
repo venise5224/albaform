@@ -62,8 +62,8 @@
 <img src="https://github.com/user-attachments/assets/467d8a77-1e28-4c6d-9bc6-b7e520b8551c" width="10%" height="10%"> &nbsp;&nbsp;&nbsp;
 <img src="https://github.com/user-attachments/assets/f38e0e0e-78e7-4602-bbea-03f277f9497f" width="12%" height="12%"> &nbsp;&nbsp;&nbsp;&nbsp;
 <img src="https://github.com/user-attachments/assets/3d567d52-2883-450b-ac3f-d124bbc79689" width="9%" height="9%"> &nbsp;&nbsp;&nbsp;
-<img src="https://github.com/user-attachments/assets/4eeacf3f-e690-43b3-aa52-18c8646497a5" width="10%" height="10%"> &nbsp;
-<img src="https://github.com/user-attachments/assets/6266651b-3fe4-4dcb-ae77-1c05da773eac" width="12%" height="12%">
+<img src="https://github.com/user-attachments/assets/4eeacf3f-e690-43b3-aa52-18c8646497a5" width="12%" height="12%"> &nbsp;
+<img src="https://github.com/user-attachments/assets/6266651b-3fe4-4dcb-ae77-1c05da773eac" width="14%" height="14%">
 
 # 시연 영상
 
