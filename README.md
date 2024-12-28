@@ -16,12 +16,9 @@
 
 # 팀원 소개
 
-| 문창기 | 정준영 | 전상민 | 정우영 |  
-
+| 문창기 | 정준영 | 전상민 | 정우영 | 
 | :---: | :---: | :---: | :---: |
-
 |<img src="https://avatars.githubusercontent.com/u/126491953?v=4" width="100" height="100">|<img src="https://avatars.githubusercontent.com/u/81373171?v=4" width="100" height="100">|<img src="https://avatars.githubusercontent.com/u/174448906?v=4" width="100" height="100">|<img src="https://avatars.githubusercontent.com/u/79072510?v=4" width="100" height="100">|
-
 |byeolee1221|junjeong|venise5224|wooy0|
 
 # 주요 기능 및 기술 스택
