@@ -30,6 +30,8 @@ const ImageInput = ({
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const MAX_FILE_SIZE_MB = 5;
+  const selectedImagesRef = useRef(selectedImages);
+  selectedImagesRef.current = selectedImages;
 
   // 크기별 클래스
   const sizeClasses = {
@@ -41,14 +43,13 @@ const ImageInput = ({
   // 임시저장 이미지가 있을 시 이를 감지하여 미리보기 이미지 표출
   useEffect(() => {
     if (initialImage?.length) {
-      selectedImages.forEach((url) => URL.revokeObjectURL(url));
+      selectedImagesRef.current.forEach((url) => URL.revokeObjectURL(url));
 
-      setSelectedImages(
-        initialImage.map((image) => URL.createObjectURL(image))
-      );
+      const newImages = initialImage.map((img) => URL.createObjectURL(img));
+      setSelectedImages(newImages);
       setNewFiles(initialImage);
     }
-  }, [initialImage, selectedImages]);
+  }, [initialImage]);
 
   useEffect(() => {
     return () => {
