@@ -11,16 +11,11 @@ export const OAuthActions = async (
 ) => {
   const cookieStore = await cookies();
   const authorizationCode = cookieStore.get("authorizationcode")?.value;
-  const oauthAccessToken = cookieStore.get("oauthAccessToken")?.value;
 
   const providerRedirectUri =
     role === "OWNER"
-      ? provider === "kakao"
-        ? `${process.env.NEXT_PUBLIC_KAKAO_OWNER_SIGNUP_REDIRECT_URL}`
-        : `${process.env.NEXT_PUBLIC_GOOGLE_OWNER_SIGNUP_REDIRECT_URL}`
-      : provider === "kakao"
-        ? `${process.env.NEXT_PUBLIC_KAKAO_APPLICANT_SIGNUP_REDIRECT_URL}`
-        : `${process.env.NEXT_PUBLIC_GOOGLE_APPLICANT_SIGNUP_REDIRECT_URL}`;
+      ? `${process.env.NEXT_PUBLIC_KAKAO_OWNER_SIGNUP_REDIRECT_URL}`
+      : `${process.env.NEXT_PUBLIC_KAKAO_APPLICANT_SIGNUP_REDIRECT_URL}`;
 
   const data = {
     location: formData.get("location")?.toString() || "",
@@ -31,7 +26,7 @@ export const OAuthActions = async (
     nickname: formData.get("nickname")?.toString(),
     name: formData.get("name")?.toString() || "",
     redirectUri: providerRedirectUri,
-    token: authorizationCode || oauthAccessToken,
+    token: authorizationCode,
   };
 
   const result = OAuthSchema.safeParse(data);
@@ -56,8 +51,9 @@ export const OAuthActions = async (
     );
 
     const responseErrorText = {
-      400: "잘못된 인가코드입니다.",
+      400: "입력한 정보가 올바르지 않습니다.",
       404: "잘못된 경로로의 요청입니다.",
+      409: "이미 가입된 회원입니다.",
       500: "서버 오류가 발생했습니다.",
     };
 
