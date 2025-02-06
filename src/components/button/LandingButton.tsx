@@ -11,7 +11,12 @@ const LandingButton = ({ children }: { children: ReactNode }) => {
   }, []);
 
   return (
-    <Link href={isLogin ? "/albalist" : "/signin/applicant"}>{children}</Link>
+    <Link
+      href={isLogin ? "/albalist" : "/signin/applicant"}
+      className="rounded-[100px] bg-blue-300 px-[24px] py-[16px] text-lg text-white pc:mt-[60px] pc:px-[36px] pc:py-[24px] pc:text-2xl"
+    >
+      {children}
+    </Link>
   );
 };
 
