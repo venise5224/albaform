@@ -1,4 +1,5 @@
 import LandingButton from "@/components/button/LandingButton";
+import LandingImage from "@/components/landingImage/LandingImage";
 import Image from "next/image";
 
 const HomePage = () => {
@@ -46,23 +47,7 @@ const HomePage = () => {
       <section className="bg-white">
         <div className="flex flex-col items-center gap-[160px] py-[120px] pc:gap-[240px] pc:pt-[400px] tablet:pt-[240px]">
           {imageList.map((list) => (
-            <div
-              key={list.id}
-              className="relative h-[344px] w-[327px] pc:h-[640px] pc:w-[1140px] tablet:h-[320px] tablet:w-[570px]"
-            >
-              <Image
-                src={list.lg}
-                fill
-                alt="이미지"
-                className="mobile:hidden"
-              />
-              <Image
-                src={list.sm}
-                fill
-                alt="?"
-                className="pc:hidden tablet:hidden"
-              />
-            </div>
+            <LandingImage key={list.id} list={list} />
           ))}
         </div>
         <div className="flex flex-col items-center text-center">
