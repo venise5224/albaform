@@ -10,6 +10,7 @@ import { useSidebarState } from "@/hooks/useSidebarState";
 import { useEffect, useState } from "react";
 import { useAtom } from "jotai";
 import { isLoggedAtom } from "@/atoms/isLogged";
+import AlarmButton from "./AlarmButton";
 
 const Header = () => {
   const [isLogin, setIsLogin] = useState<boolean | null>(null);
@@ -39,9 +40,12 @@ const Header = () => {
         {isAuthPage ? (
           <AuthPageNavigation />
         ) : isLogin ? (
-          <button onClick={() => setIsOpen(!isOpen)}>
-            <HeaderMenu />
-          </button>
+          <>
+            <AlarmButton />
+            <button onClick={() => setIsOpen(!isOpen)}>
+              <HeaderMenu />
+            </button>
+          </>
         ) : (
           <LoginButton />
         )}
