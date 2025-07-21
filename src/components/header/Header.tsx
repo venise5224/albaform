@@ -25,7 +25,6 @@ const Header = () => {
     setIsLogin(loginStatus);
   }, [isLogged]);
 
-
   const tabletStyle =
     "tablet:h-[60px] tablet:gap-[24px] tablet:px-[72px] tablet:py-[15px] tablet:text-lg";
   const pcStyle =
