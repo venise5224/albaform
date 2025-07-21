@@ -1,7 +1,7 @@
 "use client";
 
-import { usePathname } from "next/navigation";
-import { useEffect } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { isLoggedAtom } from "@/atoms/isLogged";
 import { useSetAtom } from "jotai";
