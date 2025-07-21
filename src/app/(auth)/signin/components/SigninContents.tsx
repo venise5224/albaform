@@ -46,6 +46,7 @@ const SigninContents = () => {
       if (response.status === 200) {
         localStorage.setItem("isLogin", "true");
         isLogged(true);
+        addToast("로그인이 완료되었습니다.", "info");
         router.push("/");
       } else {
         addToast(response.error as string, "warning");
