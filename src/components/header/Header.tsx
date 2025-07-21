@@ -5,13 +5,12 @@ import AuthPageNavigation from "./AuthPageNavigation";
 import Logo from "./Logo";
 import HeaderMenu from "./HeaderMenu";
 import LoginButton from "../button/LoginButton";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useSidebarState } from "@/hooks/useSidebarState";
 import { useEffect, useState } from "react";
 import { useAtom } from "jotai";
 import { isLoggedAtom } from "@/atoms/isLogged";
 import AlarmButton from "./AlarmButton";
-import { useToast } from "@/hooks/useToast";
 
 const Header = () => {
   const [isLogin, setIsLogin] = useState<boolean | null>(null);
@@ -20,25 +19,12 @@ const Header = () => {
   const currentPath = usePathname();
   const isAuthPage =
     currentPath.includes("/signin") || currentPath.includes("/signup");
-  const searchParams = useSearchParams();
-  const message = searchParams.get("message");
-  const { addToast } = useToast();
-  const router = useRouter();
-  const [messageShown, setMessageShown] = useState(false);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const loginStatus = localStorage.getItem("isLogin") !== null;
-      setIsLogin(loginStatus);
+    const loginStatus = localStorage.getItem("isLogin") !== null;
+    setIsLogin(loginStatus);
+  }, [isLogged]);
 
-      if (message && !messageShown) {
-        addToast(decodeURIComponent(message as string), "info");
-        setMessageShown(true);
-
-        router.replace("/");
-      }
-    }
-  }, [isLogged, message, addToast, router, messageShown]);
 
   const tabletStyle =
     "tablet:h-[60px] tablet:gap-[24px] tablet:px-[72px] tablet:py-[15px] tablet:text-lg";
