@@ -27,14 +27,16 @@ const Header = () => {
   const [messageShown, setMessageShown] = useState(false);
 
   useEffect(() => {
-    const loginStatus = localStorage.getItem("isLogin") !== null;
-    setIsLogin(loginStatus);
+    if (typeof window !== "undefined") {
+      const loginStatus = localStorage.getItem("isLogin") !== null;
+      setIsLogin(loginStatus);
 
-    if (message && !messageShown) {
-      addToast(decodeURIComponent(message as string), "info");
-      setMessageShown(true);
+      if (message && !messageShown) {
+        addToast(decodeURIComponent(message as string), "info");
+        setMessageShown(true);
 
-      router.replace("/");
+        router.replace("/");
+      }
     }
   }, [isLogged, message, addToast, router, messageShown]);
 
