@@ -54,7 +54,7 @@ export const GET = async (request: Request) => {
         } = await oauthLoginResponse.json();
 
         const response = NextResponse.redirect(
-          `${process.env.NEXT_PUBLIC_DEPLOY_URL}/?message=${encodeURIComponent("로그인이 완료되었습니다.")}`
+          `${process.env.NEXT_PUBLIC_DEPLOY_URL}/`
         );
 
         response.cookies.set("role", role, {
