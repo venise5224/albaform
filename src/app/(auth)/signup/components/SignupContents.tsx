@@ -14,7 +14,8 @@ import {
 } from "../../../../schema/signup/signupSchema";
 import { signupActions } from "../actions/signupActions";
 import { profileImgAtom } from "@/atoms/signupAtomStore";
-import { useAtomValue } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
+import { isLoggedAtom } from "@/atoms/isLogged";
 import { profileImgActions } from "../actions/profileImgActions";
 import FormInput from "@/components/input/FormInput";
 import ErrorText from "@/components/errorText/ErrorText";
@@ -45,6 +46,7 @@ const SignupContents = ({
   const currentParams = new URLSearchParams(searchParams.toString());
   const profileImg = useAtomValue(profileImgAtom);
   const address = useAtomValue(addressAtom);
+  const isLogged = useSetAtom(isLoggedAtom);
   const { addToast } = useToast();
   const isOAuth = currentParams.get("isOAuth") || "";
   const provider = currentParams.get("provider") || "";
@@ -129,6 +131,7 @@ const SignupContents = ({
 
         addToast("회원가입이 완료되었습니다.", "info");
         localStorage.setItem("isLogin", "true");
+        isLogged(true);
 
         methods.reset();
         router.push("/");
